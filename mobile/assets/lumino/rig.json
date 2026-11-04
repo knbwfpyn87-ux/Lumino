@@ -1,0 +1,276 @@
+{
+ "stage": 300,
+ "layers": {
+  "rays": {
+   "src": "rig-rays",
+   "x": 78.67,
+   "y": 28.0,
+   "w": 20.33,
+   "h": 37.0
+  },
+  "body": {
+   "src": "rig-body",
+   "x": 30.67,
+   "y": 25.33,
+   "w": 56.33,
+   "h": 67.33
+  },
+  "body-dark": {
+   "src": "rig-body-dark",
+   "x": 30.67,
+   "y": 25.33,
+   "w": 56.33,
+   "h": 67.33
+  },
+  "cap": {
+   "src": "rig-cap",
+   "x": 17.33,
+   "y": 2.67,
+   "w": 74.33,
+   "h": 65.0
+  }
+ },
+ "faces": {
+  "smile": {
+   "src": "face-smile",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 25.0,
+   "h": 13.0
+  },
+  "laugh": {
+   "src": "face-laugh",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 28.67,
+   "h": 19.33
+  },
+  "happy": {
+   "src": "face-happy",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 28.67,
+   "h": 14.33
+  },
+  "xd": {
+   "src": "face-xd",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 28.67,
+   "h": 21.0
+  },
+  "surprised": {
+   "src": "face-surprised",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 24.67,
+   "h": 16.67
+  },
+  "starry": {
+   "src": "face-starry",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 31.0,
+   "h": 21.67
+  },
+  "skeptical": {
+   "src": "face-skeptical",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 25.33,
+   "h": 19.67
+  },
+  "flat": {
+   "src": "face-flat",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 28.67,
+   "h": 6.33
+  },
+  "worried": {
+   "src": "face-worried",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 23.0,
+   "h": 15.0
+  },
+  "sad": {
+   "src": "face-sad",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 28.0,
+   "h": 15.0
+  },
+  "sleepy": {
+   "src": "face-sleepy",
+   "cx": 63.33,
+   "cy": 56.67,
+   "w": 26.67,
+   "h": 11.67
+  },
+  "love": {
+   "src": "face-love",
+   "cx": 63.33,
+   "cy": 54.0,
+   "w": 28.67,
+   "h": 18.0
+  }
+ },
+ "hands": {
+  "wave": {
+   "src": "hand-wave",
+   "w": 30.0,
+   "h": 29.33
+  },
+  "point": {
+   "src": "hand-point",
+   "w": 23.0,
+   "h": 29.0
+  },
+  "thumbs": {
+   "src": "hand-thumbs",
+   "w": 25.33,
+   "h": 28.67
+  },
+  "clap": {
+   "src": "hand-clap",
+   "w": 31.0,
+   "h": 22.67
+  },
+  "peace": {
+   "src": "hand-peace",
+   "w": 23.67,
+   "h": 30.0
+  },
+  "fist": {
+   "src": "hand-fist",
+   "w": 24.67,
+   "h": 26.0
+  },
+  "book": {
+   "src": "hand-book",
+   "w": 53.67,
+   "h": 34.0
+  },
+  "tablet": {
+   "src": "hand-tablet",
+   "w": 43.0,
+   "h": 27.67
+  },
+  "pencil": {
+   "src": "hand-pencil",
+   "w": 30.0,
+   "h": 28.67
+  },
+  "magnifier": {
+   "src": "hand-magnifier",
+   "w": 32.0,
+   "h": 40.33
+  },
+  "idea": {
+   "src": "hand-idea",
+   "w": 39.33,
+   "h": 44.33
+  }
+ },
+ "slots": {
+  "right": {
+   "cx": 87.33,
+   "cy": 65.33,
+   "s": 0.95
+  },
+  "left": {
+   "cx": 28.67,
+   "cy": 68.67,
+   "s": 0.95
+  },
+  "front": {
+   "cx": 62.67,
+   "cy": 82.0,
+   "s": 0.9
+  },
+  "chin": {
+   "cx": 71.33,
+   "cy": 77.33,
+   "s": 0.8
+  }
+ },
+ "fx": {
+  "question": {
+   "src": "fx-question",
+   "cx": 83.33,
+   "cy": 13.33,
+   "w": 14.1,
+   "h": 22.2
+  },
+  "sparkles": {
+   "src": "fx-sparkles",
+   "cx": 13.33,
+   "cy": 23.33,
+   "w": 22.4,
+   "h": 26.67
+  },
+  "zzz": {
+   "src": "fx-zzz",
+   "cx": 79.33,
+   "cy": 10.0,
+   "w": 24.27,
+   "h": 20.27
+  },
+  "burst": {
+   "src": "fx-burst",
+   "cx": 13.33,
+   "cy": 13.33,
+   "w": 26.25,
+   "h": 23.5
+  },
+  "burst-small": {
+   "src": "fx-burst-small",
+   "cx": 63.33,
+   "cy": 6.0,
+   "w": 21.23,
+   "h": 12.83
+  },
+  "exclaim": {
+   "src": "fx-exclaim",
+   "cx": 82.67,
+   "cy": 13.33,
+   "w": 11.47,
+   "h": 19.73
+  },
+  "bubble": {
+   "src": "fx-bubble",
+   "cx": 77.33,
+   "cy": 6.67,
+   "w": 27.69,
+   "h": 19.01
+  }
+ },
+ "poses": {
+  "reading": {
+   "src": "pose-reading",
+   "w": 85.47,
+   "h": 89.33
+  },
+  "laptop": {
+   "src": "pose-laptop",
+   "w": 89.33,
+   "h": 82.01
+  },
+  "thinking": {
+   "src": "pose-thinking",
+   "w": 88.26,
+   "h": 89.33
+  },
+  "idea": {
+   "src": "pose-idea",
+   "w": 89.33,
+   "h": 75.81
+  },
+  "wink": {
+   "src": "pose-wink",
+   "w": 89.33,
+   "h": 78.71
+  }
+ }
+}

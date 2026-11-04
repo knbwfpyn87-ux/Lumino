@@ -18,6 +18,7 @@ import { UI } from './lib/ui';
 import TopBar from './components/TopBar';
 import Study from './pages/Study';
 import Notes from './pages/Notes';
+import LuminoStudio from './pages/LuminoStudio';
 import Friends from './pages/Friends';
 import { NewPhotoQuiz, PhotoQuizView } from './pages/PhotoQuiz';
 import Moderation from './pages/Moderation';
@@ -74,6 +75,7 @@ export default function App() {
           <Route path="/courses" element={<CourseList />} />
           <Route path="/study" element={<Study />} />
           <Route path="/notes" element={<Notes />} />
+          <Route path="/lumino" element={<LuminoStudio />} />
           <Route path="/friends" element={<Friends />} />
           <Route path="/progress" element={<Home progressOnly />} />
           <Route path="/courses/:id" element={<CourseView />} />

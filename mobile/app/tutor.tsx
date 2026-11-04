@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { T, Button } from '@/components/ui';
 import UIcon from '@/components/UIcon';
+import Lumino, { LuminoSays } from '@/components/Lumino';
 import { useTheme } from '@/lib/theme';
 import { usePlan } from '@/lib/auth';
 import { askTutor } from '@/lib/api';
@@ -37,10 +38,13 @@ export default function Tutor() {
           </Pressable>); })}
       </ScrollView>
       <ScrollView ref={scroll} onContentSizeChange={() => scroll.current?.scrollToEnd({ animated: true })} contentContainerStyle={{ padding: 14, gap: 10 }}>
-        {!turns.length && <View style={{ alignItems: 'center', marginTop: 24 }}><UIcon name="mascot-hero" size={130} /></View>}
-        {!turns.length && <T color={t.muted} style={{ textAlign: 'center', marginTop: 10 }}>Ask anything. Lumino AI teaches step by step.{'\n'}AI can make mistakes, so double-check important answers.</T>}
-        {turns.map((m, i) => <View key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '86%', backgroundColor: m.role === 'user' ? t.accent : t.card, borderRadius: 20, padding: 12, borderWidth: m.role === 'user' ? 0 : 1, borderColor: t.line }}><T color={m.role === 'user' ? t.onAccent : t.text}>{m.content}</T></View>)}
-        {busy && <T color={t.muted}>Lumino AI is thinking…</T>}
+        <View style={{ backgroundColor: t.accentSoft, borderRadius: 22, padding: 12 }}>
+          {busy ? <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><Lumino mood="think" size={110} /><T color={t.muted}>Hmm, let me think…</T></View>
+            : <LuminoSays key={turns.length} size={110} mood="talk" after={turns.length ? 'idle' : 'wave'}
+                text={turns[turns.length - 1]?.role === 'assistant' ? turns[turns.length - 1].content : turns.length ? '' : "Hi, I'm Mr. Lumino! Ask me anything and I'll walk you through it step by step."} />}
+        </View>
+        {!turns.length && <T color={t.muted} size={13} style={{ textAlign: 'center', marginTop: 4 }}>AI can make mistakes, so double-check important answers.</T>}
+        {turns.slice(0, turns[turns.length - 1]?.role === 'assistant' ? -1 : undefined).map((m, i) => <View key={i} style={{ alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '86%', backgroundColor: m.role === 'user' ? t.accent : t.card, borderRadius: 20, padding: 12, borderWidth: m.role === 'user' ? 0 : 1, borderColor: t.line }}><T color={m.role === 'user' ? t.onAccent : t.text}>{m.content}</T></View>)}
         {!!err && <T color={t.bad}>{err}</T>}
       </ScrollView>
       <View style={{ flexDirection: 'row', gap: 8, padding: 10, paddingBottom: ins.bottom + 8, borderTopWidth: 1, borderColor: t.line, backgroundColor: t.card }}>

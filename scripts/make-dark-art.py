@@ -1,5 +1,6 @@
 """Dark-mode versions of the brand art: no white pixels, and a softer outer outline.
 Run after cut-gui.py:  python3 -I scripts/make-dark-art.py src/assets/ui
+Mascot body:            python3 -I scripts/make-dark-art.py src/assets/lumino body
 """
 import sys, json, numpy as np
 from PIL import Image
@@ -30,14 +31,15 @@ def darkify(name):
     h0, w0 = white.shape; lab = np.zeros((h0, w0), int); sun = {}; n = 0
     for sy, sx in zip(*np.nonzero(white)):
         if lab[sy, sx]: continue
-        n += 1; q = deque([(sy, sx)]); lab[sy, sx] = n; ty = tb = 0
+        n += 1; q = deque([(sy, sx)]); lab[sy, sx] = n; ty = tb = 0; ys = []
         while q:
-            y, x = q.popleft(); ty += ny[y, x]; tb += nb[y, x]
+            y, x = q.popleft(); ty += ny[y, x]; tb += nb[y, x]; ys.append(y)
             for dy in (-1, 0, 1):
                 for dx in (-1, 0, 1):
                     yy, xx = y + dy, x + dx
                     if 0 <= yy < h0 and 0 <= xx < w0 and white[yy, xx] and not lab[yy, xx]: lab[yy, xx] = n; q.append((yy, xx))
-        sun[n] = ty >= tb
+        # the glass base always sits at the bottom of the bulb -> sky blue
+        sun[n] = ty >= tb and np.mean(ys) < h0 * 0.7
     is_sun = np.vectorize(lambda v: sun.get(v, False))(lab) if n else np.zeros_like(white)
     target = np.where(is_sun[..., None], SUN, SKY)
     rgb = np.where(white[..., None], target, rgb)
@@ -63,8 +65,11 @@ def darkify(name):
     return int(left)
 
 meta = json.load(open(f'{D}/manifest.json'))
-for n in ['logo-mascot', 'logo-wordmark', 'mascot-hero']:
+NAMES = sys.argv[2].split(',') if len(sys.argv) > 2 else ['logo-mascot', 'logo-wordmark', 'mascot-hero']
+for n in NAMES:
     print(n, 'white pixels left:', darkify(n)); meta[n + '-dark'] = {'kind': 'art', 'size': meta[n]['size']}
+if 'logo-mascot' not in NAMES:
+    json.dump(meta, open(f'{D}/manifest.json', 'w'), indent=1); sys.exit()
 m, wm = Image.open(f'{D}/logo-mascot-dark.png'), Image.open(f'{D}/logo-wordmark-dark.png')
 W = max(m.width, wm.width); logo = Image.new('RGBA', (W, m.height + wm.height + 6))
 logo.alpha_composite(m, ((W - m.width) // 2 + 6, 0)); logo.alpha_composite(wm, ((W - wm.width) // 2, m.height + 6))

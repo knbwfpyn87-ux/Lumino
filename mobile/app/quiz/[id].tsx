@@ -11,6 +11,7 @@ import { saveResult } from '@/lib/api';
 import { resolveTest, tierOf, canAccess } from '@/lib/tests';
 import { recordCourseResult, parseCourseTestId, courseTestId } from '@shared/courses';
 import { PLAN_INFO } from '@shared/plans';
+import Lumino, { LuminoSays } from '@/components/Lumino';
 
 export default function Quiz() {
   const { id } = useLocalSearchParams<{ id: string }>(); const t = useTheme(); const ins = useSafeAreaInsets(); const plan = usePlan();
@@ -45,7 +46,7 @@ export default function Quiz() {
     const pct = score / qs.length; const c = parseCourseTestId(test.id);
     return (
       <View style={{ flex: 1, backgroundColor: t.bg, padding: 24, paddingTop: ins.top + 40, gap: 16, alignItems: 'center' }}>
-        <T size={84}>{pct === 1 ? '🏆' : pct >= 0.7 ? '🎉' : pct >= 0.5 ? '👍' : '💪'}</T>
+        <Lumino mood={pct === 1 ? 'cheer' : pct >= 0.7 ? 'love' : pct >= 0.5 ? 'teach' : 'wrong'} size={190} />
         <T size={40} weight="900">{score}/{qs.length}</T>
         <T color={t.muted} style={{ textAlign: 'center' }}>{c ? (pct >= 0.7 ? 'Level passed! The next one is unlocked.' : 'Score 70% to unlock the next level.') : pct >= 0.7 ? 'Great work!' : 'Keep going, you\'ve got this.'}</T>
         <View style={{ alignSelf: 'stretch', gap: 10, marginTop: 'auto', paddingBottom: ins.bottom + 10 }}>
@@ -86,7 +87,8 @@ export default function Quiz() {
       {picked !== null && (
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: 18, paddingBottom: ins.bottom + 14, gap: 10, backgroundColor: right ? '#e7f8f0' : '#fde9ec', borderTopLeftRadius: 24, borderTopRightRadius: 24 }}>
           <T size={20} weight="900" color={right ? '#0b7a52' : '#b4233a'}>{right ? (combo >= 3 ? `On fire! ${combo} in a row 🔥` : 'Nice! ✨') : 'Not quite'}</T>
-          {q.explanation && <T color="#1c1f2e">{q.explanation}</T>}
+          <LuminoSays key={q.id} size={96} mood={right ? 'correct' : 'wrong'} after={right ? 'correct' : 'teach'}
+            text={right ? (q.explanation ?? 'You got it!') : `The answer is ${String.fromCharCode(65 + q.answer)}, "${q.choices[q.answer]}". ${q.explanation ?? ''}`.trim()} />
           <Button title={i < qs.length - 1 ? 'Continue' : 'See results'} onPress={next} />
         </View>
       )}
