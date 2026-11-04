@@ -50,7 +50,6 @@ export default function Lumino({ mood = 'idle', talking = false, char, size = 16
           {look.rays && img('rig-rays', L.rays.x, L.rays.y, L.rays.w, L.rays.h, { opacity: .9 })}
           {img((dark ? 'rig-body-dark' : 'rig-body'), L.body.x, L.body.y, L.body.w, L.body.h)}
           {face && (() => { const f = rig.faces[face]; return img(f.src as never, f.cx - f.w / 2, f.cy - f.h / 2, f.w, f.h); })()}
-          {img('rig-cap', L.cap.x, L.cap.y, L.cap.w, L.cap.h)}
         </>}
       </Animated.View>
       {look.hand && (() => { const [h, slot] = look.hand; const hd = rig.hands[h]; const s = rig.slots[slot]; const w = hd.w * s.s, hh = hd.h * s.s;

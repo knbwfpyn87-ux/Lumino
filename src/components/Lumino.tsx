@@ -43,7 +43,6 @@ export default function Lumino({ mood = 'idle', talking = false, char, size = 22
   const [mouth, setMouth] = useState<Face | null>(null);
   const tick = useRef(0);
   const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isDark = dark ?? (typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark');
 
   // Blink every few seconds when not talking
   useEffect(() => {
@@ -71,9 +70,11 @@ export default function Lumino({ mood = 'idle', talking = false, char, size = 22
       <div className={'lum-body ' + (reduce ? '' : look.body ?? '')}>
         {look.pose ? (() => { const p = rig.poses[look.pose]; return layer(p.src, (100 - p.w) / 2, 100 - p.h - 2, p.w, p.h, 'lum-pose', 'pose-' + look.pose); })() : <>
           {look.rays && layer(L.rays.src, L.rays.x, L.rays.y, L.rays.w, L.rays.h, 'lum-rays')}
-          {layer(isDark ? L['body-dark'].src : L.body.src, L.body.x, L.body.y, L.body.w, L.body.h)}
+          {dark === undefined ? <>
+            {layer(L.body.src, L.body.x, L.body.y, L.body.w, L.body.h, 'light-only', 'body-l')}
+            {layer(L['body-dark'].src, L['body-dark'].x, L['body-dark'].y, L['body-dark'].w, L['body-dark'].h, 'dark-only', 'body-d')}
+          </> : layer(dark ? L['body-dark'].src : L.body.src, L.body.x, L.body.y, L.body.w, L.body.h)}
           {face && (() => { const f = rig.faces[face]; return layer(f.src, f.cx - f.w / 2, f.cy - f.h / 2, f.w, f.h, 'lum-face', 'face'); })()}
-          {layer(L.cap.src, L.cap.x, L.cap.y, L.cap.w, L.cap.h, 'lum-cap')}
         </>}
       </div>
       {look.hand && (() => { const [h, slot, anim] = look.hand; const hd = rig.hands[h]; const s = rig.slots[slot]; const w = hd.w * s.s, hh = hd.h * s.s;

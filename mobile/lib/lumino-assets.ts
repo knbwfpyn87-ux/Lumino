@@ -1,7 +1,9 @@
-// Generated: Mr. Lumino layers. Re-run scripts/gen-mobile-lumino.py after build-rig.py
+// Generated: Mr. Lumino layers. Re-run: python3 -I scripts/gen-mobile-lumino.py
 /* eslint-disable */
 export const LUM_SRC = {
   'base': require('../assets/lumino/base.png'),
+  'base-blank': require('../assets/lumino/base-blank.png'),
+  'base-blank-dark': require('../assets/lumino/base-blank-dark.png'),
   'body': require('../assets/lumino/body.png'),
   'body-dark': require('../assets/lumino/body-dark.png'),
   'cap': require('../assets/lumino/cap.png'),

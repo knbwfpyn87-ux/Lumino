@@ -529,3 +529,5 @@ button.choice.faded { opacity:.55; }
 .scene[data-scene="moods"] .scene-stage .lsays { flex-direction:column; gap:4px; }
 .scene[data-scene="moods"] .scene-caption { font-size:2.6rem; }
 .scene[data-scene="moods"] .scene-stage { margin-top:20px; }
+/* Lumino layers are absolutely positioned: keep that when swapping light/dark versions */
+[data-theme="dark"] .lumino img.lum-l.dark-only { display:block !important; }

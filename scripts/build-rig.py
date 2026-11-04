@@ -13,30 +13,33 @@ def place(name, img, x, y):  # x, y = top-left on the stage
                            'w': round(img.width / STAGE * 100, 2), 'h': round(img.height / STAGE * 100, 2)}
     save(img, name)
 
-S = 0.78  # body scale that matches the reference
-rays = Image.open(f'{D}/rays.png'); rays = rays.resize((int(rays.width * .6), int(rays.height * .6)), Image.LANCZOS); place('rays', rays, 236, 84)
-for v in ('body', 'body-dark'):
-    b = Image.open(f'{D}/{v}.png'); b = b.resize((int(b.width * S), int(b.height * S)), Image.LANCZOS); place(v, b, 92, 76)
-cap = Image.open(f'{D}/cap.png').transpose(Image.FLIP_LEFT_RIGHT).rotate(-6, resample=Image.BICUBIC, expand=True)
-cap = cap.resize((int(cap.width * .78), int(cap.height * .78)), Image.LANCZOS); place('cap', cap, 52, 8)
+# Everything is placed by mapping the base reference character onto the stage:
+#   stage = (pack - REF) * K + OFF   (the base character carries the cap exactly as drawn in the pack)
+REF, K, OFF = (334, 60), 0.9, (10, 26)
+T = lambda x, y: ((x - REF[0]) * K + OFF[0], (y - REF[1]) * K + OFF[1])
+man = json.load(open(f'{D}/manifest.json')); ox, oy = man['base-blank']['origin']
+for v in ('base-blank', 'base-blank-dark'):
+    b = Image.open(f'{D}/{v}.png'); b = b.resize((round(b.width * K), round(b.height * K)), Image.LANCZOS)
+    place('body' if v == 'base-blank' else 'body-dark', b, *T(ox, oy))
+rays = Image.open(f'{D}/rays.png'); rays = rays.resize((int(rays.width * .6 * K), int(rays.height * .6 * K)), Image.LANCZOS); place('rays', rays, *T(574, 102))
 
-# Faces: centered on the bulb's face spot
-FACE_C = (190, 162)
+# Faces: centered where the reference face sits; the expression sheet is drawn ~12% smaller than the base face
+FACE_C = T(494, 203); FACE_S = 1.14 * K
 rig['faces'] = {}
 for f in ['smile', 'laugh', 'happy', 'xd', 'surprised', 'starry', 'skeptical', 'flat', 'worried', 'sad', 'sleepy', 'love']:
-    im = Image.open(f'{D}/face-{f}.png'); cy = FACE_C[1] + (8 if f == 'sleepy' else 0)
+    im = Image.open(f'{D}/face-{f}.png'); cy = FACE_C[1] + (6 if f == 'sleepy' else 0)
     rig['faces'][f] = {'src': f'face-{f}', 'cx': round(FACE_C[0] / STAGE * 100, 2), 'cy': round(cy / STAGE * 100, 2),
-                       'w': round(im.width / STAGE * 100, 2), 'h': round(im.height / STAGE * 100, 2)}
+                       'w': round(im.width * FACE_S / STAGE * 100, 2), 'h': round(im.height * FACE_S / STAGE * 100, 2)}
 
-# Hands: where they float in each slot (center, scale)
-SLOTS = {'right': ((262, 196), .95), 'left': ((86, 206), .95), 'front': ((188, 246), .9), 'chin': ((214, 232), .8)}
+# Hands: where they float beside the bulb (center, scale)
+SLOTS = {'right': (T(570, 225), .8), 'left': (T(392, 230), .8), 'front': (T(494, 280), .78), 'chin': (T(530, 265), .7)}
 rig['hands'] = {}
 for h in ['wave', 'point', 'thumbs', 'clap', 'peace', 'fist', 'book', 'tablet', 'pencil', 'magnifier', 'idea']:
     im = Image.open(f'{D}/hand-{h}.png'); rig['hands'][h] = {'src': f'hand-{h}', 'w': round(im.width / STAGE * 100, 2), 'h': round(im.height / STAGE * 100, 2)}
 rig['slots'] = {k: {'cx': round(c[0] / STAGE * 100, 2), 'cy': round(c[1] / STAGE * 100, 2), 's': s} for k, (c, s) in SLOTS.items()}
 
-# Effects: where they pop
-FX = {'question': (250, 40, .9), 'sparkles': (40, 70, .8), 'zzz': (238, 30, .8), 'burst': (40, 40, .75), 'burst-small': (190, 18, .7), 'exclaim': (248, 40, .8), 'bubble': (232, 20, .62)}
+# Effects: where they pop (stage px)
+FX = {'question': (258, 46, .9), 'sparkles': (52, 20, .7), 'zzz': (244, 40, .8), 'burst': (40, 18, .62), 'burst-small': (160, 16, .7), 'exclaim': (256, 46, .8), 'bubble': (250, 30, .62)}
 rig['fx'] = {}
 for k, (cx, cy, s) in FX.items():
     im = Image.open(f'{D}/fx-{k}.png'); rig['fx'][k] = {'src': f'fx-{k}', 'cx': round(cx / STAGE * 100, 2), 'cy': round(cy / STAGE * 100, 2),
