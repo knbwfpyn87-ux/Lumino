@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { ASSISTANTS, canAccess, PLAN_INFO } from '../lib/plans';
 import { usePlan } from '../lib/auth';
 import { askAssistant, aiUsedToday } from '../lib/api';
@@ -9,9 +10,9 @@ type Turn = { role: 'user' | 'assistant'; content: string };
 
 export default function Assistant() {
   const plan = usePlan();
-  const [active, setActive] = useState<string | null>(null);
+  const [active, setActive] = useState<string | null>(new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('q') ? 'study-buddy' : null);
   const [chats, setChats] = useState<Record<string, Turn[]>>({});
-  const [text, setText] = useState(''); const [busy, setBusy] = useState(false); const [err, setErr] = useState(''); const [used, setUsed] = useState(0);
+  const [sp] = useSearchParams(); const [text, setText] = useState(sp.get('q') ?? ''); const [busy, setBusy] = useState(false); const [err, setErr] = useState(''); const [used, setUsed] = useState(0);
   const end = useRef<HTMLDivElement>(null);
   const limit = plan === 'pro' ? 150 : plan === 'plus' ? 30 : 0;
   useEffect(() => { aiUsedToday().then(setUsed).catch(() => {}); }, []);
@@ -22,7 +23,7 @@ export default function Assistant() {
 
   if (!a) return (
     <section>
-      <h2>AI assistants</h2>
+      <h2>Lumino AI Tutor</h2>
       <p className="muted">{used}/{limit} messages used today</p>
       <div className="grid">{ASSISTANTS.map(x => { const open = canAccess(plan, x.tier); return (
         <div key={x.id} className={'card' + (open ? '' : ' dim')} onClick={() => open ? setActive(x.id) : (window.location.hash = '#/pricing')}>

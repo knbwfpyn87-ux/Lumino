@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { LEVELS } from '../lib/catalog';
 import { useTests } from '../components/useTests';
 import { usePlan } from '../lib/auth';
@@ -7,8 +7,8 @@ import { canAccess, tierOf, PLAN_INFO } from '../lib/plans';
 
 export default function Tests() {
   const { tests, loading } = useTests(); const plan = usePlan(); const [hideLocked, setHideLocked] = useState(false);
-  const [level, setLevel] = useState('All'); const [q, setQ] = useState('');
-  const shown = tests.filter(t => (!hideLocked || canAccess(plan, tierOf(t))) && (level === 'All' || t.level === level) && (t.subject + t.title).toLowerCase().includes(q.toLowerCase()));
+  const [sp] = useSearchParams(); const [level, setLevel] = useState('All'); const [q, setQ] = useState(sp.get('q') ?? '');
+  const shown = tests.filter(t => (!hideLocked || canAccess(plan, tierOf(t))) && (level === 'All' || t.level === level) && (t.subject + ' ' + t.title).toLowerCase().includes(q.toLowerCase()));
   return (
     <section>
       <h2>Practice tests</h2>
