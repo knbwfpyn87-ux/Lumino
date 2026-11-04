@@ -6,6 +6,7 @@ import { getProgress } from '../lib/progress';
 import { useTests } from '../components/useTests';
 import { db } from '../lib/store';
 import { isCloud } from '../lib/supabase';
+import Call from '../components/Call';
 
 export default function Groups() {
   const { profile } = useAuth(); const name = myName(profile);
@@ -14,7 +15,7 @@ export default function Groups() {
   const load = useCallback(() => api.listGroups().then(setGroups).catch(e => setErr(e.message)), []);
   useEffect(() => { load(); }, [load]);
   const active = groups.find(g => g.id === activeId);
-  if (active) return <GroupRoom group={active} me={name} onBack={() => setActiveId(null)} onLeft={() => { setActiveId(null); load(); }} />;
+  if (active) return <GroupRoom group={active} me={name} myId={profile?.id ?? 'local'} onBack={() => setActiveId(null)} onLeft={() => { setActiveId(null); load(); }} />;
 
   const create = async () => { if (!newName.trim()) return; setErr(''); try { const g = await api.createGroup(newName.trim()); setNewName(''); await load(); setActiveId(g.id); } catch (e) { setErr((e as Error).message); } };
   const join = async () => { if (!code.trim()) return; setErr(''); try { const id = await api.joinGroup(code); setCode(''); await load(); setActiveId(id); } catch (e) { setErr((e as Error).message); } };
@@ -31,13 +32,17 @@ export default function Groups() {
   );
 }
 
-function GroupRoom({ group, me, onBack, onLeft }: { group: api.GroupInfo; me: string; onBack: () => void; onLeft: () => void }) {
+function GroupRoom({ group, me, myId, onBack, onLeft }: { group: api.GroupInfo; me: string; myId: string; onBack: () => void; onLeft: () => void }) {
   const { tests } = useTests();
   const [members, setMembers] = useState<string[]>([]); const [msgs, setMsgs] = useState<api.Msg[]>([]);
   const [testIds, setTestIds] = useState<string[]>([]); const [quizzes, setQuizzes] = useState<api.PhotoQuizInfo[]>([]);
   const [boards, setBoards] = useState<Record<string, api.ResultRow[]>>({});
   const [text, setText] = useState(''); const [inCall, setInCall] = useState(false); const [copied, setCopied] = useState(false); const [err, setErr] = useState('');
   const chatEnd = useRef<HTMLDivElement>(null);
+  const [blocked, setBlocked] = useState<string[]>([]); const [ttl, setTtl] = useState(7);
+  const [reporting, setReporting] = useState<api.Msg | null>(null); const [menu, setMenu] = useState<string | null>(null);
+  useEffect(() => { api.listBlocked().then(setBlocked).catch(() => {}); api.getMessageTtl(group.id).then(setTtl).catch(() => {}); }, [group.id]);
+  const isOwner = group.owner === myId;
 
   const loadMsgs = useCallback(() => api.listMessages(group.id).then(setMsgs), [group.id]);
   useEffect(() => {
@@ -58,10 +63,8 @@ function GroupRoom({ group, me, onBack, onLeft }: { group: api.GroupInfo; me: st
         <button className="ghost" onClick={async () => { if (confirm('Leave this group?')) { await api.leaveGroup(group.id); onLeft(); } }}>Leave group</button></div>
       <h2>{group.name}</h2>
       <p className="muted">Invite code: <b>{group.invite_code}</b> <button className="ghost x" onClick={copy}>{copied ? 'Copied!' : 'Copy'}</button> · {members.length} member{members.length === 1 ? '' : 's'}: {members.join(', ')}</p>
-      <div className="row">
-        <button onClick={() => setInCall(!inCall)}>{inCall ? 'Leave call' : '📞 Start call'}</button>
-        {inCall && <span className="muted">Calls are coming soon (video provider not connected yet).</span>}
-      </div>
+      {inCall ? <Call groupId={group.id} onLeave={() => setInCall(false)} />
+        : <div className="row"><button onClick={() => setInCall(true)}>📞 Join call</button><span className="muted small">🔒 Encrypted, never recorded</span></div>}
       {err && <p className="wrong">{err}</p>}
       <h3>📸 Photo quizzes</h3>
       <div className="row"><Link to={`/photo-quiz/new?group=${group.id}`}><button>+ Quiz from photos</button></Link></div>
@@ -71,9 +74,40 @@ function GroupRoom({ group, me, onBack, onLeft }: { group: api.GroupInfo; me: st
       <div className="list">{testIds.map(id => { const t = tests.find(x => x.id === id); if (!t) return null; const best = boards[id] ?? [];
         return <div key={id} className="item col"><div className="row between"><b>{t.title}</b><Link to={`/tests/${id}?group=${group.id}`}><button>Take it</button></Link></div>
           {best.length ? <ol className="board">{best.map((r, n) => <li key={r.username}>{['🥇', '🥈', '🥉'][n] ?? ''} {r.username} — {r.score}/{r.total}</li>)}</ol> : <small className="muted">No scores yet. Be first!</small>}</div>; })}</div>
-      <h3>Chat</h3>
-      <div className="chat">{msgs.length ? msgs.map(m => <p key={m.id} className={m.username === me ? 'mine' : ''}><b>{m.username}:</b> {m.text}</p>) : <p className="muted">Say hi 👋</p>}<div ref={chatEnd} /></div>
+      <div className="row between"><h3>Chat</h3>
+        <span className="muted small">🕒 Messages delete after {isOwner && isCloud
+          ? <select className="mini" value={ttl} onChange={async e => { const d = +e.target.value as 1 | 7 | 30; try { await api.setMessageTtl(group.id, d); setTtl(d); } catch (er) { setErr((er as Error).message); } }}><option value={1}>1 day</option><option value={7}>7 days</option><option value={30}>30 days</option></select>
+          : `${ttl} day${ttl === 1 ? '' : 's'}`}</span></div>
+      <div className="chat">{msgs.length ? msgs.filter(m => !blocked.includes(m.user_id)).map(m => (
+        <div key={m.id} className={'msg' + (m.user_id === myId || m.username === me ? ' mine' : '')}>
+          <p><b>{m.username}:</b> {m.text}</p>
+          {m.user_id !== myId && m.username !== me && <button className="ghost dots3" aria-label="Message options" onClick={() => setMenu(menu === m.id ? null : m.id)}>⋯</button>}
+          {menu === m.id && <div className="msgmenu">
+            <button className="ghost" onClick={() => { setReporting(m); setMenu(null); }}>🚩 Report</button>
+            <button className="ghost" onClick={async () => { if (!confirm(`Block ${m.username}? You won't see their messages.`)) return; await api.blockUser(m.user_id); setBlocked(b => [...b, m.user_id]); setMenu(null); }}>🚫 Block {m.username}</button>
+          </div>}
+        </div>)) : <p className="muted">Say hi 👋</p>}<div ref={chatEnd} /></div>
+      {blocked.length > 0 && <p className="muted small">{blocked.length} blocked · <a onClick={async () => { for (const b of blocked) await api.unblockUser(b); setBlocked([]); }}>Unblock all</a></p>}
+      {reporting && <ReportDialog msg={reporting} groupId={group.id} onClose={() => setReporting(null)} />}
       <div className="row"><input style={{ flex: 1 }} placeholder="Message" value={text} maxLength={2000} onChange={e => setText(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} /><button onClick={send}>Send</button></div>
     </section>
+  );
+}
+
+const REASONS: [api.Reason, string][] = [['harassment', 'Harassment'], ['bullying', 'Bullying'], ['inappropriate', 'Inappropriate content'], ['safety', 'I feel unsafe'], ['cheating', 'Cheating'], ['spam', 'Spam'], ['other', 'Other']];
+function ReportDialog({ msg, groupId, onClose }: { msg: api.Msg; groupId: string; onClose: () => void }) {
+  const [reason, setReason] = useState<api.Reason>('harassment'); const [details, setDetails] = useState(''); const [sent, setSent] = useState(false); const [err, setErr] = useState('');
+  const send = async () => { try { await api.reportMessage(msg, groupId, reason, details.trim()); setSent(true); } catch (e) { setErr((e as Error).message); } };
+  return (
+    <div className="modal" onClick={onClose}><div className="modalcard" onClick={e => e.stopPropagation()}>
+      {sent ? <><h3>Thanks for reporting</h3><p className="muted">A moderator will review it. A copy is saved even after the chat auto-deletes. If you're in danger, tell a trusted adult or call 911.</p><button onClick={onClose}>Done</button></> : <>
+        <h3>Report message</h3>
+        <p className="quote">"{msg.text}" — {msg.username}</p>
+        <div className="reasons">{REASONS.map(([v, l]) => <label key={v}><input type="radio" name="reason" checked={reason === v} onChange={() => setReason(v)} /> {l}</label>)}</div>
+        <textarea rows={2} maxLength={1000} placeholder="Anything else? (optional)" value={details} onChange={e => setDetails(e.target.value)} />
+        {err && <p className="wrong">{err}</p>}
+        <div className="row"><button className="ghost" onClick={onClose}>Cancel</button><button className="bad" onClick={send}>Send report</button></div>
+      </>}
+    </div></div>
   );
 }

@@ -131,3 +131,53 @@ export function subscribeResponses(quizId: string, onChange: () => void): () => 
   const ch = supabase.channel('resp-' + quizId).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'photo_responses', filter: `quiz_id=eq.${quizId}` }, onChange).subscribe();
   return () => { supabase!.removeChannel(ch); };
 }
+
+// ---------- Safety: report, block, auto-delete, moderation ----------
+export type Reason = 'harassment' | 'bullying' | 'inappropriate' | 'spam' | 'cheating' | 'safety' | 'other';
+export async function reportMessage(m: Msg, groupId: string, reason: Reason, details: string) {
+  if (!supabase) return;
+  must(await supabase.from('reports').insert({ reporter: await me(), reported_user: m.user_id, group_id: groupId, message_id: m.id, message_text: m.text, reason, details: details || null }));
+}
+export async function listBlocked(): Promise<string[]> {
+  if (!supabase) { try { return JSON.parse(localStorage.getItem('lumino:blocked') ?? '[]'); } catch { return []; } }
+  return (must(await supabase.from('blocks').select('blocked')) as { blocked: string }[]).map(b => b.blocked);
+}
+export async function blockUser(userId: string) {
+  if (!supabase) { const b = await listBlocked(); try { localStorage.setItem('lumino:blocked', JSON.stringify([...new Set([...b, userId])])); } catch { /* ignore */ } return; }
+  const r = await supabase.from('blocks').insert({ blocker: await me(), blocked: userId }); if (r.error && r.error.code !== '23505') throw new Error(r.error.message);
+}
+export async function unblockUser(userId: string) {
+  if (!supabase) { const b = await listBlocked(); try { localStorage.setItem('lumino:blocked', JSON.stringify(b.filter(x => x !== userId))); } catch { /* ignore */ } return; }
+  must(await supabase.from('blocks').delete().eq('blocker', await me()).eq('blocked', userId));
+}
+export async function getMessageTtl(groupId: string): Promise<number> {
+  if (!supabase) return 7;
+  return (must(await supabase.from('groups').select('message_ttl_days').eq('id', groupId).single()) as { message_ttl_days: number }).message_ttl_days;
+}
+export async function setMessageTtl(groupId: string, days: 1 | 7 | 30) {
+  if (!supabase) return;
+  must(await supabase.from('groups').update({ message_ttl_days: days }).eq('id', groupId));
+}
+export type Report = { id: string; reason: Reason; details: string | null; message_text: string; status: string; created_at: string; reported_user: string; reported: string; reporter_name: string };
+export async function listReports(): Promise<Report[]> {
+  if (!supabase) return [];
+  const rows = must(await supabase.from('reports').select('id, reason, details, message_text, status, created_at, reported_user, reported:profiles!reports_reported_user_fkey(username), reporter:profiles!reports_reporter_fkey(username)').eq('status', 'open').order('created_at', { ascending: false })) as never[];
+  return rows.map((r: Report & { reported: { username: string }; reporter: { username: string } }) => ({ ...r, reported: r.reported?.username ?? '?', reporter_name: r.reporter?.username ?? '?' }));
+}
+export async function resolveReport(id: string, status: 'actioned' | 'dismissed') { if (supabase) must(await supabase.from('reports').update({ status }).eq('id', id)); }
+export async function banUser(userId: string) { if (supabase) must(await supabase.from('profiles').update({ banned: true }).eq('id', userId)); }
+export async function amModerator(): Promise<boolean> {
+  if (!supabase) return false;
+  const { data } = await supabase.auth.getUser(); if (!data.user) return false;
+  const r = await supabase.from('profiles').select('is_moderator').eq('id', data.user.id).single();
+  return !!(r.data as { is_moderator: boolean } | null)?.is_moderator;
+}
+
+// ---------- Calls ----------
+export async function getCallToken(groupId: string): Promise<{ token: string; url: string }> {
+  if (!supabase) throw new Error('Calls need the live (Supabase) version of Lumino.');
+  const { data, error } = await supabase.functions.invoke('livekit-token', { body: { groupId } });
+  if (error) throw new Error(error.message);
+  if (data?.error) throw new Error(data.error);
+  return { token: data.token, url: data.url ?? import.meta.env.VITE_LIVEKIT_URL };
+}

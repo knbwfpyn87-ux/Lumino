@@ -8,6 +8,7 @@ import Upload from './pages/Upload';
 import Groups from './pages/Groups';
 import Tutor from './pages/Tutor';
 import { NewPhotoQuiz, PhotoQuizView } from './pages/PhotoQuiz';
+import Moderation from './pages/Moderation';
 import Feedback from './components/Feedback';
 import { useProgress } from './components/useProgress';
 import { levelOf } from './lib/progress';
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="/groups" element={<Groups />} />
           <Route path="/photo-quiz/new" element={<NewPhotoQuiz />} />
           <Route path="/photo-quiz/:id" element={<PhotoQuizView />} />
+          <Route path="/moderation" element={<Moderation />} />
           {TUTOR && <Route path="/tutor" element={<Tutor />} />}
         </Routes>
       </main>
