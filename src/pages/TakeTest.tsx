@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { db } from '../lib/store';
+import { SAT_TESTS } from '../lib/sat';
 import { BUILTIN_TESTS } from '../lib/catalog';
 import { award, recordResult } from '../lib/progress';
 import { confetti } from '../components/Feedback';
 
 export default function TakeTest() {
   const { id } = useParams(); const [sp] = useSearchParams(); const groupId = sp.get('group') ?? undefined;
-  const test = [...BUILTIN_TESTS, ...db.tests()].find(t => t.id === id);
+  const test = [...BUILTIN_TESTS, ...SAT_TESTS, ...db.tests()].find(t => t.id === id);
   const [i, setI] = useState(0); const [ans, setAns] = useState<Record<string, number>>({});
   const [done, setDone] = useState(false); const [secs, setSecs] = useState(0);
   useEffect(() => { if (done) return; const t = setInterval(() => setSecs(s => s + 1), 1000); return () => clearInterval(t); }, [done]);

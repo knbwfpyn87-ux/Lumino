@@ -1,14 +1,18 @@
 import type { Test } from './store';
 
 // Course catalog: standard levels + AP. Built-in tests are seeds; add more under /content later.
-export const LEVELS = ['Standard', 'Honors', 'AP'] as const;
+export const LEVELS = ['Standard', 'Honors', 'AP', 'College'] as const;
 export const SUBJECTS = [
   'Algebra I', 'Geometry', 'Algebra II', 'Precalculus', 'Biology', 'Chemistry', 'Physics', 'English', 'World History', 'US History',
   'AP Calculus AB', 'AP Calculus BC', 'AP Statistics', 'AP Biology', 'AP Chemistry', 'AP Physics 1', 'AP Physics 2', 'AP Physics C',
   'AP Environmental Science', 'AP Computer Science A', 'AP Computer Science Principles', 'AP English Language', 'AP English Literature',
   'AP US History', 'AP World History', 'AP European History', 'AP US Government', 'AP Comparative Government', 'AP Human Geography',
   'AP Psychology', 'AP Macroeconomics', 'AP Microeconomics', 'AP Spanish Language', 'AP French Language', 'AP Art History', 'AP Music Theory',
-  'SAT', 'ACT', 'PSAT',
+  'SAT', 'ACT', 'PSAT', 'CLEP',
+  'College Calculus I', 'College Calculus II', 'Linear Algebra', 'Differential Equations', 'Discrete Math', 'Intro Statistics',
+  'General Chemistry', 'Organic Chemistry', 'General Biology', 'Anatomy & Physiology', 'University Physics', 'Intro Psychology',
+  'Intro Sociology', 'Micro/Macroeconomics', 'Intro Computer Science', 'Data Structures', 'English Composition', 'Public Speaking',
+  'US Government', 'Philosophy', 'Accounting', 'MCAT', 'LSAT', 'GRE',
 ];
 
 export const BUILTIN_TESTS: Test[] = [

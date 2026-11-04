@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { db } from '../lib/store';
+import { SAT_TESTS } from '../lib/sat';
 import { BUILTIN_TESTS, LEVELS } from '../lib/catalog';
 
 export default function Tests() {
-  const all = [...BUILTIN_TESTS, ...db.tests()];
+  const all = [...BUILTIN_TESTS, ...SAT_TESTS, ...db.tests()];
   const [level, setLevel] = useState('All'); const [q, setQ] = useState('');
   const shown = all.filter(t => (level === 'All' || t.level === level) && (t.subject + t.title).toLowerCase().includes(q.toLowerCase()));
   return (

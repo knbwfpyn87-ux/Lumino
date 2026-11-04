@@ -64,3 +64,10 @@ div.choice { padding:6px 10px; border-radius:8px; } div.choice.right { backgroun
 .toast { background:var(--accent); color:var(--on-accent); padding:10px 16px; border-radius:12px; font-weight:700; box-shadow:0 8px 24px var(--shadow); animation:pop .3s; }
 .banner { position:fixed; top:30%; left:50%; transform:translateX(-50%); background:var(--panel); border:2px solid var(--yellow); padding:20px 32px; border-radius:20px; font-size:1.6rem; font-weight:800; z-index:51; box-shadow:0 20px 60px var(--shadow); animation:pop .4s; }
 @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
+.note { background:var(--accent-soft); border-left:4px solid var(--yellow); padding:10px 14px; border-radius:10px; font-size:.92rem; }
+.drop { display:block; text-align:center; border:2px dashed var(--line); border-radius:16px; padding:28px; margin:14px 0; cursor:pointer; background:var(--panel); } .drop:hover { border-color:var(--accent); }
+.thumbs { display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:10px; margin:12px 0; }
+.thumb { position:relative; } .thumb img { width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:10px; border:1px solid var(--line); }
+.thumb button { position:absolute; top:4px; right:4px; background:var(--panel); } .thumb span { position:absolute; bottom:6px; left:8px; background:var(--panel); border-radius:6px; padding:0 6px; font-weight:700; font-size:.8rem; }
+img.page { width:100%; border-radius:14px; border:1px solid var(--line); margin:10px 0; max-height:60vh; object-fit:contain; background:var(--panel); cursor:zoom-in; } img.page.zoom { max-height:none; cursor:zoom-out; }
+.card img.cover { width:100%; height:110px; object-fit:cover; border-radius:10px; margin-bottom:8px; }

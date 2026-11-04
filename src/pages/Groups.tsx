@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { db, uid, type Group } from '../lib/store';
+import { db, uid, photoDb, type Group } from '../lib/store';
+import { SAT_TESTS } from '../lib/sat';
 import { BUILTIN_TESTS } from '../lib/catalog';
 import { getProgress } from '../lib/progress';
 
@@ -9,7 +10,7 @@ export default function Groups() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [name, setName] = useState(''); const [text, setText] = useState(''); const [user, setUser] = useState(db.user());
   const [inCall, setInCall] = useState(false);
-  const tests = [...BUILTIN_TESTS, ...db.tests()];
+  const tests = [...BUILTIN_TESTS, ...SAT_TESTS, ...db.tests()];
   const persist = (g: Group[]) => { setGroups(g); db.saveGroups(g); };
   const active = groups.find(g => g.id === activeId);
   const patch = (p: Partial<Group>) => active && persist(groups.map(g => g.id === active.id ? { ...g, ...p } : g));
@@ -23,6 +24,9 @@ export default function Groups() {
         <button onClick={() => setInCall(!inCall)}>{inCall ? 'Leave call' : '📞 Start call'}</button>
         {inCall && <span className="muted">Call UI placeholder — WebRTC/LiveKit provider to be attached.</span>}
       </div>
+      <h3>📸 Photo quizzes</h3>
+      <div className="row"><Link to={`/photo-quiz/new?group=${active.id}`}><button>+ Quiz from photos</button></Link></div>
+      <div className="grid">{photoDb.all().filter(q => q.groupId === active.id).map(q => <Link key={q.id} to={`/photo-quiz/${q.id}`} className="card"><img className="cover" src={q.pages[0]} alt="" /><h3>{q.title}</h3><p>{q.pages.length} pages · by {q.author}</p></Link>)}</div>
       <h3>Group tests</h3>
       <div className="row">
         <select onChange={e => e.target.value && patch({ testIds: [...new Set([...active.testIds, e.target.value])] })} value="">

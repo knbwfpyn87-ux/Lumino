@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <section>
       <h1>Hey {name} 👋</h1>
-      <p className="muted">{pct >= 100 ? 'Goal done for today. Anything extra is bonus XP.' : `${p.goal - p.todayXp} XP to hit today's goal.`}</p>
+      <p className="muted">High school to college: AP, SAT, and university courses, studied together.<br />{pct >= 100 ? 'Goal done for today. Anything extra is bonus XP.' : `${p.goal - p.todayXp} XP to hit today's goal.`}</p>
       <div className="stats">
         <div className="stat"><div className="ring" style={{ ['--p' as string]: pct }}><span>{pct}%</span></div><div><b>Daily goal</b><p className="muted">{p.todayXp}/{p.goal} XP
           <select value={p.goal} onChange={e => setGoal(+e.target.value)} className="mini">{[50, 100, 200, 300].map(g => <option key={g} value={g}>{g}</option>)}</select></p></div></div>
@@ -21,9 +21,9 @@ export default function Home() {
       <h2>Up next</h2>
       <div className="grid">
         <Link className="card cta" to="/flashcards"><h3>🃏 Review cards</h3><p>{due ? `${due} cards due` : 'All caught up'}</p></Link>
-        <Link className="card" to="/tests"><h3>📝 Practice test</h3><p>Standard, Honors, AP, SAT/ACT</p></Link>
+        <Link className="card" to="/tests"><h3>📝 Practice test</h3><p>High school, AP, SAT, college</p></Link>
         <Link className="card" to="/groups"><h3>👥 Study groups</h3><p>Chat, call, compete</p></Link>
-        <Link className="card" to="/upload"><h3>⬆️ Upload a test</h3><p>Share with your group</p></Link>
+        <Link className="card" to="/photo-quiz/new"><h3>📸 Quiz from photos</h3><p>Snap your worksheet, solve it together</p></Link>
       </div>
       {p.results.length > 0 && <><h2>Recent</h2>
         <div className="list">{p.results.slice(0, 5).map((r, i) => <div key={i} className="item"><span>{r.title}</span><span className={r.score / r.total >= .8 ? 'right' : ''}>{r.score}/{r.total}</span></div>)}</div></>}
