@@ -1,0 +1,1 @@
+// Web already has localStorage.
