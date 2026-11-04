@@ -531,3 +531,6 @@ button.choice.faded { opacity:.55; }
 .scene[data-scene="moods"] .scene-stage { margin-top:20px; }
 /* Lumino layers are absolutely positioned: keep that when swapping light/dark versions */
 [data-theme="dark"] .lumino img.lum-l.dark-only { display:block !important; }
+.voicebtn { position:absolute; right:8px; bottom:6px; background:transparent !important; border:none; padding:2px 4px !important; min-height:0 !important; font-size:.95rem; opacity:.55; cursor:pointer; }
+.voicebtn:hover { opacity:1; }
+.lsays-bubble { padding-right:38px; }

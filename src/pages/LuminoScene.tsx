@@ -3,6 +3,10 @@ import Lumino, { type LuminoMood } from '../components/Lumino';
 import LuminoSays from '../components/LuminoSays';
 import { LOGO_FULL } from '../lib/logo';
 
+// Per-line audio lengths (ms) for the demo videos, written by scripts/make-scene-voice.py
+const DUR: Record<string, number> = (window as unknown as { __luminoDur?: Record<string, number> }).__luminoDur ?? {};
+const mark = (k: string) => { const w = window as unknown as { __marks?: { k: string; t: number }[] }; (w.__marks ??= []).push({ k, t: Date.now() }); };
+
 // Scripted scenes for Mr. Lumino demo videos (#/lumino-scene?s=ai|teacher|moods).
 type Step = { mood: LuminoMood; after?: LuminoMood; say?: string; hold: number; user?: string; pick?: number; caption?: string };
 const Q = { prompt: 'If 3x + 7 = 22, what is x?', choices: ['3', '5', '7', '15'], answer: 1 };
@@ -36,6 +40,7 @@ export default function LuminoScene() {
   useEffect(() => {
     if (k < 0 || k >= scene.steps.length) return; setTyped(!step.say);
     if (step.user) setChat(c => [...c, step.user!]); if (step.pick !== undefined) setPicked(step.pick);
+    if (step.say) mark(`${s}:${k}`);
   }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { if (k < 0 || !typed || k >= scene.steps.length) return; const t = setTimeout(() => setK(k + 1), step.hold); return () => clearTimeout(t); }, [typed, k]); // eslint-disable-line react-hooks/exhaustive-deps
   const end = k >= scene.steps.length; const last = scene.steps[scene.steps.length - 1];
@@ -48,7 +53,7 @@ export default function LuminoScene() {
         <div className="scene-choices">{Q.choices.map((c, i) => <div key={i} className={'scene-choice ' + (picked === i ? (i === Q.answer ? 'ok' : 'bad') : '')}>{String.fromCharCode(65 + i)}. {c}</div>)}</div></div>}
       {s === 'ai' && chat.map((c, i) => <div key={i} className="scene-user">{c}</div>)}
       <div className="scene-stage">
-        {cur.say ? <LuminoSays key={k} text={cur.say} mood={cur.mood} after={cur.after ?? 'idle'} size={s === 'teacher' ? 280 : 340} onDone={() => setTyped(true)} />
+        {cur.say ? <LuminoSays key={k} text={cur.say} mood={cur.mood} after={cur.after ?? 'idle'} size={s === 'teacher' ? 280 : 340} onDone={() => setTyped(true)} silent durationMs={DUR[`${s}:${k}`]} />
           : <div className="lsays left"><Lumino key={'m' + k} mood={cur.mood} size={s === 'moods' ? 380 : s === 'teacher' ? 280 : 340} />{cur.caption && <div className="scene-caption">{cur.caption}</div>}</div>}
       </div>
     </div>

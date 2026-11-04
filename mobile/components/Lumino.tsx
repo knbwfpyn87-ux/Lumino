@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, Image, Text, View, AccessibilityInfo } from 'react-native';
+import { Animated, Easing, Image, Pressable, Text, View, AccessibilityInfo } from 'react-native';
+import { speak, stopSpeaking, speakable, voiceOn, setVoiceOn, onVoiceChange } from '@/lib/voice';
 import rig from '@/assets/lumino/rig.json';
 import { LUM_SRC } from '@/lib/lumino-assets';
 import { useTheme } from '@/lib/theme';
@@ -60,17 +61,29 @@ export default function Lumino({ mood = 'idle', talking = false, char, size = 16
   );
 }
 
-/** Lumino + speech bubble that types out `text` with lip-sync. */
+/** Lumino + speech bubble. He reads `text` aloud with the iPhone's voice while the words appear and his mouth moves. */
 export function LuminoSays({ text, mood = 'talk', after = 'idle', size = 120 }: { text: string; mood?: LuminoMood; after?: LuminoMood; size?: number }) {
-  const t = useTheme(); const [n, setN] = useState(0);
-  useEffect(() => { setN(0); }, [text]);
-  useEffect(() => { if (n >= text.length) return; const ch = text[n]; const id = setTimeout(() => setN(x => x + 1), /[.!?]/.test(ch) ? 260 : /[,;:]/.test(ch) ? 140 : 25); return () => clearTimeout(id); }, [n, text]);
-  const talking = n < text.length;
+  const t = useTheme(); const [n, setN] = useState(0); const [voice, setVoice] = useState(voiceOn());
+  const [spoken, setSpoken] = useState<null | { upto: number; done: boolean }>(null);
+  useEffect(() => onVoiceChange(() => setVoice(voiceOn())), []);
+  useEffect(() => { setN(0); setSpoken(null); }, [text]);
+  useEffect(() => {
+    if (!voice || !text) return; const plain = speakable(text);
+    speak(text, { onStart: () => setSpoken({ upto: 0, done: false }),
+      onWord: i => { const end = text.indexOf(' ', Math.ceil(((i + 1) / Math.max(plain.length, 1)) * text.length)); setSpoken({ upto: end < 0 ? text.length : end, done: false }); },
+      onEnd: () => setSpoken({ upto: text.length, done: true }) });
+    return () => { stopSpeaking(); };
+  }, [text, voice]);
+  useEffect(() => { if (spoken || n >= text.length) return; const ch = text[n]; const id = setTimeout(() => setN(x => x + 1), /[.!?]/.test(ch) ? 260 : /[,;:]/.test(ch) ? 140 : 25); return () => clearTimeout(id); }, [n, text, spoken]);
+  const shown = spoken ? text.slice(0, spoken.upto) : text.slice(0, n);
+  const talking = spoken ? !spoken.done : n < text.length;
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-      <Lumino mood={talking ? mood : after} talking={talking} char={talking ? text[n - 1] : undefined} size={size} />
-      {!!text && <View style={{ flex: 1, backgroundColor: t.card, borderRadius: 18, padding: 12, borderWidth: 1, borderColor: t.line }} accessible accessibilityLabel={text}>
-        <Text style={{ color: t.text, fontSize: 15, lineHeight: 21 }}>{text.slice(0, n)}</Text></View>}
+      <Lumino mood={talking ? mood : after} talking={talking} char={!spoken && talking ? text[n - 1] : undefined} size={size} />
+      {!!text && <View style={{ flex: 1, backgroundColor: t.card, borderRadius: 18, padding: 12, paddingRight: 36, borderWidth: 1, borderColor: t.line }} accessible accessibilityLabel={text}>
+        <Text style={{ color: t.text, fontSize: 15, lineHeight: 21 }}>{shown}</Text>
+        <Pressable onPress={() => setVoiceOn(!voice)} hitSlop={10} accessibilityLabel={voice ? 'Mute Mr. Lumino' : 'Let Mr. Lumino speak'} style={{ position: 'absolute', right: 8, bottom: 6 }}>
+          <Text style={{ fontSize: 15, opacity: .6 }}>{voice ? '🔊' : '🔇'}</Text></Pressable></View>}
     </View>
   );
 }

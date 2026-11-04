@@ -85,13 +85,13 @@ export default function Lumino({ mood = 'idle', talking = false, char, size = 22
 }
 
 /** Reveals text letter by letter and reports the current letter (for lip-sync). */
-export function useTypewriter(text: string, cps = 38) {
+export function useTypewriter(text: string, cps = 38, even = false) {
   const [n, setN] = useState(0);
   useEffect(() => { setN(0); }, [text]);
   useEffect(() => {
     if (n >= text.length) return;
-    const ch = text[n]; const pause = /[.!?]/.test(ch) ? 260 : /[,;:]/.test(ch) ? 140 : 1000 / cps;
+    const ch = text[n]; const pause = even ? 1000 / cps : /[.!?]/.test(ch) ? 260 : /[,;:]/.test(ch) ? 140 : 1000 / cps;
     const id = window.setTimeout(() => setN(x => x + 1), pause); return () => window.clearTimeout(id);
-  }, [n, text, cps]);
+  }, [n, text, cps, even]);
   return { shown: text.slice(0, n), char: text[n - 1], done: n >= text.length };
 }
