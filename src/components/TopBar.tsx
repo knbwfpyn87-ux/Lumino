@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Icon from './Icon';
+import UIcon from './UIcon';
 import { useAuth, myName } from '../lib/auth';
 import { useProgress } from './useProgress';
 import { db, isDue } from '../lib/store';
@@ -25,14 +25,14 @@ export default function TopBar({ logo: _logo }: { logo: string }) {
       <div className="topspacer" />
       {searching
         ? <form className="search" onSubmit={e => { e.preventDefault(); if (q.trim()) { nav(`/tests?q=${encodeURIComponent(q.trim())}`); setSearching(false); } }}>
-            <Icon name="search" size={18} /><input autoFocus placeholder="Search classes, tests, topics…" value={q} onChange={e => setQ(e.target.value)} onBlur={() => !q && setSearching(false)} aria-label="Search" />
+            <UIcon name="top-search" size={18} /><input autoFocus placeholder="Search classes, tests, topics…" value={q} onChange={e => setQ(e.target.value)} onBlur={() => !q && setSearching(false)} aria-label="Search" />
           </form>
-        : <button className="roundbtn" aria-label="Search" onClick={() => setSearching(true)}><Icon name="search" size={22} /></button>}
+        : <button className="roundbtn" aria-label="Search" onClick={() => setSearching(true)}><UIcon name="top-search" size={20} /></button>}
       <div className="bellwrap" ref={ref}>
-        <button className="roundbtn" aria-label="Notifications" onClick={() => setOpen(!open)}><Icon name="bell" size={22} />{notes.length > 0 && <i className="dot" />}</button>
+        <button className="roundbtn" aria-label="Notifications" onClick={() => setOpen(!open)}><UIcon name="top-bell" size={30} dot={notes.length > 0} /></button>
         {open && <div className="dropdown">{notes.length ? notes.map((n, i) => <Link key={i} to={n.to} onClick={() => setOpen(false)}>{n.t}</Link>) : <p className="muted small">You're all caught up ✨</p>}</div>}
       </div>
-      <Link to="/account" className="bigavatar" title={`${name} · ${profile ? PLAN_INFO[profile.plan].name : ''}`} aria-label="Account"><Icon name="user" size={30} /></Link>
+      <Link to="/account" className="bigavatar img" title={`${name} · ${profile ? PLAN_INFO[profile.plan].name : ''}`} aria-label="Account"><UIcon name="top-avatar" size={66} /></Link>
     </header>
   );
 }

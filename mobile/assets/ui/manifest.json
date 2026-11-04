@@ -1,0 +1,318 @@
+{
+ "wave-sidebar": {
+  "kind": "art",
+  "size": [
+   258,
+   171
+  ]
+ },
+ "wave-topright": {
+  "kind": "art",
+  "size": [
+   292,
+   112
+  ]
+ },
+ "wave-hero": {
+  "kind": "art",
+  "size": [
+   257,
+   184
+  ]
+ },
+ "nav-classes": {
+  "kind": "icon",
+  "ink": "#031a46",
+  "size": [
+   43,
+   40
+  ]
+ },
+ "nav-study": {
+  "kind": "icon",
+  "ink": "#001840",
+  "size": [
+   44,
+   35
+  ]
+ },
+ "nav-friends": {
+  "kind": "icon",
+  "ink": "#015596",
+  "size": [
+   46,
+   36
+  ]
+ },
+ "nav-groups": {
+  "kind": "icon",
+  "ink": "#015494",
+  "size": [
+   46,
+   35
+  ]
+ },
+ "nav-ai": {
+  "kind": "icon",
+  "ink": "#043d6d",
+  "size": [
+   35,
+   36
+  ]
+ },
+ "nav-settings": {
+  "kind": "icon",
+  "ink": "#020d42",
+  "size": [
+   38,
+   39
+  ]
+ },
+ "nav-bell": {
+  "kind": "icon",
+  "ink": "#021d4a",
+  "size": [
+   50,
+   48
+  ],
+  "dot": {
+   "cx": 70.3,
+   "cy": 24.8,
+   "d": 31.1,
+   "color": "#fcca07"
+  }
+ },
+ "top-bell": {
+  "kind": "icon",
+  "ink": "#032a54",
+  "size": [
+   49,
+   49
+  ],
+  "dot": {
+   "cx": 73.3,
+   "cy": 25.9,
+   "d": 34.3,
+   "color": "#fbc606"
+  }
+ },
+ "top-search": {
+  "kind": "icon",
+  "ink": "#000d2e",
+  "size": [
+   31,
+   30
+  ]
+ },
+ "icon-classes": {
+  "kind": "icon",
+  "ink": "#003165",
+  "size": [
+   35,
+   32
+  ]
+ },
+ "icon-calendar": {
+  "kind": "icon",
+  "ink": "#00356d",
+  "size": [
+   34,
+   34
+  ]
+ },
+ "icon-friends": {
+  "kind": "icon",
+  "ink": "#065c9e",
+  "size": [
+   57,
+   43
+  ]
+ },
+ "icon-ai-yellow": {
+  "kind": "icon",
+  "ink": "#febf08",
+  "size": [
+   40,
+   39
+  ]
+ },
+ "icon-progress": {
+  "kind": "icon",
+  "ink": "#0066af",
+  "size": [
+   40,
+   39
+  ]
+ },
+ "icon-book": {
+  "kind": "icon",
+  "ink": "#002d55",
+  "size": [
+   46,
+   35
+  ]
+ },
+ "icon-video": {
+  "kind": "icon",
+  "ink": "#013561",
+  "size": [
+   45,
+   30
+  ]
+ },
+ "icon-video-room": {
+  "kind": "icon",
+  "ink": "#03599a",
+  "size": [
+   42,
+   29
+  ]
+ },
+ "icon-room": {
+  "kind": "icon",
+  "ink": "#0379da",
+  "size": [
+   38,
+   30
+  ]
+ },
+ "tool-flashcards": {
+  "kind": "icon",
+  "ink": "#0668ae",
+  "size": [
+   50,
+   46
+  ]
+ },
+ "tool-notes": {
+  "kind": "icon",
+  "ink": "#e29505",
+  "size": [
+   42,
+   46
+  ]
+ },
+ "tool-practice": {
+  "kind": "icon",
+  "ink": "#056db5",
+  "size": [
+   47,
+   45
+  ]
+ },
+ "tool-timer": {
+  "kind": "icon",
+  "ink": "#e39406",
+  "size": [
+   44,
+   48
+  ]
+ },
+ "tool-ai": {
+  "kind": "icon",
+  "ink": "#6a6af1",
+  "size": [
+   46,
+   47
+  ]
+ },
+ "sparkle-greeting": {
+  "kind": "icon",
+  "ink": "#fed42d",
+  "size": [
+   56,
+   61
+  ]
+ },
+ "logo-mascot": {
+  "kind": "art",
+  "size": [
+   136,
+   104
+  ]
+ },
+ "logo-wordmark": {
+  "kind": "art",
+  "size": [
+   195,
+   44
+  ]
+ },
+ "mascot-hero": {
+  "kind": "art",
+  "size": [
+   243,
+   203
+  ]
+ },
+ "nav-home": {
+  "kind": "art",
+  "size": [
+   41,
+   36
+  ]
+ },
+ "top-avatar": {
+  "kind": "art",
+  "size": [
+   77,
+   74
+  ]
+ },
+ "avatar-blue": {
+  "kind": "art",
+  "size": [
+   59,
+   56
+  ]
+ },
+ "avatar-yellow": {
+  "kind": "art",
+  "size": [
+   58,
+   57
+  ]
+ },
+ "avatar-purple": {
+  "kind": "art",
+  "size": [
+   59,
+   56
+  ]
+ },
+ "avatar-gray": {
+  "kind": "art",
+  "size": [
+   58,
+   56
+  ]
+ },
+ "btn-send": {
+  "kind": "art",
+  "size": [
+   61,
+   46
+  ]
+ },
+ "btn-play": {
+  "kind": "art",
+  "size": [
+   46,
+   41
+  ]
+ },
+ "dot-online": {
+  "kind": "art",
+  "size": [
+   15,
+   15
+  ]
+ },
+ "logo-full": {
+  "kind": "art",
+  "size": [
+   195,
+   154
+  ]
+ }
+}

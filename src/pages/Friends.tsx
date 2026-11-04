@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { listGroups, listMembers, type GroupInfo } from '../lib/api';
 import { useAuth, myName } from '../lib/auth';
+import { UI } from '../lib/ui';
 
-const COLORS = ['#38b6ff', '#ffc928', '#b39dff', '#9aa8bd', '#34d399', '#f472b6'];
+const FACES = ['avatar-blue', 'avatar-yellow', 'avatar-purple', 'avatar-gray'];
 
 // Everyone you study with, gathered from your groups.
 export default function Friends() {
@@ -16,7 +17,7 @@ export default function Friends() {
     <section>
       <h1 className="greet">Friends</h1>
       <p className="muted">People you study with. Add friends by sharing a group's invite code.</p>
-      <div className="grid">{people.map((p, i) => <div key={p.name} className="card friend"><span className="avatar" style={{ background: COLORS[i % COLORS.length] }}>{p.name.slice(0, 1).toUpperCase()}</span><div><b>{p.name}</b><p className="muted small">{p.groups.join(', ')}</p></div></div>)}</div>
+      <div className="grid">{people.map((p, i) => <div key={p.name} className="card friend"><img className="face img" src={UI[FACES[i % FACES.length]]} alt="" /><div><b>{p.name}</b><p className="muted small">{p.groups.join(', ')}</p></div></div>)}</div>
       {!people.length && <div className="panel"><p>No friends yet.</p><Link to="/groups"><button>{groups.length ? 'Share a group invite code' : 'Create a study group'}</button></Link></div>}
     </section>
   );
