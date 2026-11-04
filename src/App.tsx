@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Flashcards from './pages/Flashcards';
@@ -11,16 +12,19 @@ import Tutor from './pages/Tutor';
 const TUTOR = import.meta.env.VITE_ENABLE_TUTOR === 'true';
 
 export default function App() {
+  const [theme, setTheme] = useState<string>(() => { try { return localStorage.getItem('lumino:theme') ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch { return 'light'; } });
+  useEffect(() => { document.documentElement.dataset.theme = theme; try { localStorage.setItem('lumino:theme', theme); } catch { /* ignore */ } }, [theme]);
   return (
     <div className="app">
       <nav>
-        <span className="logo">✦ Lumino</span>
+        <span className="logo"><img src="/logo.svg" alt="" />Lumino</span>
         <NavLink to="/" end>Home</NavLink>
         <NavLink to="/flashcards">Flashcards</NavLink>
         <NavLink to="/tests">Practice Tests</NavLink>
         <NavLink to="/upload">Upload Test</NavLink>
         <NavLink to="/groups">Study Groups</NavLink>
         {TUTOR && <NavLink to="/tutor">AI Tutor</NavLink>}
+        <button className="theme" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Toggle dark mode">{theme === 'dark' ? '☀️' : '🌙'}</button>
       </nav>
       <main>
         <Routes>
