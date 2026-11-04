@@ -19,6 +19,7 @@ import TopBar from './components/TopBar';
 import Study from './pages/Study';
 import Notes from './pages/Notes';
 import LuminoStudio from './pages/LuminoStudio';
+import LuminoScene from './pages/LuminoScene';
 import Friends from './pages/Friends';
 import { NewPhotoQuiz, PhotoQuizView } from './pages/PhotoQuiz';
 import Moderation from './pages/Moderation';
@@ -38,6 +39,7 @@ export default function App() {
   const [theme, setTheme] = useState<string>(() => { try { return localStorage.getItem('lumino:theme') ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch { return 'light'; } });
   useEffect(() => { document.documentElement.dataset.theme = theme; try { localStorage.setItem('lumino:theme', theme); } catch { /* ignore */ } }, [theme]);
   const { session, profile, loading } = useAuth();
+  if (window.location.hash.startsWith('#/lumino-scene')) return <LuminoScene />;
   if (isCloud) {
     if (loading) return <div className="auth"><Brand name="logo-mascot" className="authlogo" /></div>;
     if (!session) return ['#/terms', '#/privacy'].includes(window.location.hash) ? <main>{window.location.hash === '#/terms' ? <Terms /> : <Privacy />}</main> : <SignIn logo={LOGO} />;

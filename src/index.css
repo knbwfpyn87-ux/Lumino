@@ -510,3 +510,22 @@ button.choice.isright { border-color:var(--ok); background:rgba(18,166,113,.12);
 button.choice.iswrong { border-color:var(--bad); background:rgba(224,71,94,.12); color:var(--text); opacity:1; }
 button.choice.faded { opacity:.55; }
 .teacherdone { display:flex; flex-direction:column; align-items:center; } .teacherdone .lsays { width:100%; text-align:left; }
+/* Video scenes */
+.scene { position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:30px 60px;
+  background:radial-gradient(circle at 85% 15%, rgba(255,210,51,.45), transparent 40%), radial-gradient(circle at 10% 90%, rgba(91,192,255,.35), transparent 45%), #f6f9fd; overflow:hidden; }
+.scene-logo { position:absolute; top:22px; left:28px; width:110px; }
+.scene-title { position:absolute; top:34px; right:36px; font-family:Nunito, sans-serif; font-weight:900; font-size:1.3rem; color:var(--text); background:#fff; padding:8px 18px; border-radius:999px; box-shadow:0 6px 20px var(--shadow); }
+.scene-stage { width:min(1000px, 100%); }
+.scene-stage .lsays-bubble { font-size:1.55rem; padding:20px 26px; border-radius:26px; }
+.scene-user { align-self:flex-end; margin-right:8%; background:var(--accent); color:#fff; font-size:1.3rem; padding:12px 20px; border-radius:22px 22px 6px 22px; animation:lum-pop .4s both; }
+.scene-q { background:#fff; border-radius:22px; padding:16px 22px; box-shadow:0 8px 24px var(--shadow); font-size:1.4rem; width:min(820px, 100%); }
+.scene-choices { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:12px; }
+.scene-choice { border:2px solid var(--line); border-radius:14px; padding:10px; text-align:center; font-weight:600; transition:all .25s; }
+.scene-choice.ok { border-color:var(--ok); background:rgba(18,166,113,.14); transform:scale(1.05); }
+.scene-choice.bad { border-color:var(--bad); background:rgba(224,71,94,.14); }
+.scene-caption { font-family:Nunito, sans-serif; font-weight:900; font-size:3rem; color:var(--text); animation:lum-pop .4s both; }
+@media (min-width: 1800px) { .scene { zoom:1.5; } }
+.scene-stage { display:flex; justify-content:center; }
+.scene[data-scene="moods"] .scene-stage .lsays { flex-direction:column; gap:4px; }
+.scene[data-scene="moods"] .scene-caption { font-size:2.6rem; }
+.scene[data-scene="moods"] .scene-stage { margin-top:20px; }
