@@ -45,11 +45,16 @@ export function SignIn({ logo }: { logo: string }) {
 // Shown once after sign-up to pick a username and role.
 export function Onboarding({ logo }: { logo: string }) {
   const { session, refresh, signOut } = useAuth();
-  const [username, setUsername] = useState(''); const [role, setRole] = useState('student'); const [level, setLevel] = useState('high_school');
+  const [username, setUsername] = useState(''); const [role, setRole] = useState('student'); const [level, setLevel] = useState('high_school'); const [birthYear, setBirthYear] = useState(''); const [agree, setAgree] = useState(false);
   const [err, setErr] = useState(''); const [busy, setBusy] = useState(false);
   const save = async (e: React.FormEvent) => {
-    e.preventDefault(); if (!supabase || !session) return; setBusy(true); setErr('');
-    const { error } = await supabase.from('profiles').insert({ id: session.user.id, username: username.trim(), role, school_level: level });
+    e.preventDefault(); if (!supabase || !session) return; setErr('');
+    const y = Number(birthYear), age = new Date().getFullYear() - y;
+    if (!y || y < 1900) return setErr('Enter your birth year.');
+    if (age < 13) return setErr('Sorry, you need to be at least 13 to use Lumino.');
+    if (!agree) return setErr('Please accept the Terms and Privacy Policy.');
+    setBusy(true);
+    const { error } = await supabase.from('profiles').insert({ id: session.user.id, username: username.trim(), role, school_level: level, birth_year: y });
     setBusy(false);
     if (error) return setErr(error.code === '23505' ? 'That username is taken.' : error.message);
     await refresh();
@@ -62,6 +67,8 @@ export function Onboarding({ logo }: { logo: string }) {
         <input required minLength={2} maxLength={30} placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
         <div className="seg">{[['student', '🎒 Student'], ['teacher', '🍎 Teacher']].map(([v, l]) => <button type="button" key={v} className={role === v ? '' : 'ghost'} onClick={() => setRole(v)}>{l}</button>)}</div>
         <div className="seg">{[['high_school', 'High school'], ['college', 'College']].map(([v, l]) => <button type="button" key={v} className={level === v ? '' : 'ghost'} onClick={() => setLevel(v)}>{l}</button>)}</div>
+        <input inputMode="numeric" maxLength={4} placeholder="Birth year (e.g. 2009)" value={birthYear} onChange={e => setBirthYear(e.target.value.replace(/\D/g, ''))} />
+        <label className="small muted" style={{ textAlign: 'left' }}><input type="checkbox" checked={agree} onChange={e => setAgree(e.target.checked)} /> I agree to the <a href="#/terms" target="_blank">Terms</a> and <a href="#/privacy" target="_blank">Privacy Policy</a>{' '}(under 18: with a parent's OK)</label>
         <button disabled={busy}>Let's go</button>
         {err && <p className="wrong">{err}</p>}
         <p className="muted small"><a onClick={signOut}>Sign out</a></p>

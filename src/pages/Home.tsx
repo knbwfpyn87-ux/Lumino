@@ -22,6 +22,7 @@ export default function Home() {
       <h2>Up next</h2>
       <div className="grid">
         <Link className="card cta" to="/flashcards"><h3>🃏 Review cards</h3><p>{due ? `${due} cards due` : 'All caught up'}</p></Link>
+        <Link className="card" to="/courses"><h3>🎓 Classes</h3><p>Units that level up as you go</p></Link>
         <Link className="card" to="/tests"><h3>📝 Practice test</h3><p>High school, AP, SAT, college</p></Link>
         <Link className="card" to="/groups"><h3>👥 Study groups</h3><p>Chat, call, compete</p></Link>
         <Link className="card" to="/photo-quiz/new"><h3>📸 Quiz from photos</h3><p>Snap your worksheet, solve it together</p></Link>

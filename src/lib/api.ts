@@ -181,3 +181,34 @@ export async function getCallToken(groupId: string): Promise<{ token: string; ur
   if (data?.error) throw new Error(data.error);
   return { token: data.token, url: data.url ?? import.meta.env.VITE_LIVEKIT_URL };
 }
+
+// ---------- Billing & AI ----------
+const returnUrl = () => window.location.origin + window.location.pathname;
+async function invoke<T>(fn: string, body: Record<string, unknown>): Promise<T> {
+  if (!supabase) throw new Error('This needs the live version of Lumino.');
+  const { data, error } = await supabase.functions.invoke(fn, { body });
+  if (error) {
+    // Edge function errors carry a JSON body with { error, message }.
+    const ctx = (error as { context?: Response }).context;
+    const parsed = ctx ? await ctx.json().catch(() => null) : null;
+    const e = new Error(parsed?.message ?? parsed?.error ?? error.message) as Error & { code?: string };
+    e.code = parsed?.error; throw e;
+  }
+  return data as T;
+}
+export async function startCheckout(plan: 'plus' | 'pro') { const { url } = await invoke<{ url: string }>('create-checkout', { plan, returnUrl: returnUrl() }); window.location.href = url; }
+export async function openBillingPortal() { const { url } = await invoke<{ url: string }>('billing-portal', { returnUrl: returnUrl() }); window.location.href = url; }
+export async function askAssistant(assistant: string, messages: { role: 'user' | 'assistant'; content: string }[]): Promise<string> {
+  return (await invoke<{ reply: string }>('ai-assistant', { assistant, messages })).reply;
+}
+export async function aiUsedToday(): Promise<number> {
+  if (!supabase) return 0;
+  const { data } = await supabase.from('ai_usage').select('messages').eq('day', new Date().toISOString().slice(0, 10)).maybeSingle();
+  return (data as { messages: number } | null)?.messages ?? 0;
+}
+export async function deleteAccount() { await invoke('delete-account', {}); await supabase?.auth.signOut(); }
+export type ImportedQ = { prompt: string; choices: string[]; answer: number; explanation: string; answer_confidence: 'from_key' | 'solved' | 'unsure' };
+export async function aiImportTest(files: File[]): Promise<{ title: string; subject: string; questions: ImportedQ[] }> {
+  const toB64 = (f: File) => new Promise<{ media_type: string; data: string }>((res, rej) => { const r = new FileReader(); r.onload = () => res({ media_type: f.type, data: String(r.result).split(',')[1] }); r.onerror = rej; r.readAsDataURL(f); });
+  return invoke('ai-import-test', { files: await Promise.all(files.map(toB64)) });
+}

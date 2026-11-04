@@ -35,6 +35,33 @@ The `anon` key is safe in the browser; access is enforced by row-level security 
 
 **Audio:** echo cancellation, noise suppression and auto-gain are on (stops MacBook speakers feeding back into the mic), speech-tuned Opus with packet-loss protection, and a "tap to hear" fallback for iPhone Safari's autoplay rules.
 
+## Subscriptions & AI setup
+Plans: **Basic** (free) · **Premium** $1.99/mo · **Premium+** $3.99/mo.
+
+11. Run `supabase/migrations/003_billing_ai.sql`.
+12. **Stripe:** create two monthly Prices ($1.99 and $3.99). Add a webhook endpoint pointing to `https://<project>.supabase.co/functions/v1/stripe-webhook` for `customer.subscription.created/updated/deleted`. Turn on the Customer Portal (Settings → Billing → Customer portal).
+13. **Anthropic:** create an API key at console.anthropic.com.
+14. Set secrets and deploy:
+    ```bash
+    supabase secrets set STRIPE_SECRET_KEY=sk_live_... STRIPE_WEBHOOK_SECRET=whsec_... STRIPE_PRICE_PLUS=price_... STRIPE_PRICE_PRO=price_... ANTHROPIC_API_KEY=sk-ant-... SITE_URL=https://<you>.github.io/<repo>/
+    supabase functions deploy create-checkout
+    supabase functions deploy billing-portal
+    supabase functions deploy stripe-webhook --no-verify-jwt
+    supabase functions deploy ai-assistant
+    supabase functions deploy ai-import-test
+    supabase functions deploy delete-account
+    ```
+
+**AI cost guardrails:** Premium 30 messages/day, Premium+ 150/day (an AI upload counts as 5). Assistants run `claude-opus-5-5` at low effort with a 2,000-token reply cap. Watch your Anthropic usage page the first weeks and lower limits in `supabase/functions/_shared/common.ts` if needed.
+
+## Question bank checks
+```bash
+npm run check:bank          # structure + recomputes math answers + all course levels
+npx tsx scripts/verify-java.ts   # runs AP CSA code questions through real Java
+```
+
+**Known limitation:** built-in tests ship inside the app bundle, so plan locks for them are enforced in the app, not the server. A determined user could dig them out of the JavaScript. Moving premium content into a Supabase table with plan-based row security fixes this.
+
 ## What syncs when live
 Accounts & usernames (student/teacher, high school/college), study groups with invite codes, live group chat, uploaded tests, group test leaderboards, photo quizzes (photos in private storage) with live answers, XP and streak on your profile.
 

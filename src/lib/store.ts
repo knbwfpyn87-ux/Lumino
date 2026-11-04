@@ -1,8 +1,8 @@
 // Local persistence layer. Swap for a real backend (Supabase/Firebase) later.
 export type Card = { id: string; front: string; back: string; due?: number; interval?: number; ease?: number };
 export type Deck = { id: string; name: string; subject: string; cards: Card[] };
-export type Question = { id: string; prompt: string; choices: string[]; answer: number; explanation?: string };
-export type Test = { id: string; title: string; subject: string; level: string; author: string; questions: Question[] };
+export type Question = { id: string; prompt: string; code?: string; choices: string[]; answer: number; explanation?: string };
+export type Test = { id: string; title: string; subject: string; level: string; author: string; questions: Question[]; tier?: 'free' | 'plus' | 'pro' };
 export type Message = { id: string; user: string; text: string; at: number };
 export type Group = { id: string; name: string; members: string[]; messages: Message[]; testIds: string[] };
 
