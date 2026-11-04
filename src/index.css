@@ -76,3 +76,4 @@ img.page { width:100%; border-radius:14px; border:1px solid var(--line); margin:
 [data-theme="dark"] body, [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] p, [data-theme="dark"] label, [data-theme="dark"] li, [data-theme="dark"] .card, [data-theme="dark"] .card p, [data-theme="dark"] nav a, [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] textarea, [data-theme="dark"] button.ghost, [data-theme="dark"] button.choice { color:#fff; }
 [data-theme="dark"] nav a.active { color:var(--accent); }
 [data-theme="dark"] ::placeholder { color:#c9ccdb; opacity:1; }
+[data-theme="dark"] .card.cta, [data-theme="dark"] .card.cta h3, [data-theme="dark"] .card.cta p { color:#14161f; }
