@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { db, uid, type Question } from '../lib/store';
+import { uid, type Question } from '../lib/store';
+import { uploadTest } from '../lib/api';
+import { useAuth, myName } from '../lib/auth';
+import { award } from '../lib/progress';
 import { LEVELS, SUBJECTS } from '../lib/catalog';
 
 const blank = (): Question => ({ id: uid(), prompt: '', choices: ['', '', '', ''], answer: 0 });
@@ -7,18 +10,20 @@ const blank = (): Question => ({ id: uid(), prompt: '', choices: ['', '', '', ''
 export default function Upload() {
   const [title, setTitle] = useState(''); const [subject, setSubject] = useState(SUBJECTS[0]); const [level, setLevel] = useState<string>('Standard');
   const [qs, setQs] = useState<Question[]>([blank()]); const [msg, setMsg] = useState('');
+  const { profile } = useAuth(); const name = myName(profile);
   const upd = (i: number, q: Partial<Question>) => setQs(qs.map((x, j) => j === i ? { ...x, ...q } : x));
 
-  const publish = () => {
-    if (!title.trim() || qs.some(q => !q.prompt.trim())) return setMsg('Add a title and fill every question.');
-    db.saveTests([...db.tests(), { id: uid(), title, subject, level, author: db.user(), questions: qs }]);
-    setMsg('Published! Find it under Practice Tests.'); setTitle(''); setQs([blank()]);
+  const publish = async () => {
+    if (!title.trim() || qs.some(q => !q.prompt.trim() || q.choices.some(c => !c.trim()))) return setMsg('Add a title and fill every question and choice.');
+    try { await uploadTest({ title, subject, level, questions: qs }, name); award(20, 'shared a test'); setMsg('Published! Find it under Practice Tests.'); setTitle(''); setQs([blank()]); }
+    catch (e) { setMsg('Could not publish: ' + (e as Error).message); }
   };
   const importJson = async (f: File) => {
     try {
       const t = JSON.parse(await f.text());
-      db.saveTests([...db.tests(), { ...t, id: uid(), author: t.author ?? db.user() }]); setMsg(`Imported "${t.title}".`);
-    } catch { setMsg('Invalid JSON file.'); }
+      if (!t.title || !Array.isArray(t.questions)) throw new Error('Missing title or questions');
+      await uploadTest({ title: t.title, subject: t.subject ?? subject, level: t.level ?? level, questions: t.questions.map((q: Question) => ({ ...q, id: q.id ?? uid() })) }, name); setMsg(`Imported "${t.title}".`);
+    } catch (e) { setMsg('Could not import: ' + (e as Error).message); }
   };
 
   return (

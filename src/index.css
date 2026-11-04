@@ -77,3 +77,10 @@ img.page { width:100%; border-radius:14px; border:1px solid var(--line); margin:
 [data-theme="dark"] nav a.active { color:var(--accent); }
 [data-theme="dark"] ::placeholder { color:#c9ccdb; opacity:1; }
 [data-theme="dark"] .card.cta, [data-theme="dark"] .card.cta h3, [data-theme="dark"] .card.cta p { color:#14161f; }
+.auth { min-height:100vh; display:grid; place-items:center; padding:16px; background:radial-gradient(circle at 20% 10%, var(--accent-soft), transparent 50%), var(--bg); }
+.authcard { width:100%; max-width:380px; background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:28px; display:flex; flex-direction:column; gap:12px; text-align:center; box-shadow:0 20px 60px var(--shadow); }
+.authcard h1 { font-size:1.8rem; margin:0; } .authlogo { width:72px; height:72px; margin:0 auto; animation:pop .5s; }
+.authcard a { color:var(--accent); cursor:pointer; font-weight:600; } .small { font-size:.88rem; }
+.seg { display:flex; gap:8px; } .seg button { flex:1; }
+.userchip { display:flex; align-items:center; gap:6px; }
+.chat p.mine b { color:var(--accent); }

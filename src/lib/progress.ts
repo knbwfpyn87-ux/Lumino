@@ -12,7 +12,8 @@ export function getProgress(): P {
   if (p.lastDay !== today()) { p.todayXp = 0; if (p.lastDay !== yesterday()) p.streak = p.lastDay ? 0 : p.streak; }
   return p;
 }
-function put(p: P) { try { localStorage.setItem(KEY, JSON.stringify(p)); } catch { /* ignore */ } window.dispatchEvent(new Event('lumino:progress')); }
+import { syncProgress } from './api';
+function put(p: P) { syncProgress(p.xp, p.streak, p.lastDay).catch(() => {}); try { localStorage.setItem(KEY, JSON.stringify(p)); } catch { /* ignore */ } window.dispatchEvent(new Event('lumino:progress')); }
 
 export const levelOf = (xp: number) => { let lvl = 1, need = 100, rest = xp; while (rest >= need) { rest -= need; lvl++; need = Math.round(need * 1.25); } return { lvl, into: rest, need }; };
 

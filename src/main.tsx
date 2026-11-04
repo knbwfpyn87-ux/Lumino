@@ -3,4 +3,5 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
-createRoot(document.getElementById('root')!).render(<StrictMode><HashRouter><App /></HashRouter></StrictMode>);
+import { AuthProvider } from './lib/auth';
+createRoot(document.getElementById('root')!).render(<StrictMode><HashRouter><AuthProvider><App /></AuthProvider></HashRouter></StrictMode>);

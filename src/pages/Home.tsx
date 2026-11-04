@@ -2,12 +2,13 @@ import { Link } from 'react-router-dom';
 import { useProgress } from '../components/useProgress';
 import { levelOf, setGoal } from '../lib/progress';
 import { db, isDue } from '../lib/store';
+import { useAuth, myName } from '../lib/auth';
 
 export default function Home() {
   const p = useProgress(); const L = levelOf(p.xp);
   const due = db.decks().reduce((n, d) => n + d.cards.filter(isDue).length, 0);
   const pct = Math.min(100, Math.round((p.todayXp / p.goal) * 100));
-  const name = db.user();
+  const { profile } = useAuth(); const name = myName(profile);
   return (
     <section>
       <h1>Hey {name} 👋</h1>

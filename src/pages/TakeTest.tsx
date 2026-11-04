@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router-dom';
-import { db } from '../lib/store';
-import { SAT_TESTS } from '../lib/sat';
-import { BUILTIN_TESTS } from '../lib/catalog';
+import { useTests } from '../components/useTests';
+import { saveResult } from '../lib/api';
+import { useAuth, myName } from '../lib/auth';
 import { award, recordResult } from '../lib/progress';
 import { confetti } from '../components/Feedback';
 
 export default function TakeTest() {
   const { id } = useParams(); const [sp] = useSearchParams(); const groupId = sp.get('group') ?? undefined;
-  const test = [...BUILTIN_TESTS, ...SAT_TESTS, ...db.tests()].find(t => t.id === id);
+  const { tests, loading } = useTests(); const { profile } = useAuth();
+  const test = tests.find(t => t.id === id);
   const [i, setI] = useState(0); const [ans, setAns] = useState<Record<string, number>>({});
   const [done, setDone] = useState(false); const [secs, setSecs] = useState(0);
   useEffect(() => { if (done) return; const t = setInterval(() => setSecs(s => s + 1), 1000); return () => clearInterval(t); }, [done]);
-  if (!test) return <p>Test not found. <Link to="/tests">Back</Link></p>;
+  if (!test) return loading ? <p className="muted">Loading…</p> : <p>Test not found. <Link to="/tests">Back</Link></p>;
   const qs = test.questions; const q = qs[i];
   const score = qs.filter(x => ans[x.id] === x.answer).length;
   const fmt = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
 
   const submit = () => {
     setDone(true);
-    recordResult({ testId: test.id, title: test.title, score, total: qs.length, at: Date.now(), user: db.user(), groupId });
+    recordResult({ testId: test.id, title: test.title, score, total: qs.length, at: Date.now(), user: myName(profile), groupId });
+    saveResult({ testId: test.id, title: test.title, score, total: qs.length, groupId }).catch(() => {});
     award(10 + score * 5, `${score}/${qs.length} on ${test.title}`);
     if (score / qs.length >= 0.8) setTimeout(() => confetti(document.querySelector('.confetti') as HTMLCanvasElement), 100);
   };
