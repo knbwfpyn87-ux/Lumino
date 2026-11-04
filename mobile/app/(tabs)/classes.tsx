@@ -6,6 +6,7 @@ import { useTheme } from '@/lib/theme';
 import { getMyClasses, setMyClasses } from '@/lib/progress';
 import { on } from '@/lib/events';
 import { COURSES, levelState, getCourseProgress } from '@/lib/tests';
+import UIcon from '@/components/UIcon';
 
 export default function Classes() {
   const t = useTheme(); const [mine, setMine] = useState(getMyClasses()); const [, tick] = useState(0);
@@ -15,7 +16,7 @@ export default function Classes() {
   const toggle = (id: string) => { const n = mine.includes(id) ? mine.filter(x => x !== id) : [...mine, id]; setMine(n); setMyClasses(n); };
   return (
     <Screen>
-      <T size={30} weight="900">Classes</T>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}><UIcon name="icon-classes" size={32} ink /><T size={30} weight="900">Classes</T></View>
       <T color={t.muted}>Each unit has 3 levels that get harder. Tap ☆ to add a class to your Today screen.</T>
       {COURSES.map(c => {
         const total = c.units.length * 3; const passed = c.units.reduce((n, _, u) => n + [0, 1, 2].filter(l => levelState(c.id, u, l, prog).passed).length, 0);

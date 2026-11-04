@@ -8,6 +8,9 @@ import { useAuth, usePlan } from '@/lib/auth';
 import { useProgress, levelOf, lastWeek, getMyClasses } from '@/lib/progress';
 import { on } from '@/lib/events';
 import { nextLevel, COURSES } from '@/lib/tests';
+import UIcon from '@/components/UIcon';
+import { Image } from 'react-native';
+import { UI_SRC } from '@/lib/ui-assets';
 
 const greet = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
 
@@ -18,8 +21,10 @@ export default function Today() {
   const next = mine.map(id => nextLevel(id, plan)).find(Boolean);
   return (
     <Screen>
+      <Image source={UI_SRC['wave-topright']} style={{ position: 'absolute', top: 0, right: 0, width: 200, height: 79, opacity: t.bg === '#0f111a' ? 0.35 : 1 }} />
+      <Image source={UI_SRC['logo-full']} style={{ width: 92, height: 72 }} resizeMode="contain" />
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-        <View><T size={15} color={t.muted}>{greet()}</T><T size={30} weight="900">{profile?.username ?? 'Student'} 👋</T></View>
+        <View style={{ flexDirection: 'row', gap: 8, flex: 1 }}><UIcon name="sparkle-greeting" size={28} ink keep /><View style={{ flex: 1 }}><T size={15} color={t.muted}>{greet()}</T><T size={28} weight="900">{profile?.username ?? 'Student'}!</T></View></View>
         <Pressable onPress={() => router.push('/(tabs)/me')} style={{ alignItems: 'center', backgroundColor: t.card, borderRadius: 18, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: t.line }}>
           <T size={22} weight="900">🔥 {p.streak}</T><T size={11} color={t.muted}>day streak</T>
         </Pressable>
@@ -32,11 +37,11 @@ export default function Today() {
           <Bar pct={goalPct} height={12} />
           <T size={13} color={t.muted}>{p.todayXp}/{p.goal} XP · Level {L.lvl}</T>
         </View>
-        <T size={64}>💡</T>
+        <UIcon name="mascot-hero" size={104} />
       </LinearGradient>
 
       <Card onPress={() => router.push(`/quiz/sprint~${Date.now() % 1e9}`)} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
-        <View style={{ width: 52, height: 52, borderRadius: 16, backgroundColor: t.yellow, alignItems: 'center', justifyContent: 'center' }}><T size={26}>⚡️</T></View>
+        <View style={{ width: 56, height: 56, borderRadius: 16, backgroundColor: '#fff3d1', alignItems: 'center', justifyContent: 'center' }}><UIcon name="tool-timer" size={32} ink keep /></View>
         <View style={{ flex: 1 }}><T weight="800" size={17}>60-second sprint</T><T size={13} color={t.muted}>5 quick questions from your classes</T></View>
         <Icon ios="chevron.right" size={18} color={t.muted} />
       </Card>
@@ -52,7 +57,7 @@ export default function Today() {
       )}
 
       <Card>
-        <T weight="800" size={17}>This week</T>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}><UIcon name="icon-progress" size={24} ink /><T weight="800" size={17}>This week</T></View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
           {week.map(d => <View key={d.date} style={{ alignItems: 'center', gap: 6 }}>
             <View style={{ width: 36, height: 36, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: d.studied ? t.ok : t.bg, borderWidth: d.studied ? 0 : 2, borderColor: t.line }}>{d.studied && <T color="#fff" weight="900">✓</T>}</View>
@@ -62,10 +67,13 @@ export default function Today() {
 
       {mine.length > 0 && <View style={{ gap: 10 }}>
         <T weight="800" size={17}>My classes</T>
-        {mine.map(id => { const c = COURSES.find(x => x.id === id); return c && <Card key={id} onPress={() => router.push(`/class/${id}`)} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14 }}><T size={24}>{c.emoji}</T><T weight="700" style={{ flex: 1 }}>{c.name}</T><Icon ios="chevron.right" size={16} color={t.muted} /></Card>; })}
+        {mine.map(id => { const c = COURSES.find(x => x.id === id); return c && <Card key={id} onPress={() => router.push(`/class/${id}`)} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14 }}><View style={{ width: 34, height: 26, borderRadius: 7, backgroundColor: ['#7cc8ff', '#ff9aa2', '#c4b5fd', '#ffd666'][mine.indexOf(id) % 4] }} /><T weight="700" style={{ flex: 1 }}>{c.name}</T><Icon ios="chevron.right" size={16} color={t.muted} /></Card>; })}
       </View>}
 
-      <Button title="✨ Ask Lumino AI" kind="ghost" onPress={() => router.push('/tutor')} />
+      <Card onPress={() => router.push('/tutor')} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+        <UIcon name="icon-ai-yellow" size={30} ink keep /><T weight="800" size={17} style={{ flex: 1 }}>AI Tutor</T>
+        <T color={t.muted} size={14}>Ask a question…</T><UIcon name="btn-send" size={34} />
+      </Card>
     </Screen>
   );
 }

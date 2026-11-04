@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/auth';
 import { useProgress, levelOf, setGoal } from '@/lib/progress';
 import { isCloud, SITE_URL } from '@/lib/supabase';
 import { PLAN_INFO, type Plan } from '@shared/plans';
+import UIcon from '@/components/UIcon';
 
 export default function Me() {
   const t = useTheme(); const { profile, session, signOut } = useAuth(); const p = useProgress(); const L = levelOf(p.xp);
@@ -13,7 +14,7 @@ export default function Me() {
   return (
     <Screen>
       <View style={{ alignItems: 'center', gap: 6, marginTop: 10 }}>
-        <View style={{ width: 86, height: 86, borderRadius: 43, backgroundColor: t.accent, alignItems: 'center', justifyContent: 'center' }}><T size={36} weight="900" color={t.onAccent}>{(profile?.username ?? 'S').slice(0, 1).toUpperCase()}</T></View>
+        <UIcon name="top-avatar" size={92} />
         <T size={24} weight="900">{profile?.username ?? 'Student'}</T>
         {session?.user.email && <T color={t.muted}>{session.user.email}</T>}
       </View>

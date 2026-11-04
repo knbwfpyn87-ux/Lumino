@@ -5,6 +5,7 @@ import { T, Button } from '@/components/ui';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
 import { supabase, SITE_URL } from '@/lib/supabase';
+import UIcon from '@/components/UIcon';
 
 export default function Onboarding() {
   const t = useTheme(); const { session, refresh, signOut } = useAuth();
@@ -22,6 +23,7 @@ export default function Onboarding() {
   const input = { backgroundColor: t.card, color: t.text, borderRadius: 16, padding: 16, fontSize: 17, borderWidth: 1, borderColor: t.line } as const;
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1, backgroundColor: t.bg, justifyContent: 'center', padding: 24, gap: 12 }}>
+      <View style={{ alignSelf: 'center' }}><UIcon name="logo-mascot" size={90} /></View>
       <T size={30} weight="900">Set up your profile</T>
       <TextInput placeholder="Username" placeholderTextColor={t.muted} autoCapitalize="none" value={username} onChangeText={setUsername} style={input} maxLength={30} />
       {seg([['student', '🎒 Student'], ['teacher', '🍎 Teacher']], role, setRole)}

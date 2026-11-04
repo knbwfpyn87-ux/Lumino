@@ -3,6 +3,7 @@ import { ActionSheetIOS, Alert, FlatList, KeyboardAvoidingView, Pressable, Share
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { T } from '@/components/ui';
+import UIcon from '@/components/UIcon';
 import { useTheme } from '@/lib/theme';
 import { useAuth } from '@/lib/auth';
 import { listMessages, sendMessage, subscribeMessages, reportMessage, blockUser, type Msg } from '@/lib/api';
@@ -38,7 +39,7 @@ export default function Chat() {
       <View style={{ flexDirection: 'row', gap: 8, padding: 10, paddingBottom: ins.bottom + 8, borderTopWidth: 1, borderColor: t.line, backgroundColor: t.card }}>
         <TextInput placeholder="Message" placeholderTextColor={t.muted} value={text} onChangeText={setText} onSubmitEditing={send} returnKeyType="send" maxLength={2000}
           style={{ flex: 1, backgroundColor: t.bg, color: t.text, borderRadius: 22, paddingHorizontal: 16, paddingVertical: 10, fontSize: 16 }} />
-        <Pressable onPress={send} accessibilityLabel="Send" style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: t.accent, alignItems: 'center', justifyContent: 'center' }}><T color={t.onAccent} weight="900" size={18}>↑</T></Pressable>
+        <Pressable onPress={send} accessibilityLabel="Send" hitSlop={6} style={{ alignSelf: 'center' }}><UIcon name="btn-send" size={40} /></Pressable>
       </View>
     </KeyboardAvoidingView>
   );
