@@ -27,7 +27,7 @@ function classGrade(id: string) {
 export default function Home({ progressOnly = false }: { progressOnly?: boolean }) {
   const p = useProgress(); const L = levelOf(p.xp); const nav = useNavigate();
   const { profile } = useAuth(); const name = myName(profile);
-  const [mine, setMine] = useState(getMyClasses()); const [picking, setPicking] = useState(false);
+  const [mine, setMine] = useState(getMyClasses()); const [picking, setPicking] = useState(false); const [pq, setPq] = useState('');
   const [up, setUp] = useState(getUpcoming()); const [adding, setAdding] = useState(false); const [ut, setUt] = useState(''); const [ud, setUd] = useState('');
   const [groups, setGroups] = useState<GroupInfo[]>([]); const [friends, setFriends] = useState<string[]>([]); const [counts, setCounts] = useState<Record<string, number>>({});
   const [ask, setAsk] = useState('');
@@ -84,7 +84,7 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
           <div className="dash2">
             <div className="panel">
               <div className="panelhead"><h3><UIcon name="icon-classes" size={30} ink /> My Classes</h3><button className="link" onClick={() => setPicking(!picking)}>{picking ? 'Done' : mine.length ? <>View All <Icon name="arrow" size={14} /></> : 'Add classes'}</button></div>
-              {picking ? <div className="pickgrid">{COURSES.map(c => <label key={c.id} className={'pick' + (mine.includes(c.id) ? ' on' : '')}><input type="checkbox" checked={mine.includes(c.id)} onChange={() => { const n = mine.includes(c.id) ? mine.filter(x => x !== c.id) : [...mine, c.id]; setMine(n); setMyClasses(n); }} />{c.emoji} {c.name}</label>)}</div>
+              {picking ? <><input className="pickq" placeholder="Search classes…" value={pq} onChange={e => setPq(e.target.value)} /><div className="pickgrid">{COURSES.filter(c => c.name.toLowerCase().includes(pq.toLowerCase())).map(c => <label key={c.id} className={'pick' + (mine.includes(c.id) ? ' on' : '')}><input type="checkbox" checked={mine.includes(c.id)} onChange={() => { const n = mine.includes(c.id) ? mine.filter(x => x !== c.id) : [...mine, c.id]; setMine(n); setMyClasses(n); }} />{c.emoji} {c.name}</label>)}</div></>
                 : mine.length ? <div className="classlist">{mine.slice(0, 4).map((id, i) => { const c = COURSES.find(x => x.id === id); if (!c) return null; const g = classGrade(id);
                     return <Link key={id} to={`/courses/${id}`} className="classrow"><span className="swatch" style={{ background: COLORS[i % COLORS.length] }} /><span className="cname">{c.name}</span><span className="grade">{g.letter}</span></Link>; })}</div>
                 : <p className="muted small">Pick the classes you're taking to see them here.</p>}

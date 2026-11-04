@@ -1,23 +1,15 @@
 // Class-based courses: each class has units; each unit has 3 levels that get harder.
 // Pass a level (70%+) to unlock the next one; finish a unit's Level 1 to open the next unit.
-import { G, Rng, build, type Gen } from '../generated';
+import { G, Rng, build } from '../generated';
 import { CSA_UNITS } from './csa';
 import type { Test } from '../store';
 import type { Tier } from '../plans';
 
-export type Unit = { title: string; topics: string; levels: Gen[][] };
-export type Course = { id: string; name: string; subject: string; level: string; emoji: string; units: Unit[] };
+import { ladder, type Course, type Category } from './ladder';
+import { MORE_COURSES } from './catalog';
+export { CATEGORIES, type Course, type Unit, type Category } from './ladder';
 
-// For math/English classes: L1 = the unit's skill, L2 = + previous unit, L3 = cumulative mix.
-function ladder(units: { title: string; topics: string; gens: Gen[] }[]): Unit[] {
-  return units.map((u, i) => ({ title: u.title, topics: u.topics, levels: [
-    u.gens,
-    [...u.gens, ...u.gens, ...(units[i - 1]?.gens ?? u.gens)],
-    [...u.gens, ...units.slice(0, i + 1).flatMap(x => x.gens)],
-  ] }));
-}
-
-export const COURSES: Course[] = [
+const BASE: Omit<Course, 'category'>[] = [
   { id: 'ap-csa', name: 'AP Computer Science A', subject: 'AP Computer Science A', level: 'AP', emoji: '💻', units: CSA_UNITS },
   { id: 'alg1', name: 'Algebra I', subject: 'Algebra I', level: 'Standard', emoji: '➗', units: ladder([
     { title: 'Linear Equations', topics: 'solving one-variable equations', gens: [G.linear] },
@@ -55,6 +47,8 @@ export const COURSES: Course[] = [
     { title: 'Transitions', topics: 'logical connectors', gens: [G.transition] },
   ]) },
 ];
+const BASE_CAT: Record<string, Category> = { 'ap-csa': 'Computer Science', alg1: 'Math', geo: 'Math', alg2: 'Math', 'ap-stats': 'Math', 'sat-math': 'Test Prep', 'sat-rw': 'Test Prep' };
+export const COURSES: Course[] = [...BASE.map(c => ({ ...c, category: BASE_CAT[c.id] ?? 'Math' })), ...MORE_COURSES];
 
 /** Plan needed for a unit: Basic gets the first 2 units, Premium ~70% of units, Premium+ everything. */
 export function unitTier(course: Course, unitIdx: number): Tier {

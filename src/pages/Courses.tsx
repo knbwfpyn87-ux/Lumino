@@ -1,21 +1,31 @@
 import { Link, useParams } from 'react-router-dom';
-import { COURSES, unitTier, levelState, courseTestId, getCourseProgress, PASS } from '../lib/courses';
+import { useState } from 'react';
+import { COURSES, CATEGORIES, unitTier, levelState, courseTestId, getCourseProgress, PASS } from '../lib/courses';
+import { getMyClasses, setMyClasses } from '../lib/planner';
 import { usePlan } from '../lib/auth';
 import { canAccess, PLAN_INFO } from '../lib/plans';
 
 const LEVELS = ['Level 1 · Core', 'Level 2 · Mixed', 'Level 3 · Challenge'];
 
 export function CourseList() {
-  const prog = getCourseProgress();
+  const prog = getCourseProgress(); const [q, setQ] = useState(''); const [cat, setCat] = useState<string>('All'); const [mine, setMine] = useState(getMyClasses());
+  const toggle = (id: string) => { const n = mine.includes(id) ? mine.filter(x => x !== id) : [...mine, id]; setMine(n); setMyClasses(n); };
+  const shown = COURSES.filter(c => (cat === 'All' || (cat === 'Mine' ? mine.includes(c.id) : c.category === cat)) && (c.name + ' ' + c.units.map(u => u.title).join(' ')).toLowerCase().includes(q.toLowerCase()));
   return (
     <section>
-      <h2>Classes</h2>
-      <p className="muted">Pick your class. Each unit has 3 levels that get harder. Score {PASS * 100}% to unlock the next one.</p>
-      <div className="grid">{COURSES.map(c => {
-        const total = c.units.length * 3; const done = c.units.reduce((n, _, u) => n + [0, 1, 2].filter(l => levelState(c.id, u, l, prog).passed).length, 0);
-        return <Link key={c.id} to={`/courses/${c.id}`} className="card"><h3>{c.emoji} {c.name}</h3><p>{c.units.length} units · {c.level}</p>
-          <div className="bar"><i style={{ width: `${(done / total) * 100}%` }} /></div><p className="muted small">{done}/{total} levels passed</p></Link>;
-      })}</div>
+      <h1 className="greet">Classes</h1>
+      <p className="muted">{COURSES.length} classes · {COURSES.reduce((n, c) => n + c.units.length, 0)} units. Each unit has 3 levels that get harder. Score {PASS * 100}% to unlock the next one. Tap ☆ to add a class to My Classes.</p>
+      <div className="row"><input className="classsearch" placeholder="Search classes or topics (e.g. IB Physics, mitosis, derivatives)" value={q} onChange={e => setQ(e.target.value)} /></div>
+      <div className="cattabs">{['All', 'Mine', ...CATEGORIES].map(k => <button key={k} className={cat === k ? '' : 'ghost'} onClick={() => setCat(k)}>{k === 'Mine' ? `★ My Classes (${mine.length})` : k}{k !== 'All' && k !== 'Mine' ? <span className="catn">{COURSES.filter(c => c.category === k).length}</span> : null}</button>)}</div>
+      {(cat === 'All' && !q ? CATEGORIES : [null]).map(group => { const list = group ? shown.filter(c => c.category === group) : shown; if (!list.length) return null;
+        return <div key={group ?? 'list'}>{group && <h2 className="cathead">{group}</h2>}
+          <div className="grid">{list.map(c => {
+            const total = c.units.length * 3; const done = c.units.reduce((n, _, u) => n + [0, 1, 2].filter(l => levelState(c.id, u, l, prog).passed).length, 0);
+            return <div key={c.id} className="card classcard"><Link to={`/courses/${c.id}`} className="classlink"><h3>{c.emoji} {c.name}</h3><p>{c.units.length} units · {c.level}</p>
+              <div className="bar"><i style={{ width: `${(done / total) * 100}%` }} /></div><p className="muted small">{done}/{total} levels passed</p></Link>
+              <button className={'star' + (mine.includes(c.id) ? ' on' : '')} onClick={() => toggle(c.id)} aria-label={mine.includes(c.id) ? `Remove ${c.name} from My Classes` : `Add ${c.name} to My Classes`}>{mine.includes(c.id) ? '★' : '☆'}</button></div>;
+          })}</div></div>; })}
+      {!shown.length && <p className="muted">No classes match "{q}".</p>}
     </section>
   );
 }

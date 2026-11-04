@@ -1,8 +1,9 @@
 import type { Test } from './store';
 
 // Course catalog: standard levels + AP. Built-in tests are seeds; add more under /content later.
-export const LEVELS = ['Standard', 'Honors', 'AP', 'College'] as const;
-export const SUBJECTS = [
+export const LEVELS = ['Standard', 'Honors', 'AP', 'IB', 'College'] as const;
+import { MORE_COURSES } from './courses/catalog';
+const BASE_SUBJECTS = [
   'Algebra I', 'Geometry', 'Algebra II', 'Precalculus', 'Biology', 'Chemistry', 'Physics', 'English', 'World History', 'US History',
   'AP Calculus AB', 'AP Calculus BC', 'AP Statistics', 'AP Biology', 'AP Chemistry', 'AP Physics 1', 'AP Physics 2', 'AP Physics C',
   'AP Environmental Science', 'AP Computer Science A', 'AP Computer Science Principles', 'AP English Language', 'AP English Literature',
@@ -14,6 +15,7 @@ export const SUBJECTS = [
   'Intro Sociology', 'Micro/Macroeconomics', 'Intro Computer Science', 'Data Structures', 'English Composition', 'Public Speaking',
   'US Government', 'Philosophy', 'Accounting', 'MCAT', 'LSAT', 'GRE',
 ];
+export const SUBJECTS = [...new Set([...BASE_SUBJECTS, ...MORE_COURSES.map(c => c.name)])].sort((a, b) => a.localeCompare(b));
 
 export const BUILTIN_TESTS: Test[] = [
   { id: 'b-calc', title: 'Limits & Derivatives Warm-up', subject: 'AP Calculus AB', level: 'AP', author: 'Lumino', questions: [
