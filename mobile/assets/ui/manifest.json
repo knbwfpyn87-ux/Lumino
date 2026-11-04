@@ -314,5 +314,33 @@
    195,
    154
   ]
+ },
+ "logo-mascot-dark": {
+  "kind": "art",
+  "size": [
+   136,
+   104
+  ]
+ },
+ "logo-wordmark-dark": {
+  "kind": "art",
+  "size": [
+   195,
+   44
+  ]
+ },
+ "mascot-hero-dark": {
+  "kind": "art",
+  "size": [
+   243,
+   203
+  ]
+ },
+ "logo-full-dark": {
+  "kind": "art",
+  "size": [
+   195,
+   154
+  ]
  }
 }

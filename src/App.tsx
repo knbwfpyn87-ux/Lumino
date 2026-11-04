@@ -13,6 +13,7 @@ import { Terms, Privacy } from './pages/Legal';
 import { CourseList, CourseView } from './pages/Courses';
 import Icon from './components/Icon';
 import UIcon from './components/UIcon';
+import Brand from './components/Brand';
 import { UI } from './lib/ui';
 import TopBar from './components/TopBar';
 import Study from './pages/Study';
@@ -25,7 +26,7 @@ import { useAuth } from './lib/auth';
 import { isCloud } from './lib/supabase';
 import { SignIn, Onboarding } from './pages/Auth';
 
-import { LOGO, LOGO_FULL } from './lib/logo';
+import { LOGO } from './lib/logo';
 
 const NAV = [
   { to: '/', label: 'Home', icon: 'nav-home' }, { to: '/courses', label: 'Classes', icon: 'nav-classes' }, { to: '/study', label: 'Study', icon: 'nav-study' },
@@ -37,7 +38,7 @@ export default function App() {
   useEffect(() => { document.documentElement.dataset.theme = theme; try { localStorage.setItem('lumino:theme', theme); } catch { /* ignore */ } }, [theme]);
   const { session, profile, loading } = useAuth();
   if (isCloud) {
-    if (loading) return <div className="auth"><img src={LOGO} alt="" className="authlogo" /></div>;
+    if (loading) return <div className="auth"><Brand name="logo-mascot" className="authlogo" /></div>;
     if (!session) return ['#/terms', '#/privacy'].includes(window.location.hash) ? <main>{window.location.hash === '#/terms' ? <Terms /> : <Privacy />}</main> : <SignIn logo={LOGO} />;
     if (!profile) return <Onboarding logo={LOGO} />;
   }
@@ -45,7 +46,7 @@ export default function App() {
     <div className="shell">
       <Feedback />
       <aside className="side">
-        <NavLink to="/" className="brandfull" end aria-label="Lumino home"><img src={LOGO_FULL} alt="Lumino" /></NavLink>
+        <NavLink to="/" className="brandfull" end aria-label="Lumino home"><Brand name="logo-full" alt="Lumino" /></NavLink>
         <nav className="sidenav">
           {NAV.map(n => <NavLink key={n.to} to={n.to} end={n.to === '/'}><UIcon name={n.icon} size={28} ink className={n.icon === 'nav-home' ? 'navhome' : ''} /><span>{n.label}</span></NavLink>)}
         </nav>

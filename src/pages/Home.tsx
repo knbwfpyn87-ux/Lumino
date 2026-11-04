@@ -10,7 +10,7 @@ import { listGroups, listMembers, type GroupInfo } from '../lib/api';
 import Icon from '../components/Icon';
 import UIcon from '../components/UIcon';
 import { UI } from '../lib/ui';
-import { MASCOT_HERO } from '../lib/logo';
+import Brand from '../components/Brand';
 
 const greet = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
 const COLORS = ['#7cc8ff', '#ff9aa2', '#c4b5fd', '#ffd666', '#86efac', '#fdba74', '#93c5fd'];
@@ -76,7 +76,7 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
       <div className="dashgrid">
         <div className="dashmain">
           <Link to={mine[0] ? `/courses/${mine[0]}` : '/courses'} className="hero" aria-label="Study now">
-            <img className="mascot" src={MASCOT_HERO} alt="" />
+            <Brand name="mascot-hero" className="mascot" />
             <div><h2>Study Smarter Together.</h2><p>AI-powered learning, built for you and your friends.</p></div>
             <img className="herowave" src={UI['wave-hero']} alt="" aria-hidden="true" />
           </Link>

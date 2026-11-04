@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/auth';
+import Brand from '../components/Brand';
 
 type Mode = 'signin' | 'signup' | 'reset';
 
-export function SignIn({ logo }: { logo: string }) {
+export function SignIn(_props: { logo?: string }) {
   const [mode, setMode] = useState<Mode>('signin');
   const [email, setEmail] = useState(''); const [password, setPassword] = useState('');
   const [msg, setMsg] = useState(''); const [err, setErr] = useState(''); const [busy, setBusy] = useState(false);
@@ -25,7 +26,7 @@ export function SignIn({ logo }: { logo: string }) {
   return (
     <div className="auth">
       <form className="authcard" onSubmit={submit}>
-        <img src={logo} alt="" className="authlogo" />
+        <Brand name="logo-mascot" className="authlogo" />
         <h1>Lumino</h1>
         <p className="muted">{mode === 'signup' ? 'Create your account' : mode === 'reset' ? 'Reset your password' : 'Welcome back. Keep that streak going 🔥'}</p>
         <input type="email" required placeholder="Email" autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} />
@@ -43,7 +44,7 @@ export function SignIn({ logo }: { logo: string }) {
 }
 
 // Shown once after sign-up to pick a username and role.
-export function Onboarding({ logo }: { logo: string }) {
+export function Onboarding(_props: { logo?: string }) {
   const { session, refresh, signOut } = useAuth();
   const [username, setUsername] = useState(''); const [role, setRole] = useState('student'); const [level, setLevel] = useState('high_school'); const [birthYear, setBirthYear] = useState(''); const [agree, setAgree] = useState(false);
   const [err, setErr] = useState(''); const [busy, setBusy] = useState(false);
@@ -62,7 +63,7 @@ export function Onboarding({ logo }: { logo: string }) {
   return (
     <div className="auth">
       <form className="authcard" onSubmit={save}>
-        <img src={logo} alt="" className="authlogo" />
+        <Brand name="logo-mascot" className="authlogo" />
         <h1>Set up your profile</h1>
         <input required minLength={2} maxLength={30} placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
         <div className="seg">{[['student', '🎒 Student'], ['teacher', '🍎 Teacher']].map(([v, l]) => <button type="button" key={v} className={role === v ? '' : 'ghost'} onClick={() => setRole(v)}>{l}</button>)}</div>

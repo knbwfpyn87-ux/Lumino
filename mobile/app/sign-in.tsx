@@ -3,8 +3,7 @@ import { KeyboardAvoidingView, TextInput, View } from 'react-native';
 import { T, Button } from '@/components/ui';
 import { useTheme } from '@/lib/theme';
 import { supabase } from '@/lib/supabase';
-import { Image } from 'react-native';
-import { UI_SRC } from '@/lib/ui-assets';
+import UIcon from '@/components/UIcon';
 
 export default function SignIn() {
   const t = useTheme(); const [mode, setMode] = useState<'in' | 'up' | 'reset'>('in');
@@ -19,7 +18,7 @@ export default function SignIn() {
   const input = { backgroundColor: t.card, color: t.text, borderRadius: 16, padding: 16, fontSize: 17, borderWidth: 1, borderColor: t.line } as const;
   return (
     <KeyboardAvoidingView behavior="padding" style={{ flex: 1, backgroundColor: t.bg, justifyContent: 'center', padding: 24, gap: 12 }}>
-      <Image source={UI_SRC['logo-full']} style={{ width: 190, height: 149, alignSelf: 'center' }} resizeMode="contain" accessibilityLabel="Lumino" />
+      <View style={{ alignSelf: 'center' }} accessibilityLabel="Lumino"><UIcon name="logo-full" size={149} /></View>
       <T color={t.muted} style={{ textAlign: 'center', marginBottom: 10 }}>{mode === 'up' ? 'Create your account' : mode === 'reset' ? 'Reset your password' : 'Study smarter, together.'}</T>
       <TextInput placeholder="Email" placeholderTextColor={t.muted} autoCapitalize="none" keyboardType="email-address" textContentType="emailAddress" autoComplete="email" value={email} onChangeText={setEmail} style={input} />
       {mode !== 'reset' && <TextInput placeholder="Password (8+ characters)" placeholderTextColor={t.muted} secureTextEntry textContentType={mode === 'up' ? 'newPassword' : 'password'} value={pw} onChangeText={setPw} style={input} />}

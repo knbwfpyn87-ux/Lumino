@@ -6,7 +6,7 @@ import { useProgress } from './useProgress';
 import { db, isDue } from '../lib/store';
 import { getUpcoming } from '../lib/planner';
 import { PLAN_INFO } from '../lib/plans';
-import { LOGO_FULL } from '../lib/logo';
+import Brand from './Brand';
 
 export default function TopBar({ logo: _logo }: { logo: string }) {
   const { profile } = useAuth(); const name = myName(profile); const p = useProgress(); const nav = useNavigate();
@@ -21,7 +21,7 @@ export default function TopBar({ logo: _logo }: { logo: string }) {
   ];
   return (
     <header className="top">
-      <Link to="/" className="brandfull mobileonly"><img src={LOGO_FULL} alt="Lumino" /></Link>
+      <Link to="/" className="brandfull mobileonly"><Brand name="logo-full" alt="Lumino" /></Link>
       <div className="topspacer" />
       {searching
         ? <form className="search" onSubmit={e => { e.preventDefault(); if (q.trim()) { nav(`/tests?q=${encodeURIComponent(q.trim())}`); setSearching(false); } }}>

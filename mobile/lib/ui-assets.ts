@@ -1,4 +1,4 @@
-// Generated from assets/ui (GUI board cut-outs). Re-run: python3 -I ../scripts/gen-mobile-ui.py
+// Generated from assets/ui (GUI board cut-outs). Re-run: python3 -I scripts/gen-mobile-ui.py
 /* eslint-disable */
 export const UI_SRC = {
   'avatar-blue': require('../assets/ui/avatar-blue.png'),
@@ -18,9 +18,13 @@ export const UI_SRC = {
   'icon-video': require('../assets/ui/icon-video.png'),
   'icon-video-room': require('../assets/ui/icon-video-room.png'),
   'logo-full': require('../assets/ui/logo-full.png'),
+  'logo-full-dark': require('../assets/ui/logo-full-dark.png'),
   'logo-mascot': require('../assets/ui/logo-mascot.png'),
+  'logo-mascot-dark': require('../assets/ui/logo-mascot-dark.png'),
   'logo-wordmark': require('../assets/ui/logo-wordmark.png'),
+  'logo-wordmark-dark': require('../assets/ui/logo-wordmark-dark.png'),
   'mascot-hero': require('../assets/ui/mascot-hero.png'),
+  'mascot-hero-dark': require('../assets/ui/mascot-hero-dark.png'),
   'nav-ai': require('../assets/ui/nav-ai.png'),
   'nav-bell': require('../assets/ui/nav-bell.png'),
   'nav-classes': require('../assets/ui/nav-classes.png'),

@@ -443,3 +443,8 @@ img.herowave { width:250px; }
 }
 .tools.big .tool small { font-size:.78rem; }
 .tools.big .tool small { padding:0 6px; }
+/* Brand art swaps to its dark-mode version (no white, softer outline) */
+.dark-only { display:none !important; }
+[data-theme="dark"] .dark-only { display:inline-block !important; }
+[data-theme="dark"] .light-only { display:none !important; }
+.brandfull img { width:190px; height:auto; }

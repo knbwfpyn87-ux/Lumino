@@ -22,7 +22,7 @@ export default function Today() {
   return (
     <Screen>
       <Image source={UI_SRC['wave-topright']} style={{ position: 'absolute', top: 0, right: 0, width: 200, height: 79, opacity: t.bg === '#0f111a' ? 0.35 : 1 }} />
-      <Image source={UI_SRC['logo-full']} style={{ width: 92, height: 72 }} resizeMode="contain" />
+      <UIcon name="logo-full" size={72} />
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
         <View style={{ flexDirection: 'row', gap: 8, flex: 1 }}><UIcon name="sparkle-greeting" size={28} ink keep /><View style={{ flex: 1 }}><T size={15} color={t.muted}>{greet()}</T><T size={28} weight="900">{profile?.username ?? 'Student'}!</T></View></View>
         <Pressable onPress={() => router.push('/(tabs)/me')} style={{ alignItems: 'center', backgroundColor: t.card, borderRadius: 18, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: t.line }}>
