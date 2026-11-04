@@ -14,6 +14,8 @@ import { CourseList, CourseView } from './pages/Courses';
 import Icon from './components/Icon';
 import TopBar from './components/TopBar';
 import Study from './pages/Study';
+import Notes from './pages/Notes';
+import Friends from './pages/Friends';
 import { NewPhotoQuiz, PhotoQuizView } from './pages/PhotoQuiz';
 import Moderation from './pages/Moderation';
 import Feedback from './components/Feedback';
@@ -21,11 +23,11 @@ import { useAuth } from './lib/auth';
 import { isCloud } from './lib/supabase';
 import { SignIn, Onboarding } from './pages/Auth';
 
-import { LOGO } from './lib/logo';
+import { LOGO, LOGO_FULL } from './lib/logo';
 
 const NAV = [
-  { to: '/', label: 'Home', icon: 'home' }, { to: '/courses', label: 'Classes', icon: 'classes' }, { to: '/study', label: 'Study', icon: 'study' },
-  { to: '/groups', label: 'Friends', icon: 'friends' }, { to: '/assistant', label: 'AI Tutor', icon: 'ai' }, { to: '/progress', label: 'Progress', icon: 'progress' },
+  { to: '/', label: 'Home', icon: 'home' }, { to: '/courses', label: 'Classes', icon: 'classes' }, { to: '/study', label: 'Study', icon: 'book' },
+  { to: '/friends', label: 'Friends', icon: 'friends' }, { to: '/groups', label: 'Groups', icon: 'friends' }, { to: '/assistant', label: 'AI Tutor', icon: 'ai' },
 ];
 
 export default function App() {
@@ -41,14 +43,16 @@ export default function App() {
     <div className="shell">
       <Feedback />
       <aside className="side">
-        <NavLink to="/" className="brand" end><img src={LOGO} alt="" /><span><b>LUM</b>ino</span></NavLink>
+        <NavLink to="/" className="brandfull" end aria-label="Lumino home"><img src={LOGO_FULL} alt="Lumino" /></NavLink>
         <nav className="sidenav">
           {NAV.map(n => <NavLink key={n.to} to={n.to} end={n.to === '/'}><Icon name={n.icon} /><span>{n.label}</span></NavLink>)}
         </nav>
         <div className="sidefoot">
-          <button className="iconbtn" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Toggle dark mode"><Icon name={theme === 'dark' ? 'sun' : 'moon'} /></button>
-          <NavLink to="/account" className="iconbtn" aria-label="Settings"><Icon name="settings" /></NavLink>
+          <NavLink to="/progress" className="iconbtn plain" aria-label="Progress"><Icon name="progress" /></NavLink>
+          <button className="iconbtn plain" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label="Toggle dark mode"><Icon name={theme === 'dark' ? 'sun' : 'moon'} /></button>
+          <NavLink to="/account" className="iconbtn plain" aria-label="Settings"><Icon name="settings" /></NavLink>
         </div>
+        <div className="sidewave" aria-hidden="true" />
       </aside>
       <div className="content">
         <TopBar logo={LOGO} />
@@ -65,6 +69,8 @@ export default function App() {
           <Route path="/moderation" element={<Moderation />} />
           <Route path="/courses" element={<CourseList />} />
           <Route path="/study" element={<Study />} />
+          <Route path="/notes" element={<Notes />} />
+          <Route path="/friends" element={<Friends />} />
           <Route path="/progress" element={<Home progressOnly />} />
           <Route path="/courses/:id" element={<CourseView />} />
           <Route path="/assistant" element={<Assistant />} />

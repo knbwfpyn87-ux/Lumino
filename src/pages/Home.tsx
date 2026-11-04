@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useProgress } from '../components/useProgress';
 import { levelOf, setGoal, lastWeek } from '../lib/progress';
-import { db, isDue, uid } from '../lib/store';
+import { uid } from '../lib/store';
 import { useAuth, myName } from '../lib/auth';
 import { COURSES, levelState, getCourseProgress } from '../lib/courses';
 import { getMyClasses, setMyClasses, getUpcoming, saveUpcoming, type Upcoming } from '../lib/planner';
 import { listGroups, listMembers, type GroupInfo } from '../lib/api';
 import Icon from '../components/Icon';
-import { LOGO } from '../lib/logo';
+import { MASCOT_HERO } from '../lib/logo';
 
 const greet = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
-const COLORS = ['#a78bfa', '#60a5fa', '#34d399', '#fbbf24', '#f472b6', '#fb923c', '#38bdf8'];
+const COLORS = ['#7cc8ff', '#ff9aa2', '#c4b5fd', '#ffd666', '#86efac', '#fdba74', '#93c5fd'];
+const FACE = ['#38b6ff', '#ffc928', '#b39dff', '#9aa8bd'];
 
 /** Class "grade" = share of unit levels passed, shown as a letter. */
 function classGrade(id: string) {
@@ -26,12 +27,13 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
   const { profile } = useAuth(); const name = myName(profile);
   const [mine, setMine] = useState(getMyClasses()); const [picking, setPicking] = useState(false);
   const [up, setUp] = useState(getUpcoming()); const [adding, setAdding] = useState(false); const [ut, setUt] = useState(''); const [ud, setUd] = useState('');
-  const [groups, setGroups] = useState<GroupInfo[]>([]); const [friends, setFriends] = useState<string[]>([]);
+  const [groups, setGroups] = useState<GroupInfo[]>([]); const [friends, setFriends] = useState<string[]>([]); const [counts, setCounts] = useState<Record<string, number>>({});
   const [ask, setAsk] = useState('');
-  useEffect(() => { listGroups().then(async g => { setGroups(g); if (g[0]) setFriends(await listMembers(g[0].id)); }).catch(() => {}); }, []);
+  useEffect(() => { listGroups().then(async g => { setGroups(g); const c: Record<string, number> = {}; const all = new Set<string>();
+    for (const x of g.slice(0, 3)) { const m = await listMembers(x.id); c[x.id] = m.length; m.forEach(n => n !== name && all.add(n)); }
+    setCounts(c); setFriends([...all]); }).catch(() => {}); }, [name]);
   useEffect(() => { const f = () => { setMine(getMyClasses()); setUp(getUpcoming()); }; window.addEventListener('lumino:planner', f); return () => window.removeEventListener('lumino:planner', f); }, []);
 
-  const due = db.decks().reduce((n, d) => n + d.cards.filter(isDue).length, 0);
   const week = lastWeek(p); const weekXp = week.reduce((s, d) => s + d.xp, 0); const weekGoal = p.goal * 7; const weekPct = Math.min(100, Math.round(weekXp / weekGoal * 100));
   const todayPct = Math.min(100, Math.round(p.todayXp / p.goal * 100));
   const pending = up.filter(u => !u.done).sort((a, b) => a.due.localeCompare(b.due));
@@ -65,57 +67,68 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
 
   return (
     <section className="dash">
-      <div className="dashmain">
-        <h1 className="greet">{greet()}, {name}!</h1>
-        <p className="muted sub">Ready to study, learn, and grow together?</p>
-
-        <div className="hero">
-          <div><h2>Study Smarter Together.</h2><p>Classes that level up with you, practice with friends, and a Lumino AI tutor when you're stuck.</p>
-            <div className="row"><Link to={mine[0] ? `/courses/${mine[0]}` : '/courses'}><button>Study now <Icon name="arrow" size={16} /></button></Link>{due > 0 && <Link to="/flashcards"><button className="ghost">{due} cards due</button></Link>}</div></div>
-          <img className="mascot" src={LOGO} alt="" />
-        </div>
-
-        <div className="dash2">
-          <div className="panel">
-            <div className="panelhead"><h3>My Classes</h3><button className="link" onClick={() => setPicking(!picking)}>{picking ? 'Done' : mine.length ? 'Edit' : 'Add classes'}</button></div>
-            {picking ? <div className="pickgrid">{COURSES.map(c => <label key={c.id} className={'pick' + (mine.includes(c.id) ? ' on' : '')}><input type="checkbox" checked={mine.includes(c.id)} onChange={() => { const n = mine.includes(c.id) ? mine.filter(x => x !== c.id) : [...mine, c.id]; setMine(n); setMyClasses(n); }} />{c.emoji} {c.name}</label>)}</div>
-              : mine.length ? <div className="classlist">{mine.map((id, i) => { const c = COURSES.find(x => x.id === id); if (!c) return null; const g = classGrade(id);
-                  return <Link key={id} to={`/courses/${id}`} className="classrow"><span className="swatch" style={{ background: COLORS[i % COLORS.length] }} /><span className="cname">{c.name}</span><span className="grade">{g.letter}</span></Link>; })}</div>
-              : <p className="muted small">Pick the classes you're taking to see them here.</p>}
-          </div>
-
-          <div className="panel">
-            <div className="panelhead"><h3><Icon name="calendar" /> Upcoming</h3><button className="link" onClick={() => setAdding(!adding)}>{adding ? 'Cancel' : '+ Add'}</button></div>
-            {adding && <div className="row"><input placeholder="e.g. History essay" value={ut} onChange={e => setUt(e.target.value)} style={{ flex: 2 }} /><input type="date" value={ud} onChange={e => setUd(e.target.value)} style={{ flex: 1 }} /><button onClick={addUp}>Add</button></div>}
-            {pending.length ? <div className="uplist">{pending.slice(0, 5).map(u => { const days = Math.ceil((new Date(u.due + 'T23:59').getTime() - Date.now()) / 864e5);
-                return <label key={u.id} className="uprow"><input type="checkbox" checked={u.done} onChange={() => toggleUp(u.id)} /><span>{u.title}</span><span className={'when' + (days <= 1 ? ' soon' : '')}>{days < 0 ? 'Overdue' : days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : new Date(u.due + 'T12:00').toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</span></label>; })}</div>
-              : !adding && <p className="muted small">Nothing due. Add an assignment or test to stay on track.</p>}
-          </div>
-        </div>
-
-        <div className="panel">
-          <div className="panelhead"><h3>Study Tools</h3></div>
-          <div className="tools">
-            {[['cards', 'Flashcards', '/flashcards'], ['practice', 'Practice', '/tests'], ['camera', 'Photo Quiz', '/photo-quiz/new'], ['timer', 'Focus Timer', '/study#timer']].map(([ic, l, to]) =>
-              <Link key={l} to={to} className="tool"><Icon name={ic} size={26} /><span>{l}</span></Link>)}
-          </div>
-        </div>
+      <div className="greetrow">
+        <span className="spark" aria-hidden="true" />
+        <div><h1 className="greet">{greet()}, {name}!</h1><p className="muted sub">Ready to study, learn, and grow together?</p></div>
       </div>
+      <div className="dashgrid">
+        <div className="dashmain">
+          <Link to={mine[0] ? `/courses/${mine[0]}` : '/courses'} className="hero" aria-label="Study now">
+            <img className="mascot" src={MASCOT_HERO} alt="" />
+            <div><h2>Study Smarter Together.</h2><p>AI-powered learning, built for you and your friends.</p></div>
+            <span className="herowave" aria-hidden="true" />
+          </Link>
 
-      <div className="dashside">
-        <div className="panel">
-          <div className="panelhead"><h3>Study With Friends</h3></div>
-          <div className="faces">{friends.slice(0, 5).map(f => <span key={f} className="avatar" title={f}>{f.slice(0, 1).toUpperCase()}</span>)}<Link to="/groups" className="avatar add" aria-label="Add friends"><Icon name="plus" size={16} /></Link></div>
-          <Link to="/groups"><button className="ghost wide"><Icon name="friends" size={16} /> {groups.length ? `Open ${groups[0].name}` : 'Start a study room'}</button></Link>
+          <div className="dash2">
+            <div className="panel">
+              <div className="panelhead"><h3><Icon name="classes" /> My Classes</h3><button className="link" onClick={() => setPicking(!picking)}>{picking ? 'Done' : mine.length ? <>View All <Icon name="arrow" size={14} /></> : 'Add classes'}</button></div>
+              {picking ? <div className="pickgrid">{COURSES.map(c => <label key={c.id} className={'pick' + (mine.includes(c.id) ? ' on' : '')}><input type="checkbox" checked={mine.includes(c.id)} onChange={() => { const n = mine.includes(c.id) ? mine.filter(x => x !== c.id) : [...mine, c.id]; setMine(n); setMyClasses(n); }} />{c.emoji} {c.name}</label>)}</div>
+                : mine.length ? <div className="classlist">{mine.slice(0, 4).map((id, i) => { const c = COURSES.find(x => x.id === id); if (!c) return null; const g = classGrade(id);
+                    return <Link key={id} to={`/courses/${id}`} className="classrow"><span className="swatch" style={{ background: COLORS[i % COLORS.length] }} /><span className="cname">{c.name}</span><span className="grade">{g.letter}</span></Link>; })}</div>
+                : <p className="muted small">Pick the classes you're taking to see them here.</p>}
+            </div>
+
+            <div className="panel">
+              <div className="panelhead"><h3><Icon name="calendar" /> Upcoming Assignments</h3><button className="link" onClick={() => setAdding(!adding)}>{adding ? 'Cancel' : <>Add <Icon name="plus" size={14} /></>}</button></div>
+              {adding && <div className="row"><input placeholder="e.g. History essay" value={ut} onChange={e => setUt(e.target.value)} style={{ flex: 2 }} /><input type="date" value={ud} onChange={e => setUd(e.target.value)} style={{ flex: 1 }} /><button onClick={addUp}>Add</button></div>}
+              {pending.length ? <div className="uplist">{pending.slice(0, 3).map(u => { const days = Math.ceil((new Date(u.due + 'T23:59').getTime() - Date.now()) / 864e5);
+                  return <label key={u.id} className="uprow"><input type="checkbox" checked={u.done} onChange={() => toggleUp(u.id)} /><span>{u.title}</span><span className={'when' + (days <= 1 ? ' soon' : '')}>{days < 0 ? 'Overdue' : days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : new Date(u.due + 'T12:00').toLocaleDateString(undefined, { weekday: 'short' })}</span></label>; })}</div>
+                : !adding && <p className="muted small">Nothing due. Add an assignment or test to stay on track.</p>}
+            </div>
+          </div>
+
+          <div className="panel">
+            <div className="panelhead"><h3><Icon name="book" /> Study Tools</h3></div>
+            <div className="tools">
+              {[['classes', 'Flashcards', '/flashcards', 'blue'], ['pencil', 'Notes', '/notes', 'yellow'], ['practice', 'Practice', '/tests', 'blue'], ['timer', 'Focus Timer', '/study#timer', 'yellow'], ['ai', 'AI Help', '/assistant', 'purple']].map(([ic, l, to, c]) =>
+                <Link key={l} to={to} className={'tool ' + c}><Icon name={ic} size={30} /><span>{l}</span></Link>)}
+            </div>
+          </div>
         </div>
-        <div className="panel">
-          <div className="panelhead"><h3><Icon name="ai" /> AI Tutor</h3><span className="muted small">Lumino AI</span></div>
-          <form className="askbox" onSubmit={e => { e.preventDefault(); nav(`/assistant${ask.trim() ? `?q=${encodeURIComponent(ask.trim())}` : ''}`); }}>
-            <input placeholder="Ask a question or get help…" value={ask} onChange={e => setAsk(e.target.value)} /><button aria-label="Ask"><Icon name="send" size={16} /></button>
-          </form>
+
+        <div className="dashside">
+          <div className="panel">
+            <div className="panelhead"><h3><Icon name="friends" /> Study With Friends</h3></div>
+            <div className="faces">{(friends.length ? friends : []).slice(0, 4).map((f, i) => <span key={f} className="face" style={{ background: FACE[i % FACE.length] }} title={f}><Icon name="user" size={22} /></span>)}<Link to="/friends" className="face add" aria-label="Add friends"><Icon name="plus" size={20} /></Link></div>
+            <Link to={groups[0] ? `/groups?open=${groups[0].id}` : '/groups'} className="roomlink"><Icon name="video" /> <span>Start Study Room</span><Icon name="arrow" size={18} /></Link>
+          </div>
+          <div className="panel">
+            <div className="panelhead"><h3><span className="yellowic"><Icon name="ai" /></span> AI Tutor</h3></div>
+            <form className="askbox" onSubmit={e => { e.preventDefault(); nav(`/assistant${ask.trim() ? `?q=${encodeURIComponent(ask.trim())}` : ''}`); }}>
+              <input placeholder="Ask a question or get help..." value={ask} onChange={e => setAsk(e.target.value)} /><button aria-label="Ask"><Icon name="send" size={18} /></button>
+            </form>
+          </div>
+          <div className="panel">
+            <div className="panelhead"><h3><Icon name="progress" /> Your Progress</h3><Link to="/progress" className="link small">This Week <Icon name="chevron" size={14} /></Link></div>
+            <div className="progrow"><div className="bar big"><i style={{ width: `${weekPct}%` }} /></div><b>{weekPct}%</b></div>
+            <p className="muted small">🔥 {p.streak}-day streak · {weekXp}/{weekGoal} XP this week · Level {L.lvl}</p>
+          </div>
+          <div className="panel">
+            <div className="panelhead"><h3><Icon name="video" /> Active Study Rooms</h3><Link to="/groups" className="link small">View All <Icon name="arrow" size={14} /></Link></div>
+            {groups.length ? <div className="rooms">{groups.slice(0, 3).map(g => <Link key={g.id} to={`/groups?open=${g.id}`} className="room"><Icon name="friends" /><b>{g.name}</b><span className="muted small">{counts[g.id] ?? '·'} members</span><span className="playbtn"><Icon name="play" size={14} /></span></Link>)}</div>
+              : <p className="muted small">No study rooms yet. <Link to="/groups">Start one</Link></p>}
+          </div>
         </div>
-        {progressCard}
-        {streakCard}
       </div>
     </section>
   );

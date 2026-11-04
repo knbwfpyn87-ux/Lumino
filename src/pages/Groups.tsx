@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import * as api from '../lib/api';
 import { useAuth, myName } from '../lib/auth';
 import { getProgress } from '../lib/progress';
@@ -10,7 +10,7 @@ import Call from '../components/Call';
 
 export default function Groups() {
   const { profile } = useAuth(); const name = myName(profile);
-  const [groups, setGroups] = useState<api.GroupInfo[]>([]); const [activeId, setActiveId] = useState<string | null>(null);
+  const [sp] = useSearchParams(); const [groups, setGroups] = useState<api.GroupInfo[]>([]); const [activeId, setActiveId] = useState<string | null>(sp.get('open'));
   const [newName, setNewName] = useState(''); const [code, setCode] = useState(''); const [err, setErr] = useState('');
   const load = useCallback(() => api.listGroups().then(setGroups).catch(e => setErr(e.message)), []);
   useEffect(() => { load(); }, [load]);
