@@ -12,6 +12,15 @@ Ideal gas law: pV = nRT; at STP (273 K, 100 kPa), molar volume is 22.7 dm³ mol�
 ex: How many moles are in 11 g of CO₂ (M = 44 g mol⁻¹)?
 > n = m/M = 11/44
 = 0.25 mol
+lab: Finding absolute zero
+aim: Warm a trapped volume of gas at constant pressure and extrapolate the graph to find where its volume would be zero.
+set: T = 20 | Temperature (°C) | -50 to 100 by 5
+out: V = 50*(T + 273.15)/273.15 | Volume (cm³)
+plot: T, V
+step: Record the volume at 5 temperatures.
+step: Extend the line back. At what temperature does it reach zero?
+noise: 1
+result: Volume is proportional to absolute temperature (Charles's law). The line extrapolates to zero volume at −273 °C, absolute zero, which is 0 K on the Kelvin scale.
 term: mole = the amount of substance containing 6.02 × 10²³ particles
 term: empirical formula = the simplest whole-number ratio of atoms in a compound
 term: isotope = an atom of an element with a different number of neutrons
@@ -47,6 +56,13 @@ Covalent bonding: shared electron pairs. VSEPR predicts shapes (linear, trigonal
 Metallic bonding: cations in a sea of delocalized electrons; conductivity and malleability.
 Intermolecular forces (weakest to strongest): London dispersion, dipole-induced dipole, dipole–dipole, hydrogen bonding. Stronger forces → higher boiling points.
 The bonding triangle (van Arkel–Ketelaar) classifies substances by electronegativity difference and average electronegativity.
+lab: The bonding continuum
+aim: Change the electronegativity difference between two bonded atoms and see how ionic the bond becomes.
+set: dEN = 1 | Electronegativity difference | 0 to 3.3 by 0.1
+out: ion = 100*(1 - exp(-dEN^2/4)) | Ionic character (%)
+plot: dEN, ion
+step: Record the ionic character for H–H (0), H–Cl (0.9), H–F (1.8) and Na–Cl (2.1).
+result: Bonding is a continuum: equal sharing (non-polar covalent), unequal sharing (polar covalent), and nearly complete transfer (ionic) above a difference of about 1.8. The bonding triangle also uses average electronegativity.
 term: VSEPR theory = electron domains repel and determine molecular shape
 term: electronegativity = an atom's ability to attract a shared pair of electrons
 term: hydrogen bond = an intermolecular attraction between H bonded to N, O or F and a lone pair on N, O or F
@@ -103,6 +119,17 @@ HL: rate equations (rate = k[A]ᵐ[B]ⁿ), orders from experimental data, mechan
 ex: Doubling [A] doubles the rate. What is the order with respect to A?
 > 2ᵐ = 2
 = First order
+lab: Thiosulfate and temperature
+aim: Time how long sodium thiosulfate and acid take to hide a cross at different temperatures.
+set: T = 298 | Temperature (K) | 280 to 350 by 1
+set: Ea = 50 | Activation energy (kJ/mol) | 20 to 120 by 5
+out: t = 60*exp(Ea*1000/R*(1/T - 1/298)) | Time for the cross to vanish (s)
+out: rel = 60/t | Rate relative to 25 °C
+plot: T, t
+step: Record the time at 5 temperatures.
+step: How much faster is the reaction 10 K above room temperature?
+noise: 4
+result: Rates rise steeply with temperature because more particles have energy above Eₐ (Maxwell–Boltzmann). With Eₐ ≈ 50 kJ/mol the rate roughly doubles for every 10 K. Plotting ln k against 1/T gives a straight line with slope −Eₐ/R (Arrhenius).
 term: collision theory = reactions require collisions with enough energy and correct orientation
 term: activation energy = the minimum energy needed for a reaction to occur
 term: catalyst = a substance that increases the rate by providing a lower-energy pathway
@@ -120,6 +147,16 @@ Dynamic equilibrium: forward and reverse rates are equal. The equilibrium consta
 ex: For N₂ + 3H₂ ⇌ 2NH₃ (exothermic), how does raising temperature affect yield?
 > Raising temperature favors the endothermic (reverse) direction
 = Yield of NH₃ decreases (and K decreases)
+lab: Equilibrium mixture of HI
+aim: Start with 1.00 mol each of H₂ and I₂ in a 1.00 dm³ flask and find the equilibrium composition for different K values.
+set: K = 50 | Equilibrium constant K | 1 to 100 by 1
+out: x = sqrt(K)/(2 + sqrt(K)) | H₂ reacted (mol)
+out: HI = 2*x | HI at equilibrium (mol dm⁻³)
+out: H2 = 1 - x | H₂ left (mol dm⁻³)
+plot: K, HI
+step: Record the equilibrium amounts for at least 5 values of K.
+step: Check that [HI]²/([H₂][I₂]) equals K.
+result: An ICE table gives K = (2x)²/(1 − x)². A larger K means the equilibrium lies further to the right, but even at K = 100 some reactants remain. Only temperature changes K.
 term: limiting reactant = the reactant that is used up first
 term: atom economy = the percentage of reactant mass that ends up in the desired product
 term: equilibrium constant = the ratio of product to reactant concentrations at equilibrium

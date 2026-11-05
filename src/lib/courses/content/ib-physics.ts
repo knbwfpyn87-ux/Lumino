@@ -12,6 +12,17 @@ Circular motion: centripetal acceleration a = v²/r = ω²r toward the center.
 ex: A car accelerates from 10 m/s to 25 m/s in 5 s. Find its acceleration and displacement.
 > a = (25 − 10)/5 = 3 m/s²
 = s = ½(10 + 25)(5) = 87.5 m
+lab: Ball rolling off a table
+aim: Roll a ball off a bench at different speeds and measure where it lands.
+set: v = 2 | Launch speed (m/s) | 0.5 to 6 by 0.1
+set: h = 1 | Bench height (m) | 0.5 to 2 by 0.1
+out: t = sqrt(2*h/g) | Time in the air (s)
+out: x = v*t | Horizontal distance (m)
+plot: v, x
+step: Record the landing distance for 5 launch speeds at a fixed height.
+step: Change the height. Does the time in the air depend on the speed?
+noise: 3
+result: Horizontal and vertical motion are independent. The time in the air depends only on the height (t = √(2h/g)), so the landing distance is directly proportional to launch speed.
 term: SUVAT equations = kinematic equations for constant acceleration
 term: momentum = mass times velocity, conserved in isolated systems
 term: impulse = force times time, equal to the change in momentum
@@ -47,6 +58,16 @@ key: Temperature measures average kinetic energy of particles. Specific heat cap
 Heat transfer: conduction, convection and radiation. A black body emits radiation with power P = σAT⁴ (Stefan–Boltzmann law); Wien's law: λₘₐₓT = 2.9 × 10⁻³ m K.
 The greenhouse effect: Earth absorbs short-wavelength solar radiation and emits infrared; greenhouse gases absorb and re-emit infrared, warming the surface. Albedo is the fraction of radiation reflected.
 Ideal gas law: pV = nRT. Kinetic theory links pressure to particle collisions.
+lab: Specific heat capacity of a metal block
+aim: Heat a 1 kg metal block with a 50 W immersion heater and record its temperature.
+set: t = 120 | Time (s) | 0 to 600 by 10
+set: c = 900 | Specific heat capacity (J/kg·K) | 380 to 2000 by 10
+out: T = 20 + 50*t/(1*c) | Temperature (°C)
+plot: t, T
+step: Record the temperature every 100 s for aluminum (900 J/kg·K).
+step: Switch to copper (385) and compare the slope.
+noise: 2
+result: The temperature rises linearly; the slope equals P/(mc), so c = P/(m × slope). Real results come out a little high because some heat escapes to the surroundings, so the block is insulated.
 term: specific heat capacity = energy needed to raise 1 kg of a substance by 1 K
 term: latent heat = energy absorbed or released during a phase change without temperature change
 term: albedo = the fraction of incoming radiation reflected by a surface
@@ -100,6 +121,15 @@ key: Snell's law: n₁ sin θ₁ = n₂ sin θ₂. Total internal reflection occ
 Interference: constructive when path difference = nλ; destructive when path difference = (n + ½)λ. Double-slit fringe spacing s = λD/d.
 Standing waves form from two waves traveling in opposite directions, creating nodes and antinodes. On a string, λ = 2L/n.
 Doppler effect: a moving source or observer changes the observed frequency; approaching raises it, receding lowers it. It's used in radar speed guns and to measure redshift of galaxies.
+lab: Doppler effect with a moving speaker
+aim: Move a speaker playing a steady note toward or away from a microphone and measure the frequency received.
+set: vs = 30 | Source speed (m/s, + toward you) | -100 to 100 by 5
+set: f = 440 | Emitted frequency (Hz) | 200 to 1000 by 10
+out: fo = f*343/(343 - vs) | Observed frequency (Hz)
+plot: vs, fo
+step: Record the observed frequency for sources approaching and receding.
+noise: 0.5
+result: An approaching source compresses the waves (higher pitch); a receding source stretches them (lower pitch): f′ = f·v/(v − vₛ). The same effect shifts light from distant galaxies to the red, showing the universe is expanding.
 term: Snell's law = n₁ sin θ₁ = n₂ sin θ₂
 term: diffraction = the spreading of waves through gaps or around obstacles
 term: standing wave = a wave pattern with fixed nodes and antinodes
@@ -119,6 +149,16 @@ HL adds gravitational and electric potential and potential energy, escape veloci
 ex: If the distance between two masses triples, how does the gravitational force change?
 > F ∝ 1/r²
 = It becomes 1/9 as strong
+lab: Satellite orbits
+aim: Place a satellite at different distances from Earth's center and calculate its orbital period and speed.
+set: r = 7 | Orbit radius (thousand km) | 6.6 to 45 by 0.1
+out: T = 2*pi*sqrt((r*1e6)^3/(6.674e-11*5.97e24))/3600 | Period (hours)
+out: v = sqrt(6.674e-11*5.97e24/(r*1e6))/1000 | Orbital speed (km/s)
+plot: r, T
+step: Record the period at 5 radii, including the International Space Station (6.8).
+step: Find the radius where the period is 24 hours.
+noise: 0.5
+result: T² ∝ r³ (Kepler's third law). The ISS circles in about 90 minutes; at 42,200 km the period is 24 hours, a geostationary orbit that stays above one point on Earth.
 term: gravitational field strength = the force per unit mass at a point
 term: Coulomb's law = F = kq₁q₂/r² for point charges
 term: electric field strength = the force per unit charge at a point
@@ -155,6 +195,16 @@ Radioactive decay is random and spontaneous. Alpha (helium nucleus), beta-minus 
 ex: A sample has a half-life of 3 days. What fraction remains after 9 days?
 > 9 days = 3 half-lives
 = (1/2)³ = 1/8
+lab: Gamma rays and distance
+aim: Move a Geiger counter away from a gamma source and measure the count rate.
+set: d = 10 | Distance (cm) | 5 to 50 by 1
+set: A = 20000 | Source strength | 5000 to 50000 by 1000
+out: C = A/d^2 + 20 | Count rate (counts/min, including 20 background)
+plot: d, C
+step: First measure the background count (about 20 per minute).
+step: Record the count rate at 5 distances and subtract the background.
+noise: 5
+result: Gamma intensity follows an inverse-square law: doubling the distance cuts the corrected count rate to a quarter. Distance is one of the best protections from radiation.
 term: photon = a quantum of electromagnetic radiation with energy hf
 term: half-life = the time for half the radioactive nuclei to decay
 term: activity = the number of decays per second

@@ -9,6 +9,18 @@ say: ESS combines science and society. It starts with how people see the environ
 key: Environmental value systems (EVS) range from ecocentric (nature-centered, emphasizing limits and ethics) to technocentric (technology and human ingenuity solve problems), with anthropocentric (human-centered management) in between. Your perspective affects how you judge environmental issues.
 Systems thinking: a system has inputs, outputs, storages and flows (transfers and transformations). Open systems exchange matter and energy; closed systems exchange only energy; isolated systems exchange neither.
 Feedback: negative feedback stabilizes a system; positive feedback amplifies change and can push a system past a tipping point.
+lab: Lake storage and flows
+aim: A lake receives a steady inflow, and its outflow increases with how much water it stores. Watch the storage over time.
+set: t = 5 | Time (years) | 0 to 30 by 1
+set: In = 20 | Inflow (million m³/year) | 5 to 50 by 1
+out: Seq = In/0.2 | Equilibrium storage (million m³)
+out: S = Seq + (50 - Seq)*exp(-0.2*t) | Storage (million m³)
+out: Out = 0.2*S | Outflow (million m³/year)
+plot: t, S
+step: Record the storage every 5 years.
+step: Raise the inflow, as in a wet decade, and see where it settles.
+noise: 2
+result: When outflow rises with storage, the system has negative feedback and settles at a steady-state equilibrium where inputs equal outputs. Change the input and it moves to a new equilibrium.
 term: environmental value system = a worldview that shapes how people perceive environmental issues
 term: ecocentric = a perspective that places nature at the center and values it for its own sake
 term: open system = a system that exchanges both matter and energy with its surroundings
@@ -55,6 +67,16 @@ key: Biodiversity includes genetic, species and habitat diversity. Biodiversity 
 Threats: habitat loss and fragmentation, invasive species, pollution, overexploitation and climate change. The IUCN Red List categorizes extinction risk.
 Conservation approaches: species-based (captive breeding, CITES) and habitat-based (protected areas, wildlife corridors). Reserve design considers size, shape, edge effects and connectivity.
 tip: When evaluating a conservation strategy, weigh both sides: protecting habitat saves many species at once, while species-based methods can rescue critically endangered animals quickly.
+lab: Simpson's diversity in quadrats
+aim: Count three plant species in quadrats and calculate Simpson's diversity index.
+set: a = 25 | Species A count | 1 to 100 by 1
+set: b = 25 | Species B count | 1 to 100 by 1
+set: c = 25 | Species C count | 1 to 100 by 1
+out: N = a + b + c | Total plants
+out: D = 1 - ((a/N)^2 + (b/N)^2 + (c/N)^2) | Simpson's index (1 − D)
+plot: a, D
+step: Record the index when all species are equal, then make species A dominant.
+result: Diversity depends on both richness and evenness. The index is highest when species are equally common and falls as one species dominates, even though the number of species stays the same.
 term: biodiversity hotspot = a region with many endemic species that is under significant threat
 term: endemic species = a species found only in one geographic area
 term: IUCN Red List = a global inventory of species' extinction risk
@@ -71,6 +93,16 @@ key: The hydrological cycle moves water through evaporation, transpiration, cond
 Water scarcity can be physical (not enough water) or economic (lack of infrastructure). Solutions include conservation, desalination, rainwater harvesting and better irrigation.
 Water pollution: eutrophication from nitrates and phosphates causes algal blooms and hypoxia. Indicator species and biochemical oxygen demand (BOD) measure water quality.
 Aquatic food production: overfishing depletes stocks; maximum sustainable yield (MSY), quotas, marine protected areas and sustainable aquaculture help.
+lab: Fishing effort and sustainable yield
+aim: Add more fishing boats to a fishery and record the long-term sustainable catch.
+set: E = 30 | Fishing effort (boats) | 0 to 100 by 1
+out: Y = 0.01*E*1000*max(1 - 0.01*E, 0) | Sustainable catch (tonnes/year)
+out: stock = 1000*max(1 - 0.01*E, 0) | Fish stock (tonnes)
+plot: E, Y
+step: Record the catch for at least 6 levels of effort.
+step: Find the effort that gives maximum sustainable yield.
+noise: 3
+result: Catch rises with effort only up to a point (MSY at 50 boats here), then falls as the stock is overfished. Beyond MSY more boats catch fewer fish, which is why quotas and limits on effort matter.
 term: hydrological cycle = the continuous movement of water through Earth's systems
 term: eutrophication = nutrient enrichment causing algal blooms and oxygen depletion
 term: biochemical oxygen demand = the amount of oxygen used by microbes decomposing organic matter
@@ -119,6 +151,16 @@ Urban systems: cities concentrate people and consumption, creating heat islands,
 ex: A country's population grows at 2% per year. Estimate its doubling time.
 > 70 ÷ 2
 = about 35 years
+lab: How many Earths?
+aim: Change the average ecological footprint and population to see how many Earths' worth of biocapacity humanity needs.
+set: fp = 2.6 | Footprint per person (gha) | 1 to 10 by 0.1
+set: P = 8 | Population (billions) | 4 to 11 by 0.5
+out: need = fp*P | Total footprint (billion gha)
+out: earths = need/12.2 | Earths needed
+plot: fp, earths
+step: Record the Earths needed for the world average (2.6 gha) and a high-income country (about 7 gha).
+step: Find the footprint per person that would fit within one Earth.
+result: Earth has about 12.2 billion global hectares of biocapacity. At today's average footprint humanity uses about 1.7 Earths; if everyone lived like high-income countries we'd need over 4.
 term: demographic transition model = a model of changing birth and death rates as countries develop
 term: doubling time = the time for a population to double
 term: circular economy = an economic system aiming to eliminate waste by reusing resources

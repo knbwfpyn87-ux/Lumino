@@ -30,6 +30,17 @@ Solutions: molarity M = mol solute ÷ L solution. Dilution: M₁V₁ = M₂V₂.
 ex: How many moles of NaCl are in 250 mL of 0.40 M solution?
 > 0.40 mol/L × 0.250 L
 = 0.10 mol
+lab: Serial dilution
+aim: Pipette different volumes of a 2.00 M stock solution into a 100.0 mL volumetric flask and fill to the mark.
+set: V1 = 10 | Stock volume (mL) | 1 to 50 by 1
+set: M1 = 2 | Stock concentration (M) | 0.5 to 5 by 0.5
+out: M2 = M1*V1/100 | Diluted concentration (M)
+out: n = M1*V1/1000 | Moles of solute (mol)
+plot: V1, M2
+step: Record the diluted concentration for 5 stock volumes.
+step: What volume of stock makes exactly 0.150 M?
+noise: 1
+result: Dilution adds solvent but not solute, so M₁V₁ = M₂V₂. To make 0.150 M from 2.00 M stock in a 100 mL flask, pipette 7.5 mL.
 term: limiting reactant = the reactant that is completely consumed first
 term: molarity = moles of solute per liter of solution
 term: net ionic equation = an equation showing only the species that react
@@ -48,6 +59,17 @@ Thermochemistry: q = mcΔT. Exothermic ΔH < 0, endothermic ΔH > 0. Hess's law 
 ex: A gas at 2.0 atm occupies 3.0 L. Find its volume at 1.0 atm (constant T).
 > P₁V₁ = P₂V₂: 2.0 × 3.0 = 1.0 × V₂
 = 6.0 L
+lab: Mixing hot and cold water
+aim: Mix hot water with 100 g of water at 20 °C in an insulated cup and record the final temperature.
+set: m1 = 100 | Hot water mass (g) | 10 to 300 by 10
+set: T1 = 80 | Hot water temperature (°C) | 30 to 100 by 5
+out: Tf = (m1*T1 + 100*20)/(m1 + 100) | Final temperature (°C)
+out: q = m1*4.18*(T1 - Tf) | Heat lost by hot water (J)
+plot: m1, Tf
+step: Record the final temperature for 5 masses of hot water.
+step: Check that heat lost by the hot water equals heat gained by the cold water.
+noise: 1
+result: Energy is conserved: heat lost = heat gained (m₁cΔT₁ = m₂cΔT₂). The final temperature is a mass-weighted average, closer to whichever sample is larger.
 term: ideal gas law = PV = nRT
 term: partial pressure = the pressure one gas in a mixture would exert alone
 term: specific heat = the energy needed to raise 1 g of a substance by 1 °C
@@ -81,6 +103,18 @@ Equilibrium: K = [products]^coefficients ÷ [reactants]^coefficients (pure solid
 ex: A first-order reaction has k = 0.0693 s⁻¹. Find its half-life.
 > t½ = 0.693 ÷ 0.0693
 = 10 s
+lab: Second-order decomposition of NO₂
+aim: Follow the concentration of NO₂ as it decomposes (2NO₂ → 2NO + O₂) and test which plot is linear.
+set: t = 100 | Time (s) | 0 to 600 by 10
+set: kk = 0.5 | Rate constant k (M⁻¹ s⁻¹) | 0.1 to 2 by 0.1
+out: A = 1/(1/0.1 + kk*t) | [NO₂] (M)
+out: inv = 1/A | 1/[NO₂] (M⁻¹)
+out: lnA = ln(A) | ln[NO₂]
+plot: t, inv
+step: Record [NO₂], ln[NO₂] and 1/[NO₂] every 100 s.
+step: Which quantity changes by the same amount each interval?
+noise: 1
+result: 1/[NO₂] vs t is a straight line with slope k, so the reaction is second order. For second-order reactions the half-life gets longer as the concentration falls, unlike first-order reactions.
 term: rate law = an equation relating rate to reactant concentrations
 term: half-life = the time for half of a reactant to be consumed
 term: reaction quotient = Q, the K expression evaluated at any moment

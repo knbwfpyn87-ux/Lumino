@@ -9,6 +9,15 @@ say: Theme A asks what all living things share and how they differ. It starts at
 key: Water's polarity and hydrogen bonding give it cohesion, adhesion, high specific heat and solvent properties that make life possible.
 Nucleic acids: DNA (deoxyribose, double helix, A–T and C–G complementary base pairing, antiparallel strands) and RNA (ribose, single-stranded, uracil). The genetic code is universal, which is evidence of common ancestry.
 Cell theory: all organisms are made of cells, cells are the smallest unit of life, and cells come from pre-existing cells. Prokaryotes lack a nucleus; eukaryotes have membrane-bound organelles. Endosymbiosis explains the origin of mitochondria and chloroplasts.
+lab: Measuring cells under a microscope
+aim: Measure the image of a cell and use the magnification to find its actual size.
+set: I = 20 | Image size (mm) | 1 to 100 by 1
+set: M = 400 | Magnification | 40 to 1000 by 10
+out: A = I*1000/M | Actual size (μm)
+plot: M, A
+step: Record the actual size for 4 magnifications of a 20 mm image.
+step: A typical animal cell is 10–30 μm. Which settings match?
+result: Actual size = image size ÷ magnification. Converting units carefully (1 mm = 1,000 μm) is the most common source of error. Eukaryotic cells are usually 10–100 μm; bacteria about 1–5 μm.
 term: hydrogen bond = a weak attraction between a slightly positive H and a slightly negative atom
 term: complementary base pairing = A pairs with T (or U) and C pairs with G
 term: endosymbiosis = the theory that mitochondria and chloroplasts came from engulfed prokaryotes
@@ -56,6 +65,16 @@ key: Gas exchange surfaces are thin, moist, have a large surface area and a good
 Blood vessels: arteries (thick, elastic walls, high pressure), veins (thin walls, valves) and capillaries (one cell thick for exchange).
 Plants transport water through xylem by transpiration (cohesion–tension) and sugars through phloem by translocation.
 tip: Fick's law sums it up: the rate of diffusion increases with surface area and concentration difference, and decreases with the thickness of the barrier.
+lab: Potometer and transpiration
+aim: Use a potometer to measure how fast a leafy shoot takes up water in different conditions.
+set: RH = 50 | Relative humidity (%) | 20 to 95 by 5
+set: w = 1 | Wind speed (m/s) | 0 to 5 by 0.5
+out: rate = 2*(1 - RH/100)*(1 + 0.6*sqrt(w)) | Water uptake (mm per min)
+plot: RH, rate
+step: Record the rate at 5 humidity levels in still air.
+step: Then add a fan and compare.
+noise: 5
+result: Transpiration is fastest in dry, windy conditions because the water vapor gradient between the leaf and the air is steepest. Water loss pulls water up the xylem by cohesion–tension.
 term: alveoli = tiny air sacs in the lungs where gas exchange occurs
 term: transpiration = the loss of water vapor from leaves, driving water movement in xylem
 term: xylem = plant tissue that transports water and minerals
@@ -72,6 +91,16 @@ say: Theme C explores how molecules and organisms interact. Energy flow through 
 key: Enzymes lower activation energy; their activity depends on temperature, pH and substrate concentration. Competitive inhibitors bind the active site; non-competitive inhibitors bind elsewhere. End-product inhibition regulates pathways.
 Cell respiration releases energy from glucose to make ATP: anaerobic respiration (glycolysis plus fermentation, small ATP yield) and aerobic respiration (much more ATP using oxygen).
 Photosynthesis converts light energy into chemical energy: light-dependent reactions produce ATP and NADPH and release O₂; the Calvin cycle fixes CO₂ into carbohydrates. Limiting factors: light intensity, CO₂ concentration and temperature.
+lab: Yeast fermentation and sugar
+aim: Give yeast different glucose concentrations and measure how fast it produces CO₂.
+set: S = 2 | Glucose (%) | 0 to 20 by 0.5
+set: Vm = 10 | Maximum rate (cm³ CO₂/min) | 5 to 20 by 1
+out: v = Vm*S/(1.5 + S) | CO₂ production (cm³/min)
+plot: S, v
+step: Record the rate at 6 glucose concentrations.
+step: Why does adding more sugar eventually stop helping?
+noise: 5
+result: The rate rises, then levels off as the yeast's enzymes become saturated (all active sites occupied). At high sugar concentrations another factor, the amount of enzyme, becomes limiting.
 term: competitive inhibition = an inhibitor binding to the active site, blocking the substrate
 term: aerobic respiration = respiration using oxygen, producing large amounts of ATP
 term: limiting factor = the factor in shortest supply that limits the rate of a process
@@ -121,6 +150,16 @@ say: Life changes over time through evolution, and today, rapid climate change i
 key: Natural selection: variation exists, more offspring are produced than survive, individuals with better-adapted traits survive and reproduce more, and those traits become more common. Evidence: fossils, homologous structures, DNA sequences and observed change (antibiotic resistance).
 Speciation occurs through reproductive isolation (allopatric or sympatric). Gene pools and allele frequencies change through selection, drift and gene flow (HL: Hardy–Weinberg).
 Climate change: rising CO₂ from fossil fuels enhances the greenhouse effect, causing warming, ocean acidification, shifts in species ranges and coral bleaching. Mitigation includes reducing emissions and protecting carbon sinks.
+lab: Antibiotic resistance spreading
+aim: Track the fraction of resistant bacteria in a population when an antibiotic gives them an advantage each generation.
+set: t = 10 | Generations | 0 to 60 by 1
+set: s = 0.3 | Selective advantage | 0.05 to 1 by 0.05
+out: p = 0.001*(1 + s)^t/(0.001*(1 + s)^t + 0.999) | Fraction resistant
+plot: t, p
+step: Record the fraction resistant every 10 generations.
+step: Lower the selective advantage, as when antibiotics are used less.
+noise: 2
+result: A rare resistant mutant spreads slowly at first, then rapidly, until it dominates (an S-shaped curve). Bacteria divide every 20–30 minutes, so this can happen in days; reducing antibiotic overuse lowers the advantage.
 term: natural selection = differential survival and reproduction of individuals with advantageous traits
 term: allopatric speciation = speciation through geographic isolation
 term: gene pool = all the alleles in a population

@@ -9,6 +9,16 @@ say: Biology rests on chemistry. Four kinds of large molecules build every cell.
 key: Macromolecules: carbohydrates (monosaccharides, energy and structure), lipids (fats, phospholipids, steroids), proteins (amino acids, four levels of structure) and nucleic acids (nucleotides; DNA and RNA). Polymers form by dehydration synthesis and break by hydrolysis.
 Prokaryotic cells lack a nucleus; eukaryotic cells have a nucleus and membrane-bound organelles: mitochondria (respiration), chloroplasts (photosynthesis), ER, Golgi apparatus, lysosomes and the cytoskeleton.
 Membranes follow the fluid mosaic model. Transport: diffusion and osmosis (passive), facilitated diffusion through channels, active transport with ATP (the sodium–potassium pump), and endocytosis and exocytosis.
+lab: Potassium and membrane potential
+aim: Change the potassium concentration outside a neuron and measure its resting membrane potential.
+set: Ko = 5 | Outside [K⁺] (mM) | 1 to 100 by 1
+set: Ki = 140 | Inside [K⁺] (mM) | 100 to 160 by 5
+out: E = 61.5*log(Ko/Ki) | Equilibrium potential (mV)
+plot: Ko, E
+step: Record the potential at 5 outside concentrations.
+step: What happens to the cell when outside K⁺ rises sharply (hyperkalemia)?
+noise: 2
+result: The Nernst equation E = 61.5 log([K⁺]out/[K⁺]in) gives about −90 mV normally. Raising outside K⁺ depolarizes the membrane, which is why high blood potassium disrupts heart rhythms.
 term: dehydration synthesis = joining monomers by removing water
 term: hydrolysis = breaking polymers by adding water
 term: fluid mosaic model = a membrane of phospholipids with embedded, moving proteins
@@ -57,6 +67,16 @@ say: DNA stores genetic information; gene expression turns it into proteins.
 key: DNA replication is semi-conservative: helicase unwinds, primase lays primers, DNA polymerase adds nucleotides 5′ → 3′ (leading strand continuous, lagging strand in Okazaki fragments), and ligase seals gaps.
 The central dogma: DNA → RNA → protein. Transcription by RNA polymerase; in eukaryotes, mRNA is processed (5′ cap, poly-A tail, intron splicing). Translation at ribosomes: tRNA anticodons pair with mRNA codons; start codon AUG.
 Gene regulation: the lac operon in bacteria; transcription factors, epigenetics and alternative splicing in eukaryotes. Mutations (point, frameshift) can alter proteins. Biotechnology: PCR, gel electrophoresis, CRISPR.
+lab: Gel electrophoresis ladder
+aim: Run DNA fragments of known sizes through an agarose gel and measure how far each travels.
+set: bp = 1000 | Fragment size (base pairs) | 100 to 10000 by 100
+set: V = 100 | Voltage (V) | 50 to 150 by 10
+out: d = max((60 - 15*log(bp))*V/100, 0) | Distance traveled (mm)
+plot: bp, d
+step: Record the distance for at least 5 fragment sizes.
+step: Use the curve to estimate the size of a fragment that moved 15 mm.
+noise: 3
+result: DNA is negatively charged and moves toward the positive electrode. Small fragments slip through the gel faster: distance falls with the logarithm of size, so a ladder of known sizes lets you estimate unknowns.
 term: semi-conservative replication = each new DNA molecule keeps one original strand
 term: transcription = synthesizing RNA from a DNA template
 term: operon = a cluster of bacterial genes controlled by one promoter
@@ -92,6 +112,16 @@ say: Ecology connects organisms to each other and their environment, from popula
 key: Population growth: exponential dN/dt = rN, and logistic growth that levels off at carrying capacity K. Density-dependent and density-independent factors limit growth; r- and K-selected life histories differ.
 Communities: competition, predation, mutualism, commensalism and parasitism. Keystone species shape communities; succession (primary and secondary) changes them over time.
 Ecosystems: energy flows (about 10% passes between trophic levels) while nutrients cycle (carbon, nitrogen, phosphorus). Human impacts include habitat loss, invasive species, climate change and biodiversity loss.
+lab: Mark and recapture
+aim: Estimate the size of a beetle population by marking 50 beetles, releasing them, then catching a second sample of 60.
+set: Rr = 10 | Marked beetles recaptured | 1 to 50 by 1
+set: M = 50 | Beetles marked | 20 to 100 by 5
+set: C = 60 | Second sample size | 20 to 100 by 5
+out: N = M*C/Rr | Estimated population
+plot: Rr, N
+step: Record the estimate for at least 5 recapture counts.
+step: What assumptions must hold for this estimate to be accurate?
+result: Lincoln–Petersen: N = MC/R. Fewer recaptures means a bigger population. It assumes marks aren't lost, marking doesn't affect survival, and the population is closed (no births, deaths or migration) between samples.
 term: carrying capacity = the maximum population an environment can sustain
 term: logistic growth = growth that slows as a population nears carrying capacity
 term: keystone species = a species with an outsized effect on its community

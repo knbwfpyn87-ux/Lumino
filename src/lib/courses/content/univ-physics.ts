@@ -13,6 +13,17 @@ ex: A 5 kg box is pulled with 30 N on a surface with friction force 10 N. Find i
 > F_net = 30 − 10 = 20 N
 > a = 20 ÷ 5
 = 4 m/s²
+lab: Atwood machine
+aim: Hang two masses over a light pulley and measure the acceleration.
+set: m2 = 1.2 | Heavier mass (kg) | 1 to 3 by 0.05
+set: m1 = 1 | Lighter mass (kg) | 0.5 to 1 by 0.05
+out: a = (m2 - m1)*g/(m1 + m2) | Acceleration (m/s²)
+out: T = 2*m1*m2*g/(m1 + m2) | String tension (N)
+plot: m2, a
+step: Record the acceleration for 5 values of the heavier mass.
+step: Use your data to estimate g.
+noise: 3
+result: a = (m₂ − m₁)g/(m₁ + m₂): only the difference in weight drives the system, but both masses must be accelerated. With nearly equal masses the motion is slow enough to time, which is how Atwood measured g.
 term: acceleration = the rate of change of velocity
 term: free-body diagram = a sketch showing all forces on one object
 term: kinetic friction = the force opposing sliding, μ_kN
@@ -62,6 +73,16 @@ Waves: v = fλ. Transverse versus longitudinal. Wave speed on a string v = √(T
 ex: A wave has frequency 50 Hz and wavelength 4 m. Find its speed.
 > v = fλ = 50 × 4
 = 200 m/s
+lab: Driven oscillator and resonance
+aim: Drive a mass on a spring (natural frequency 10 rad/s) at different frequencies and measure the amplitude.
+set: w = 8 | Driving frequency (rad/s) | 1 to 20 by 0.25
+set: b = 1 | Damping (kg/s) | 0.2 to 5 by 0.1
+out: A = 10/sqrt((100 - w^2)^2 + (b*w)^2) | Amplitude (m)
+plot: w, A
+step: Record the amplitude at 6 driving frequencies.
+step: Increase the damping and compare the peak.
+noise: 2
+result: The amplitude peaks sharply when the driving frequency matches the natural frequency: resonance. More damping lowers and widens the peak. Engineers add damping so bridges and buildings don't resonate.
 term: simple harmonic motion = oscillation with restoring force proportional to displacement
 term: period = the time for one complete cycle
 term: standing wave = a wave pattern with fixed nodes and antinodes
@@ -80,6 +101,18 @@ Circuits: current I = dQ/dt, Ohm's law V = IR, power P = IV = I²R. Series resis
 ex: Find the equivalent resistance of 6 Ω and 3 Ω in parallel.
 > 1/R = 1/6 + 1/3 = 1/2
 = 2 Ω
+lab: Battery internal resistance
+aim: Connect different load resistors to a 9 V battery with 1.5 Ω internal resistance and measure the terminal voltage and power.
+set: Rl = 5 | Load resistance (Ω) | 0.1 to 20 by 0.1
+set: r = 1.5 | Internal resistance (Ω) | 0.5 to 5 by 0.5
+out: I = 9/(Rl + r) | Current (A)
+out: V = 9 - I*r | Terminal voltage (V)
+out: P = I^2*Rl | Power to load (W)
+plot: Rl, P
+step: Record the voltage and power for at least 6 loads.
+step: Find the load that receives the most power.
+noise: 2
+result: The terminal voltage drops below the emf as current flows (V = ε − Ir). Power delivered to the load is greatest when the load resistance equals the internal resistance (maximum power transfer).
 term: electric field = force per unit charge
 term: capacitance = charge stored per volt
 term: Kirchhoff's loop rule = voltages around any closed loop sum to zero

@@ -26,6 +26,16 @@ Research Summaries describe one or more experiments; questions ask about design,
 Conflicting Viewpoints present two or more hypotheses (like Scientist 1 and Scientist 2); questions ask what each believes and where they agree or disagree.
 For conflicting viewpoints, summarize each viewpoint in one sentence in the margin before answering.
 tip: Underline the key claim of each viewpoint. Most questions ask what one scientist would predict or how a new result affects a claim.
+lab: The classic pendulum passage
+aim: A student tests whether a pendulum's length, mass or swing angle affects its period. Run the experiments yourself.
+set: L = 1 | Length (m) | 0.2 to 2 by 0.1
+set: m = 100 | Bob mass (g) | 50 to 500 by 50
+out: T = 2*pi*sqrt(L/g) | Period (s)
+plot: L, T
+step: Experiment 1: change only the length and record 4 trials.
+step: Experiment 2: change only the mass. Did the period change?
+noise: 1
+result: Only length affects the period (T grows with √L); mass doesn't. ACT questions test this: identify the variable changed in each experiment and what stayed constant.
 term: hypothesis = a testable explanation
 term: viewpoint = one scientist's explanation in a conflicting viewpoints passage
 term: trend = a general pattern in data
@@ -43,6 +53,16 @@ Interpolation estimates values between data points; extrapolation estimates beyo
 ex: A table shows plant height: week 1: 2 cm, week 2: 4 cm, week 3: 6 cm. Predict week 5.
 > It grows 2 cm per week
 = About 10 cm (extrapolating the trend)
+lab: Solubility curves
+aim: Dissolve potassium nitrate and sodium chloride in 100 g of water at different temperatures and read their solubility.
+set: T = 30 | Water temperature (°C) | 0 to 80 by 5
+out: KNO3 = 13.3*exp(0.0355*T) | KNO₃ solubility (g/100 g water)
+out: NaCl = 35.7 + 0.04*T | NaCl solubility (g/100 g water)
+plot: T, KNO3
+step: Record both solubilities every 10 °C.
+step: At what temperature are they equal? Which salt depends more on temperature?
+noise: 2
+result: KNO₃ solubility rises steeply with temperature, while NaCl barely changes; the curves cross near 24 °C. ACT data questions ask you to read values, compare trends and interpolate between points.
 term: direct relationship = both variables increase together
 term: inverse relationship = one variable increases as the other decreases
 term: interpolation = estimating a value between known data points
@@ -82,6 +102,17 @@ ex: Scientists test plant growth at 3 light levels with the same soil and water.
 > Measured: growth (dependent)
 = Controlled: soil and water
 To test a hypothesis, change only the variable in question and keep everything else the same.
+lab: Seed germination experiment
+aim: Design and run an experiment testing how temperature affects the percentage of radish seeds that germinate in 5 days.
+set: T = 20 | Temperature (°C) | 0 to 45 by 1
+set: n = 50 | Seeds per dish | 10 to 100 by 10
+out: G = 95*exp(-((T - 25)/8)^2) | Germination (%)
+out: count = G/100*n | Seeds germinated
+plot: T, G
+step: Independent variable: temperature. Dependent variable: percent germinated. Controls: seed type, water, light, number of seeds.
+step: Record germination at 6 temperatures.
+noise: 5
+result: Germination peaks near 25 °C and falls at extremes. More seeds per dish reduces the effect of random variation. On the ACT, a good experiment changes only one variable and keeps everything else the same.
 term: independent variable = the variable deliberately changed in an experiment
 term: dependent variable = the variable measured in an experiment
 term: controlled variable = a factor kept the same in an experiment
