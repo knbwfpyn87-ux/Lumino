@@ -14,12 +14,13 @@ export type World = {
   drag: number;       // linear air drag coefficient (1/s), 0 = none
   ground: boolean;    // a floor at y = 0
   bounce: number;     // restitution for floor and collisions, 0..1
+  friction: number;   // how fast things sliding on the floor slow down (1/s)
   collide: boolean;   // circle–circle collisions
   t: number;
 };
 
 export const world = (o: Partial<World> = {}): World =>
-  ({ bodies: [], links: [], g: 9.8, drag: 0, ground: true, bounce: 0.6, collide: true, t: 0, ...o });
+  ({ bodies: [], links: [], g: 9.8, drag: 0, ground: true, bounce: 0.6, friction: 4, collide: true, t: 0, ...o });
 export const body = (x: number, y: number, o: Partial<Body> = {}): Body =>
   ({ pos: { x, y }, vel: { x: 0, y: 0 }, r: 0.1, m: 1, ...o });
 
@@ -65,6 +66,7 @@ function tick(w: World, h: number) {
   if (w.ground) for (const b of w.bodies) if (Number.isFinite(b.m) && b.pos.y < b.r) {
     b.pos.y = b.r; if (b.vel.y < 0) b.vel.y = -b.vel.y * w.bounce;
     if (Math.abs(b.vel.y) < 0.05) b.vel.y = 0;
+    b.vel.x *= Math.max(0, 1 - w.friction * h);
   }
   if (w.collide) for (let i = 0; i < w.bodies.length; i++) for (let k = i + 1; k < w.bodies.length; k++) {
     const a = w.bodies[i], b = w.bodies[k]; const dx = b.pos.x - a.pos.x, dy = b.pos.y - a.pos.y, d = Math.hypot(dx, dy);
@@ -75,7 +77,8 @@ function tick(w: World, h: number) {
     const j = -(1 + w.bounce) * rv / (wa + wb);
     a.vel.x -= j * nx * wa; a.vel.y -= j * ny * wa; b.vel.x += j * nx * wb; b.vel.y += j * ny * wb;
   }
-  for (const b of w.bodies) if (b.trail) { b.trail.push({ ...b.pos }); if (b.trail.length > 600) b.trail.shift(); }
+  // trail: one point every 1/60 s, last 10 s
+  if (Math.floor((w.t + h) * 60) > Math.floor(w.t * 60)) for (const b of w.bodies) if (b.trail) { b.trail.push({ ...b.pos }); if (b.trail.length > 600) b.trail.shift(); }
   w.t += h;
 }
 
@@ -97,5 +100,5 @@ export const SCENES: Record<string, (p: P) => World> = {
     w.bodies.push(b); w.links.push({ a: b, b: top, kind: 'spring', len: rest, k }); return w; },
   /** Cart m1 at v1 hits cart m2 at rest (e = bounce: 1 elastic, 0 sticky-ish). */
   collision: p => { const w = world({ g: 0, ground: false, bounce: p.e ?? 1 }); const m1 = p.m1 ?? 1, m2 = p.m2 ?? 1;
-    const a = body(-1.5, 0.5, { m: m1, r: 0.12 * Math.cbrt(m1) }); a.vel.x = p.v1 ?? 2; w.bodies.push(a, body(0.5, 0.5, { m: m2, r: 0.12 * Math.cbrt(m2) })); return w; },
+    const a = body(-1.5, 0.5, { m: m1, r: 0.12 * Math.cbrt(m1) }); a.vel.x = p.v1 ?? 2; w.bodies.push(a, body(0.5, 0.5, { m: m2, r: 0.12 * Math.cbrt(m2), color: '#f59f00' })); return w; },
 };

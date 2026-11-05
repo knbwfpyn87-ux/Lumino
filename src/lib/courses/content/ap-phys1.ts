@@ -225,6 +225,7 @@ out: u1 = (m1 - m2)/(m1 + m2)*v1 | Moving glider after (m/s)
 out: u2 = 2*m1/(m1 + m2)*v1 | Target glider after (m/s)
 out: K = 0.5*m1*u1^2 + 0.5*m2*u2^2 | Total KE after (J)
 plot: m2, u2
+sim: collision | m1=m1, m2=m2, v1=v1, e=1
 step: Record both final velocities for at least 4 target masses.
 step: Check the total kinetic energy before and after.
 noise: 2

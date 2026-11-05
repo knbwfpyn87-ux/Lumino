@@ -277,6 +277,7 @@ set: th = 40 | Launch angle (°) | 10 to 80 by 1
 out: t = x/(v*cosd(th)) | Time to reach x (s)
 out: y = x*tand(th) - g*x^2/(2*v^2*cosd(th)^2) | Height (m)
 plot: x, y
+sim: projectile | v=v, a=th
 step: Start from x = (v cos θ)t and y = (v sin θ)t − 4.9t². Solve the first for t and substitute.
 result: Eliminating t gives y = x tan θ − gx²/(2v² cos² θ), a parabola. The parametric form also tells you when the ball is at each point.
 term: parametric equations = equations that express x and y in terms of a parameter t

@@ -300,6 +300,7 @@ out: T0 = 2*pi*sqrt(L/g) | Small-angle period (s)
 out: T = T0*(1 + (A*pi/180)^2/16 + 11*(A*pi/180)^4/3072) | Measured period (s)
 out: err = 100*(T - T0)/T0 | Difference (%)
 plot: A, T
+sim: pendulum | L=L, a=A
 step: Record the period for at least 5 release angles.
 noise: 0.5
 result: For small angles the period is 2π√(L/g) whatever the amplitude, because sin θ ≈ θ. Above about 20° the period grows noticeably (7% longer at 60°), since the motion is no longer simple harmonic.

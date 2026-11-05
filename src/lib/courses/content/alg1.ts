@@ -588,6 +588,7 @@ set: t = 0.5 | Time (s) | 0 to 2 by 0.02
 set: v = 8 | Upward launch speed (m/s) | 4 to 12 by 0.5
 out: h = -4.9*t^2 + v*t + 2 | Height (m)
 plot: t, h
+sim: projectile | v=v, a=90, h=2
 step: Find the vertex: when does the ball reach its highest point?
 result: The path is a parabola opening down. The vertex is at t = v/9.8, and the ball passes the 3.05 m rim height twice: once rising and once falling.
 term: parabola = the U-shaped graph of a quadratic function

@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { Pressable, View, type LayoutChangeEvent, type GestureResponderEvent } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import { T, Button } from '@/components/ui';
+import { PhysicsView } from '@/components/PhysicsView';
 import { useTheme } from '@/lib/theme';
 import { labModel, startValues, snap, curve, bounds, measure, fmt, niceTicks, type LabBlock } from '@shared/courses';
 
@@ -70,6 +71,7 @@ export function Lab({ b, onDone }: { b: LabBlock; onDone?: () => void }) {
       <T>{isLab ? 'Goal: ' : ''}{b.aim}</T>
       {!isLab && b.steps.length > 0 && <T size={13} weight="900" color={t.muted}>TRY THIS</T>}
       {b.steps.map((s, i) => <T key={i} size={15} color={t.muted}>{i + 1}. {s}</T>)}
+      {b.sim && <PhysicsView scene={b.sim.scene} params={Object.fromEntries(Object.entries(b.sim.map).map(([k, n]) => [k, n in v ? v[n] : Number(n)]))} />}
       {b.sets.map(s => <Slider key={s.name} s={s} value={vals[s.name]} onChange={x => setVals({ ...vals, [s.name]: x })} />)}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{shown.map(o => <View key={o.name} style={{ flexGrow: 1, flexBasis: 130, backgroundColor: t.accentSoft, borderRadius: 12, padding: 10 }}>
         <T size={12} weight="700" color={t.muted}>{o.label}</T><T size={20} weight="900">{fmt(v[o.name])}</T></View>)}</View>

@@ -19,6 +19,7 @@ set: h = 1 | Bench height (m) | 0.5 to 2 by 0.1
 out: t = sqrt(2*h/g) | Time in the air (s)
 out: x = v*t | Horizontal distance (m)
 plot: v, x
+sim: projectile | v=v, a=0, h=h
 step: Record the landing distance for 5 launch speeds at a fixed height.
 step: Change the height. Does the time in the air depend on the speed?
 noise: 3
