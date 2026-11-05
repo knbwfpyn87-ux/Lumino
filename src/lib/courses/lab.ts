@@ -26,6 +26,7 @@ const FUNCS: Record<string, (...a: number[]) => number> = {
   sqrt: Math.sqrt, abs: Math.abs, exp: Math.exp, ln: Math.log, log: Math.log10, log2: Math.log2,
   sin: Math.sin, cos: Math.cos, tan: Math.tan, asin: Math.asin, acos: Math.acos, atan: Math.atan,
   sind: x => Math.sin(x * D), cosd: x => Math.cos(x * D), tand: x => Math.tan(x * D), asind: x => Math.asin(x) / D, acosd: x => Math.acos(x) / D, atand: x => Math.atan(x) / D,
+  sinh: Math.sinh, cosh: Math.cosh, tanh: Math.tanh,
   min: Math.min, max: Math.max, round: Math.round, floor: Math.floor, ceil: Math.ceil, sign: Math.sign,
   fact, choose: (n, k) => fact(n) / (fact(k) * fact(n - k)), normcdf: z => 0.5 * (1 + erf(z / Math.SQRT2)), normpdf: z => Math.exp(-z * z / 2) / Math.sqrt(2 * Math.PI),
   if: (c, a, b) => (c > 0 ? a : b), mod: (a, b) => ((a % b) + b) % b,

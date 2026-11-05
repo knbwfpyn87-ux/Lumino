@@ -12,6 +12,18 @@ ex: a(t) = 6t m/s² and v(0) = 2 m/s. Find v(t) and v(3).
 > v(t) = 2 + ∫₀ᵗ 6t dt = 2 + 3t²
 = v(3) = 29 m/s
 Displacement is the integral of velocity; distance traveled is the integral of speed |v|. On graphs, slope and area still give derivatives and integrals.
+lab: Rocket sled with increasing thrust
+aim: A sled's acceleration grows steadily with time (a = kt). Use calculus to predict its velocity and position.
+set: t = 3 | Time (s) | 0 to 10 by 0.1
+set: kk = 2 | Jerk k (m/s³) | 0.5 to 5 by 0.5
+out: a = kk*t | Acceleration (m/s²)
+out: v = kk*t^2/2 | Velocity (m/s)
+out: x = kk*t^3/6 | Position (m)
+plot: t, v
+step: Record velocity and position every 2 seconds.
+step: Check that each column is the integral of the one before.
+noise: 2
+result: Integrating a = kt gives v = kt²/2 and x = kt³/6. Velocity is the area under the a–t graph, and position is the area under the v–t graph.
 term: instantaneous velocity = the derivative of position with respect to time
 term: instantaneous acceleration = the derivative of velocity with respect to time
 term: displacement = the integral of velocity over a time interval
@@ -48,6 +60,17 @@ ex: A 2 kg ball falls with drag F = −0.5v. What is its terminal velocity?
 > At terminal velocity, mg = bv
 > v_T = (2 × 9.8)/0.5
 = 39.2 m/s
+lab: Falling coffee filters
+aim: Drop stacks of coffee filters and track their speed as air drag builds up (drag ∝ v²).
+set: t = 0.5 | Time after release (s) | 0 to 3 by 0.05
+set: n = 1 | Filters stacked | 1 to 8 by 1
+out: vT = sqrt(n*0.0009*g/0.0016) | Terminal speed (m/s)
+out: v = vT*tanh(g*t/vT) | Speed (m/s)
+plot: t, v
+step: Record the speed every 0.5 s for one filter.
+step: Repeat with 4 filters and compare terminal speeds.
+noise: 3
+result: Speed rises, then levels off at terminal velocity where drag equals weight. With quadratic drag, terminal speed is proportional to √m: four filters fall only twice as fast as one.
 term: terminal velocity = the constant speed reached when drag balances gravity
 term: drag force = a resistive force opposing motion through a fluid
 term: center of mass = the point that moves as if all the system's mass were concentrated there
@@ -83,6 +106,18 @@ ex: F(x) = 3x² N acts from x = 0 to 2 m. Find the work done.
 > W = ∫₀² 3x² dx = x³ from 0 to 2
 = 8 J
 Conservative forces (gravity, springs) have path-independent work; nonconservative forces (friction) dissipate mechanical energy.
+lab: Stretching a nonlinear spring
+aim: Stretch a rubber cord with a force probe. Its force isn't linear, so find the work done by integrating.
+set: x = 0.1 | Stretch (m) | 0 to 0.3 by 0.01
+set: kk = 100 | Linear constant k (N/m) | 20 to 200 by 10
+set: b = 2000 | Cubic constant β (N/m³) | 0 to 5000 by 100
+out: F = kk*x + b*x^3 | Force (N)
+out: W = kk*x^2/2 + b*x^4/4 | Work done (J)
+plot: x, F
+step: Record the force and work for 5 stretches.
+step: Set β to 0 to compare with an ideal spring.
+noise: 2
+result: Work is the area under the F–x curve: W = ∫F dx = ½kx² + ¼βx⁴. With β = 0 it's the familiar ½kx²; the stiffening term adds more work at large stretches.
 term: conservative force = a force whose work is independent of path
 term: potential energy function = U(x), where F = −dU/dx
 term: stable equilibrium = an equilibrium at a minimum of potential energy
@@ -119,6 +154,17 @@ ex: A force F(t) = 10t N acts on a 2 kg object from t = 0 to 3 s. Find the chang
 > J = ∫₀³ 10t dt = 5t² from 0 to 3 = 45 N·s
 = Δv = 45/2 = 22.5 m/s
 Center of mass: x_cm = Σmᵢxᵢ/Σmᵢ, or ∫x dm / M for continuous objects. If no net external force acts, the center of mass moves at constant velocity.
+lab: Force sensor collision
+aim: Crash a 0.5 kg cart into a force sensor with different bumpers and measure the impulse.
+set: dt = 20 | Collision time (ms) | 5 to 100 by 5
+set: F = 100 | Peak force (N) | 10 to 500 by 10
+out: J = 2*F*dt/1000/pi | Impulse (N·s)
+out: dv = J/0.5 | Change in velocity (m/s)
+plot: dt, J
+step: Record the impulse for 4 collision times at the same peak force.
+step: Now keep the impulse about 1 N·s and see how the peak force must change with collision time.
+noise: 3
+result: Impulse is the area under the force–time curve (∫F dt = Δp). For the same change in momentum, a longer collision means a smaller peak force, which is how airbags and crumple zones protect people.
 term: impulse = the integral of force over time; equals change in momentum
 term: momentum = mass times velocity
 term: center of mass = the mass-weighted average position of a system
@@ -172,6 +218,17 @@ ex: A 2 kg disk (R = 0.5 m) has a string wrapped around it pulled with 4 N. Find
 > τ = 4 × 0.5 = 2 N·m
 = α = 2/0.25 = 8 rad/s²
 tip: For equilibrium problems, choose a pivot point where unknown forces act, so their torques are zero.
+lab: Torque on a pivoted rod
+aim: Hang a force probe on a rod at different angles and distances from the pivot and measure the torque.
+set: th = 90 | Angle between rod and force (°) | 0 to 180 by 5
+set: r = 0.3 | Distance from pivot (m) | 0.05 to 1 by 0.05
+set: F = 10 | Force (N) | 1 to 50 by 1
+out: tau = r*F*sind(th) | Torque (N·m)
+plot: th, tau
+step: Record the torque for at least 5 angles.
+step: Then change the distance from the pivot.
+noise: 2
+result: τ = rF sin θ is greatest when the force is perpendicular to the rod and zero when it points along it. Pushing farther from the hinge gives more torque, which is why door handles are on the far edge.
 term: torque = the rotational effect of a force, τ = rF sin θ
 term: static equilibrium = no net force and no net torque
 term: lever arm = the perpendicular distance from the axis to the line of action of a force
@@ -206,6 +263,18 @@ ex: A 0.5 kg ball moving at 4 m/s sticks to the end of a 1 m rod (I = 0.2 kg·m�
 > After: I_total = 0.2 + 0.5(1²) = 0.7
 = ω = 2/0.7 ≈ 2.86 rad/s
 Angular momentum is conserved in rotational collisions, but kinetic energy usually is not.
+lab: Spinning stool with dumbbells
+aim: Spin on a stool holding dumbbells at arm's length (1 rad/s), then pull them in. How fast do you spin?
+set: r = 0.9 | Dumbbell distance from axis (m) | 0.1 to 0.9 by 0.05
+set: m = 3 | Each dumbbell's mass (kg) | 1 to 5 by 0.5
+out: I = 2 + 2*m*r^2 | Rotational inertia (kg·m²)
+out: w = (2 + 2*m*0.81)*1/I | Angular speed (rad/s)
+out: KE = 0.5*I*w^2 | Rotational KE (J)
+plot: r, w
+step: Record the angular speed for 5 dumbbell positions.
+step: Look at the kinetic energy column. Where does the extra energy come from?
+noise: 2
+result: With no external torque, angular momentum Iω is conserved, so pulling the weights in lowers I and raises ω. Kinetic energy increases because your arms do work pulling the weights inward.
 term: angular momentum = L = Iω, or r × p for a particle
 term: conservation of angular momentum = with zero net external torque, L stays constant
 term: rotational collision = a collision involving rotation where angular momentum is conserved
@@ -223,6 +292,17 @@ ex: Show that x(t) = A cos(ωt) satisfies the SHM equation.
 > d²x/dt² = −Aω² cos(ωt) = −ω²x
 = It works when ω² = k/m
 Velocity and acceleration: v_max = Aω at equilibrium; a_max = Aω² at the turning points.
+lab: Pendulum at large angles
+aim: Time a 1 m pendulum released from bigger and bigger angles. When does the small-angle formula fail?
+set: A = 10 | Release angle (°) | 5 to 90 by 5
+set: L = 1 | Length (m) | 0.2 to 2 by 0.1
+out: T0 = 2*pi*sqrt(L/g) | Small-angle period (s)
+out: T = T0*(1 + (A*pi/180)^2/16 + 11*(A*pi/180)^4/3072) | Measured period (s)
+out: err = 100*(T - T0)/T0 | Difference (%)
+plot: A, T
+step: Record the period for at least 5 release angles.
+noise: 0.5
+result: For small angles the period is 2π√(L/g) whatever the amplitude, because sin θ ≈ θ. Above about 20° the period grows noticeably (7% longer at 60°), since the motion is no longer simple harmonic.
 term: simple harmonic motion = oscillation where acceleration is proportional and opposite to displacement
 term: angular frequency = ω = 2πf, in radians per second
 term: physical pendulum = a rigid object swinging about a pivot

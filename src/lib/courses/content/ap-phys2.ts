@@ -12,6 +12,17 @@ On a PV diagram, isothermal processes stay at constant temperature, isobaric at 
 ex: A gas at 300 K is heated to 600 K at constant volume. What happens to its pressure?
 > P/T is constant at fixed V and n
 = Pressure doubles
+lab: Molecular speeds in a gas
+aim: Heat different gases and calculate the root-mean-square speed of their molecules.
+set: T = 300 | Temperature (K) | 50 to 1000 by 10
+set: M = 28 | Molar mass (g/mol) | 2 to 44 by 1
+out: v = sqrt(3*R*T/(M/1000)) | rms speed (m/s)
+out: KE = 1.5*1.38e-23*T | Average KE per molecule (J)
+plot: T, v
+step: Record the rms speed of nitrogen (28 g/mol) at 5 temperatures.
+step: Compare hydrogen (2) and carbon dioxide (44) at room temperature.
+noise: 1
+result: Average kinetic energy depends only on temperature (KE = 3/2 kT), so speed rises with √T. At the same temperature lighter molecules move faster: hydrogen is about 3.7 times faster than nitrogen.
 term: ideal gas law = PV = nRT, relating pressure, volume, moles and temperature
 term: isothermal process = a process at constant temperature
 term: isobaric process = a process at constant pressure
@@ -49,6 +60,17 @@ ex: Two charges are 2 m apart with force 36 N. They move to 6 m apart. New force
 > Distance tripled, so force ÷ 9
 = 4 N
 Charge is conserved and quantized (multiples of e = 1.6 × 10⁻¹⁹ C). Conductors let charge move freely; charge on a conductor sits on its surface.
+lab: Coulomb's law with charged spheres
+aim: Measure the force between two charged spheres as you change their separation.
+set: r = 0.1 | Separation (m) | 0.02 to 0.5 by 0.01
+set: q1 = 0.05 | Charge 1 (μC) | 0.01 to 0.2 by 0.01
+set: q2 = 0.05 | Charge 2 (μC) | 0.01 to 0.2 by 0.01
+out: F = k*q1*1e-6*q2*1e-6/r^2 | Force (N)
+plot: r, F
+step: Record the force at 5 separations.
+step: Double the distance. By what factor does the force change?
+noise: 3
+result: Force is proportional to the product of the charges and inversely proportional to distance squared: doubling the distance cuts the force to a quarter (Coulomb's law).
 term: Coulomb's law = the electric force between charges is proportional to their product and inversely proportional to distance squared
 term: electric field = the force per unit charge at a point
 term: elementary charge = 1.6 × 10⁻¹⁹ C, the charge of a proton
@@ -102,6 +124,19 @@ RC circuits: when charging, current starts high and decreases as the capacitor f
 ex: Find R_eq for 6 Ω and 3 Ω in parallel.
 > 1/R = 1/6 + 1/3 = 1/2
 = R_eq = 2 Ω
+lab: Charging a capacitor
+aim: Connect a capacitor and resistor to a 9 V battery and record the capacitor's voltage as it charges.
+set: t = 2 | Time (s) | 0 to 10 by 0.1
+set: Rk = 10 | Resistance (kΩ) | 1 to 100 by 1
+set: C = 200 | Capacitance (μF) | 10 to 1000 by 10
+out: tau = Rk*1000*C*1e-6 | Time constant RC (s)
+out: V = 9*(1 - exp(-t/tau)) | Capacitor voltage (V)
+out: I = (9 - V)/(Rk*1000)*1000 | Current (mA)
+plot: t, V
+step: Record the voltage every second.
+step: Find the time when the voltage reaches 63% of 9 V and compare with RC.
+noise: 2
+result: The voltage rises quickly at first, then levels off at 9 V, while the current falls to zero. After one time constant (τ = RC) the capacitor is 63% charged; after 5τ it's essentially full.
 term: equivalent resistance = a single resistance that could replace a combination
 term: RC circuit = a circuit with a resistor and capacitor whose current changes over time
 term: time constant = τ = RC, describing how quickly an RC circuit charges
@@ -120,6 +155,16 @@ A long straight wire creates a magnetic field circling it: B = μ₀I/(2πr). Pa
 ex: An electron and a proton enter the same magnetic field at the same speed. How do their paths differ?
 > Opposite charges curve in opposite directions
 = They curve opposite ways; the lighter electron curves in a much smaller circle
+lab: Magnetic field around a wire
+aim: Use a magnetic field probe to measure the field at different distances from a current-carrying wire.
+set: r = 2 | Distance from wire (cm) | 0.5 to 10 by 0.5
+set: I = 10 | Current (A) | 1 to 20 by 1
+out: B = 2e-7*I/(r/100)*1e6 | Magnetic field (μT)
+plot: r, B
+step: Record the field at 5 distances.
+step: Double the current and compare.
+noise: 3
+result: B = μ₀I/(2πr): the field is proportional to current and inversely proportional to distance. The field circles the wire (right-hand rule); Earth's field is about 50 μT for comparison.
 term: magnetic field = a field produced by moving charges that exerts forces on other moving charges
 term: right-hand rule = a method for finding the direction of magnetic forces and fields
 term: Lorentz force = the force on a charge moving in a magnetic field
@@ -173,6 +218,19 @@ ex: Light enters glass (n = 1.5) from air at 30°. Find the refraction angle.
 > 1.0 sin 30° = 1.5 sin θ₂
 > sin θ₂ = 0.333
 = θ₂ ≈ 19.5°
+lab: Ray box and glass block
+aim: Shine a ray into a glass block at different angles and measure the angle of refraction.
+set: a = 30 | Angle of incidence (°) | 0 to 89 by 1
+set: n1 = 1 | Index of first medium | 1 to 2.4 by 0.01
+set: n2 = 1.5 | Index of second medium | 1 to 2.4 by 0.01
+out: s = n1/n2*sind(a) | sin of refraction angle
+out: b = if(s > 1, 90, asind(min(s, 1))) | Angle of refraction (°)
+out: tir = if(s > 1, 1, 0) | Total internal reflection? (1 = yes)
+plot: a, b
+step: Going from air into glass, record the refraction angle for 5 angles.
+step: Now go from glass (1.5) to air (1.0) and find the critical angle.
+noise: 1
+result: Snell's law n₁ sin θ₁ = n₂ sin θ₂ fits the data. Light bends toward the normal entering a denser medium. Leaving glass, beyond the critical angle (about 42°) all light reflects: total internal reflection, used in optical fibers.
 term: index of refraction = the ratio of light's speed in a vacuum to its speed in a material
 term: Snell's law = n₁ sin θ₁ = n₂ sin θ₂
 term: critical angle = the incidence angle beyond which total internal reflection occurs
@@ -211,6 +269,17 @@ Thin-film interference (soap bubbles, oil slicks) comes from light reflecting of
 ex: In a double-slit setup, what happens to the fringes if the slits move closer together?
 > Δy = λL/d, so smaller d gives larger Δy
 = The fringes spread farther apart
+lab: Double-slit interference
+aim: Shine a laser through two narrow slits and measure the spacing of the bright fringes on a screen.
+set: lam = 650 | Wavelength (nm) | 400 to 700 by 10
+set: d = 0.25 | Slit separation (mm) | 0.05 to 0.5 by 0.01
+set: L = 2 | Distance to screen (m) | 0.5 to 3 by 0.1
+out: dy = lam*1e-9*L/(d*1e-3)*1000 | Fringe spacing (mm)
+plot: lam, dy
+step: Record the fringe spacing for red, green and blue light.
+step: Then move the slits closer together.
+noise: 2
+result: Fringe spacing Δy = λL/d. Longer wavelengths and closer slits spread the fringes out. Young used this experiment to show light behaves as a wave and to measure its wavelength.
 term: interference = the combination of overlapping waves
 term: diffraction = the spreading of waves around obstacles or through openings
 term: path difference = the difference in distance traveled by two waves
@@ -230,6 +299,17 @@ Atoms have discrete energy levels; electrons emit or absorb photons when they ju
 ex: A metal has φ = 2.0 eV. Light with photon energy 5.0 eV hits it. Find K_max.
 > K_max = 5.0 − 2.0
 = 3.0 eV
+lab: The photoelectric effect
+aim: Shine light of different frequencies on a metal and measure the stopping voltage for the ejected electrons.
+set: f = 8 | Frequency (× 10¹⁴ Hz) | 3 to 15 by 0.1
+set: W = 2.3 | Work function (eV) | 1.5 to 5 by 0.1
+out: K = max(4.136*f/10 - W, 0) | Max kinetic energy (eV)
+out: Vs = K | Stopping voltage (V)
+plot: f, K
+step: Record the stopping voltage for at least 5 frequencies.
+step: Find the threshold frequency where electrons stop being ejected.
+noise: 2
+result: Below the threshold frequency no electrons escape however bright the light. Above it, K_max = hf − φ, a straight line whose slope is Planck's constant. This showed light comes in photons.
 term: photon = a quantum of electromagnetic energy, E = hf
 term: work function = the minimum energy needed to remove an electron from a metal
 term: threshold frequency = the minimum frequency of light that ejects electrons

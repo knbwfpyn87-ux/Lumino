@@ -27,6 +27,17 @@ key: Carbon cycle: photosynthesis removes CO₂; respiration, decomposition and 
 - Phosphorus cycle: no atmospheric component; it moves slowly through rocks, soil and water. It's often a limiting nutrient.
 - Water (hydrologic) cycle: evaporation, transpiration, condensation, precipitation, infiltration and runoff.
 Human impacts: burning fossil fuels adds CO₂; fertilizers add nitrogen and phosphorus, causing eutrophication.
+lab: Carbon in a growing forest
+aim: Measure carbon stored in a replanted forest plot over the decades.
+set: t = 30 | Years since planting | 0 to 150 by 5
+set: Cmax = 200 | Mature forest carbon (t/hectare) | 50 to 300 by 10
+out: C = Cmax*(1 - exp(-t/40)) | Carbon stored (t/ha)
+out: rate = Cmax/40*exp(-t/40) | Uptake rate (t/ha per year)
+plot: t, C
+step: Record carbon stored every 25 years.
+step: Compare a tropical forest (250) with a boreal forest (100).
+noise: 4
+result: Young forests absorb carbon fastest; uptake slows as the forest matures and approaches a maximum. Forests are carbon sinks, and cutting them releases that stored carbon.
 term: nitrogen fixation = converting atmospheric N₂ into ammonia that organisms can use
 term: denitrification = bacteria converting nitrates back into N₂ gas
 term: reservoir = a place where matter is stored in a cycle, like the ocean for carbon
@@ -43,6 +54,16 @@ Biodiversity includes genetic, species and ecosystem diversity. Species richness
 key: Ecosystem services are benefits humans get from nature: provisioning (food, timber), regulating (climate, flood control, pollination), supporting (nutrient cycling, soil formation) and cultural (recreation, spiritual value).
 Island biogeography: larger islands and islands closer to the mainland have more species. This applies to habitat "islands" like parks surrounded by development.
 Species have ecological tolerance ranges; generalists tolerate many conditions, while specialists need narrow conditions and are more vulnerable.
+lab: Species–area relationship
+aim: Count species on islands or habitat patches of different sizes.
+set: A = 100 | Habitat area (km²) | 1 to 1000 by 1
+set: z = 0.25 | Exponent z | 0.15 to 0.35 by 0.01
+out: S = 10*A^z | Number of species
+plot: A, S
+step: Record species counts for at least 5 areas.
+step: Cut the area by 90% (for example 1,000 → 100 km²). What fraction of species remains?
+noise: 5
+result: S = cAᶻ: larger areas hold more species, but with diminishing returns. Losing 90% of a habitat removes roughly 40–50% of its species, which is why habitat loss is the top threat to biodiversity.
 term: species richness = the number of different species in an area
 term: ecosystem services = benefits humans receive from ecosystems
 term: island biogeography = the study of how island size and distance affect species diversity
@@ -92,6 +113,16 @@ Factors lowering birth rates include education and empowerment of women, access 
 ex: A country grows at 3.5% per year. Find its doubling time.
 > 70 ÷ 3.5
 = 20 years
+lab: Birth rates and growth
+aim: Change crude birth and death rates to see the growth rate and doubling time of a country.
+set: CBR = 20 | Crude birth rate (per 1,000) | 8 to 45 by 1
+set: CDR = 8 | Crude death rate (per 1,000) | 5 to 20 by 1
+out: r = (CBR - CDR)/10 | Growth rate (%)
+out: Td = if(r > 0, 70/max(r, 0.01), 0) | Doubling time (years)
+plot: CBR, r
+step: Record the growth rate for a stage-2 country (CBR 40, CDR 15) and a stage-4 country (CBR 11, CDR 9).
+step: Find the birth rate that gives zero growth.
+result: Growth rate = (CBR − CDR)/10. Countries in stage 2 of the demographic transition grow fast (doubling in under 30 years); in stage 4 growth is near zero and can turn negative.
 term: rule of 70 = doubling time equals 70 divided by the percent growth rate
 term: total fertility rate = the average number of children born per woman
 term: replacement-level fertility = about 2.1 children per woman, keeping population stable
@@ -123,6 +154,17 @@ The atmosphere's layers: troposphere (weather, most air mass), stratosphere (ozo
 key: Uneven solar heating (more direct at the equator) drives global air circulation in convection cells (Hadley cells). Rising air at the equator brings rain (rainforests); sinking air near 30° latitude brings dry conditions (deserts).
 The Coriolis effect deflects winds, creating trade winds and westerlies. Rain shadows form when mountains force air up (rain on the windward side) and dry air sinks on the leeward side.
 El Niño (ENSO) weakens trade winds, warming the eastern Pacific and shifting weather patterns worldwide.
+lab: Albedo and Earth's temperature
+aim: Change how much sunlight Earth reflects and calculate its average surface temperature.
+set: alb = 0.3 | Albedo | 0.1 to 0.7 by 0.01
+set: GH = 33 | Greenhouse warming (°C) | 0 to 45 by 1
+out: Te = (1361*(1 - alb)/(4*5.67e-8))^0.25 - 273 | Temperature without greenhouse effect (°C)
+out: Ts = Te + GH | Surface temperature (°C)
+plot: alb, Ts
+step: Record the surface temperature at today's albedo (0.30) and at 4 other values.
+step: Set the greenhouse warming to 0. What would Earth be like?
+noise: 1
+result: Higher albedo (ice, clouds) reflects more sunlight and cools the planet. Without the natural greenhouse effect Earth would average about −18 °C; with it, about 15 °C. Melting ice lowers albedo, a positive feedback.
 term: Hadley cell = a large convection cell of rising air at the equator and sinking air near 30° latitude
 term: Coriolis effect = the deflection of moving air and water caused by Earth's rotation
 term: rain shadow = a dry area on the leeward side of a mountain range
@@ -139,6 +181,16 @@ The Green Revolution used high-yield crops, fertilizers, pesticides and irrigati
 key: Industrial agriculture problems: soil erosion, loss of soil fertility, water depletion, eutrophication from fertilizer runoff, pesticide resistance and loss of biodiversity from monocultures.
 Irrigation methods: flood and furrow irrigation waste a lot of water; drip irrigation is the most efficient. Overirrigation can cause waterlogging and soil salinization.
 Sustainable practices: crop rotation, contour plowing, terracing, no-till farming, windbreaks, cover crops and integrated pest management (IPM, combining biological, physical and limited chemical controls).
+lab: Fertilizer trial plots
+aim: Apply nitrogen fertilizer to corn plots and measure the yield and the nitrate washing off into streams.
+set: N = 120 | Nitrogen applied (kg/ha) | 0 to 300 by 10
+out: Y = 12*(1 - exp(-(N + 30)/70)) | Yield (t/ha)
+out: run = 0.05*N + 0.3*max(N - 150, 0) | Nitrate runoff (kg/ha)
+plot: N, Y
+step: Record the yield and runoff for at least 6 nitrogen levels.
+step: Find the point where extra fertilizer barely raises the yield.
+noise: 4
+result: Yield shows diminishing returns, but runoff rises sharply once crops can't use the extra nitrogen. That excess causes eutrophication and dead zones downstream, so precise application saves money and water quality.
 term: monoculture = growing a single crop over a large area
 term: soil salinization = salt buildup in soil, often from irrigation
 term: integrated pest management = controlling pests using a combination of methods to minimize pesticides
@@ -188,6 +240,16 @@ say: Renewable energy and conservation are key to a sustainable future. Each sou
 - Biomass: burning wood or making biofuels; renewable but can release CO₂ and require large areas of land.
 - Hydrogen fuel cells: produce only water but need energy to make hydrogen.
 key: Energy conservation and efficiency (insulation, LED lights, efficient vehicles, smart grids) are often the cheapest way to reduce environmental impact.
+lab: Wind turbine power curve
+aim: Measure a wind turbine's power output at different wind speeds.
+set: v = 8 | Wind speed (m/s) | 0 to 25 by 0.5
+set: L = 50 | Blade length (m) | 20 to 80 by 5
+out: P = min(0.5*1.2*pi*L^2*v^3*0.4/1e6, 0.0012*L^2) | Power (MW)
+plot: v, P
+step: Record the power at 5 wind speeds.
+step: Double the wind speed from 5 to 10 m/s. By what factor does power change?
+noise: 3
+result: Power rises with the cube of wind speed (P = ½ρAv³Cₚ), so doubling the wind gives eight times the power, until the turbine reaches its rated maximum. Longer blades sweep more area and capture more energy.
 term: photovoltaic cell = a device that converts sunlight directly into electricity
 term: intermittent energy = energy that isn't always available, like solar and wind
 term: geothermal energy = energy from heat inside Earth
@@ -219,6 +281,15 @@ key: Acid deposition forms when SO₂ and NOₓ react with water to make sulfuri
 Limestone (calcium carbonate) can neutralize acid; areas with granite bedrock are more vulnerable.
 Indoor air pollutants include radon (a radioactive gas from rocks, a leading cause of lung cancer), carbon monoxide from faulty heaters, asbestos, mold, and smoke from burning wood or dung for cooking (a major problem in developing countries).
 Noise pollution disrupts animal communication and causes stress in people.
+lab: Rain samples near a power plant
+aim: Collect rain at sites with different sulfur dioxide levels and measure its pH.
+set: S = 20 | SO₂ in the air (ppb) | 0 to 100 by 1
+out: pH = -log(2.5e-6 + 2e-7*S) | Rain pH
+plot: S, pH
+step: Record the rain pH at clean (0 ppb) and polluted sites.
+step: Find the SO₂ level where rain becomes "acid rain" (pH < 5).
+noise: 1
+result: Clean rain is naturally slightly acidic (about 5.6) from dissolved CO₂. SO₂ and NOₓ from burning fossil fuels form sulfuric and nitric acids, lowering pH; scrubbers and the Clean Air Act have reduced acid rain.
 term: acid deposition = acidic rain, snow or particles caused by sulfur and nitrogen oxides
 term: radon = a radioactive gas that seeps from rocks into buildings
 term: carbon monoxide = a colorless, odorless poisonous gas from incomplete combustion
@@ -234,6 +305,17 @@ key: Point sources come from one location (factory pipes, sewage plants); nonpoi
 Eutrophication: excess nitrogen and phosphorus cause algal blooms. When algae die, decomposers use up oxygen, creating hypoxic dead zones (like in the Gulf of Mexico).
 Other pollutants: oil spills, plastics (microplastics), heavy metals like mercury, and thermal pollution (warm water from power plants holds less oxygen).
 Sewage treatment: primary (physical removal of solids), secondary (bacteria break down organic matter), and sometimes tertiary (remove nutrients and chemicals).
+lab: Oxygen sag downstream of a sewage outfall
+aim: Measure dissolved oxygen at points downstream from where organic waste enters a river.
+set: x = 20 | Distance downstream (km) | 0 to 150 by 5
+set: L0 = 20 | BOD of the waste (mg/L) | 5 to 40 by 1
+out: t = x/10 | Travel time (days)
+out: DO = max(9 - 0.3*L0/0.3*(exp(-0.3*t) - exp(-0.6*t)), 0) | Dissolved oxygen (mg/L)
+plot: x, DO
+step: Record dissolved oxygen every 20 km.
+step: Find the lowest point and see where fish (which need about 5 mg/L) could survive.
+noise: 3
+result: Bacteria decomposing the waste use oxygen, so DO dips downstream (the oxygen sag curve), then recovers as the river re-aerates. Treating sewage to lower BOD keeps oxygen above levels fish need.
 term: point source = pollution from a single identifiable source
 term: eutrophication = nutrient enrichment causing algae blooms and oxygen loss
 term: dead zone = an area of water with too little oxygen to support most life
@@ -249,6 +331,16 @@ key: Bioaccumulation is the buildup of a toxin in an organism over its life; bio
 Solid waste goes to sanitary landfills (lined, with leachate collection and methane capture), incinerators (reduce volume but can release pollutants), or is recycled and composted. The waste hierarchy: reduce, reuse, recycle.
 Dose-response: LD50 is the dose that kills 50% of a test population. Toxicity depends on dose, and some chemicals are endocrine disruptors.
 Infectious diseases (malaria, cholera, tuberculosis) are linked to environmental conditions like poor sanitation and climate.
+lab: Dose–response and LD50
+aim: Expose groups of test organisms to increasing doses of a toxin and record the percent that die.
+set: d = 100 | Dose (mg/kg) | 1 to 1000 by 1
+set: LD = 200 | LD50 (mg/kg) | 50 to 500 by 10
+out: M = 100/(1 + (LD/d)^3) | Mortality (%)
+plot: d, M
+step: Record mortality for at least 6 doses.
+step: Find the dose that kills half the group.
+noise: 4
+result: Dose–response curves are S-shaped. The LD50 is the dose that kills 50% of the test population; a lower LD50 means a more toxic substance. "The dose makes the poison."
 term: bioaccumulation = the buildup of a toxin in an organism's body over time
 term: biomagnification = increasing concentration of a toxin at higher trophic levels
 term: LD50 = the dose of a substance that kills 50% of a test population
@@ -264,6 +356,16 @@ say: Two global atmospheric problems: a thinning ozone layer and a warming clima
 key: Stratospheric ozone absorbs harmful UV radiation. CFCs (from old refrigerants and aerosols) release chlorine that destroys ozone. The Montreal Protocol (1987) phased out CFCs, and the ozone layer is slowly recovering.
 The greenhouse effect is natural, but human emissions of CO₂ (fossil fuels, deforestation), methane (agriculture, landfills) and nitrous oxide (fertilizers) enhance it, raising global temperatures.
 Effects of climate change: rising sea levels (thermal expansion and melting ice), more extreme weather, shifting species ranges, melting permafrost (releasing more methane), and ocean acidification as oceans absorb CO₂, harming coral and shellfish.
+lab: Ocean acidification
+aim: Bubble air with different CO₂ levels through seawater and measure its pH and how easily shells can form.
+set: C = 420 | Atmospheric CO₂ (ppm) | 280 to 1000 by 10
+out: pH = 8.2 - 0.33*log2(C/280) | Seawater pH
+out: Om = 4.6*10^(2*(pH - 8.2)) | Aragonite saturation
+plot: C, pH
+step: Record the pH at 280 (pre-industrial), 420 (today) and 2 future levels.
+step: Shells dissolve when the saturation drops below 1. Is that reached?
+noise: 0.3
+result: Oceans absorb CO₂, forming carbonic acid and lowering pH, already about 0.1–0.2 units since 1850 (30% more acidic). Fewer carbonate ions make it harder for corals and shellfish to build shells.
 term: ozone layer = a stratospheric layer that absorbs harmful UV radiation
 term: Montreal Protocol = the 1987 treaty that phased out ozone-depleting CFCs
 term: greenhouse effect = the trapping of heat by gases in the atmosphere
