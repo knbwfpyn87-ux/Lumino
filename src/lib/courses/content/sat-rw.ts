@@ -40,6 +40,29 @@ why: Questioning isn't the same as completely rejecting.
 q: What should you do before reading the answer choices? | *Predict an answer in your own words | Read all choices twice | Pick the longest answer | Guess C
 why: A prediction protects you from tempting traps.
 
+@lesson Bluebook tools and test day
+say: The Digital SAT has built-in tools that make reading faster and keep you organized. Let's put them to work.
+key: Bluebook gives you an annotation tool, an answer eliminator, Mark for Review, a countdown timer you can hide, and full-length practice tests. Using them well saves time and prevents careless errors.
+## The tools
+- Annotate: highlight text in a passage and add a note. Great for marking the claim in an evidence question.
+- Answer eliminator: cross out choices you've ruled out so you never reread them.
+- Mark for Review: flag a question, guess, and come back if time allows. The question navigator shows which are flagged or unanswered.
+- Timer: hide it if it stresses you out; Bluebook warns you when 5 minutes remain.
+## How the section runs
+Reading and Writing has two modules of 27 questions with 32 minutes each. Questions are short passages with one question each, roughly in this order: Craft and Structure, Information and Ideas, Standard English Conventions, and Expression of Ideas. Like Math, it's adaptive: Module 1 performance sets the difficulty of Module 2.
+ex: You have 6 minutes left and 5 unanswered questions. What's your plan?
+> Answer every question with at least a guess, since there's no penalty
+> Spend the remaining time on flagged questions you were closest to solving
+= Never leave blanks; guess first, then revisit
+tip: Practice with Bluebook's full-length tests before test day so the tools feel automatic.
+term: answer eliminator = a Bluebook tool that crosses out answer choices you've ruled out
+term: annotation tool = a Bluebook tool for highlighting passage text and adding notes
+term: Mark for Review = a flag on a question so you can find and revisit it quickly
+q: How many questions are in each Reading and Writing module? | *27 | 22 | 33 | 44
+why: Two modules of 27 questions, 32 minutes each.
+q: A question is taking too long. What's the best move? | *Guess, mark it for review and move on | Leave it blank | Restart the module | Skip the rest of the module
+why: There's no penalty for guessing, and you can return to flagged questions within the module.
+
 @unit Craft and Structure | Words in context, text structure and purpose, cross-text connections
 @lesson Words in context
 say: Words in context questions ask which word best fits a blank or what a word means here. Context is everything.

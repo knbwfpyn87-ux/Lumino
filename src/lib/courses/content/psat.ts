@@ -101,4 +101,23 @@ why: 0.15 × 200.
 q: Two angles of a triangle are 60° and 70°. The third is… | *50° | 30° | 130° | 70°
 why: 180 − 130.
 gen: percentOf, angles, median
+
+@lesson Desmos shortcuts for the PSAT
+say: The PSAT has the same built-in Desmos calculator as the SAT, so the same shortcuts work here.
+key: Graph each side of an equation and click the intersection to solve it. Click a parabola to see its vertex and zeros. Use sliders for unknown constants. Type lists like [3, 8, 8, 12] and use mean() or median() for data questions.
+These moves are covered step by step in the SAT Math class, in the Desmos lessons of Unit 1.
+- Systems: type both equations; the intersection is the solution. Parallel lines mean no solution.
+- Equivalent expressions: graph the original and each choice; the matching graph lies exactly on top.
+- Check your work: plug an answer choice into the equation on a new line.
+code:
+| y = 2x + 7
+| y = -x + 1
+| median([3, 8, 8, 12])
+oops: Desmos gives decimals. If the choices are fractions, convert before answering.
+term: intersection = where two graphs meet; its coordinates solve both equations
+term: vertex = the highest or lowest point of a parabola
+q: Desmos shows y = 2x + 7 and y = −x + 1 crossing at (−2, 3). What is the solution of the system? | *x = −2, y = 3 | x = 3, y = −2 | x = 7, y = 1 | No solution
+why: The intersection point gives the solution (x, y).
+q: Which Desmos line finds the median of 3, 8, 8, 12? | *median([3, 8, 8, 12]) | mean([3, 8, 8, 12]) | y = median | total([3, 8, 8, 12])
+why: median() returns the middle value, 8.
 `;
