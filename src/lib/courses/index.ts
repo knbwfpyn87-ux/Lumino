@@ -5,9 +5,17 @@ import { CSA_UNITS } from './csa';
 import type { Test } from '../store';
 import type { Tier } from '../plans';
 
-import { ladder, type Course, type Category } from './ladder';
+import { ladder, type Course, type Category, type Unit } from './ladder';
 import { MORE_COURSES } from './catalog';
+import { CURRICULUM } from './curriculum.gen';
+import { LESSON_TEXT } from './lessons/index.gen';
+import { GENS } from './registry';
+import { vocab } from './banks';
+import type { Gen } from '../generated';
+import type { CurriculumCourse, CurriculumLesson, LessonText, Check } from './types';
 export { CATEGORIES, type Course, type Unit, type Category } from './ladder';
+export type { CurriculumLesson, LessonText } from './types';
+export type { Block } from './dsl';
 
 const BASE: Omit<Course, 'category'>[] = [
   { id: 'ap-csa', name: 'AP Computer Science A', subject: 'AP Computer Science A', level: 'AP', emoji: '💻', units: CSA_UNITS },
@@ -48,7 +56,41 @@ const BASE: Omit<Course, 'category'>[] = [
   ]) },
 ];
 const BASE_CAT: Record<string, Category> = { 'ap-csa': 'Computer Science', alg1: 'Math', geo: 'Math', alg2: 'Math', 'ap-stats': 'Math', 'sat-math': 'Test Prep', 'sat-rw': 'Test Prep' };
-export const COURSES: Course[] = [...BASE.map(c => ({ ...c, category: BASE_CAT[c.id] ?? 'Math' })), ...MORE_COURSES];
+const LEGACY: Course[] = [...BASE.map(c => ({ ...c, category: BASE_CAT[c.id] ?? 'Math' })), ...MORE_COURSES];
+
+// ---------- Rewritten classes (lessons first, then practice) ----------
+const checkGen = (c: Check): Gen => () => ({ prompt: c.q, correct: c.choices[c.answer], wrong: c.choices.filter((_, i) => i !== c.answer), explanation: c.why, code: c.code });
+/** One lesson's practice: its calculated generators (weighted up, they never repeat) and its quick checks. */
+const lessonPool = (l: CurriculumLesson): Gen[] => [...l.gens.flatMap(g => [GENS[g], GENS[g]]), ...l.checks.map(checkGen)];
+function unitPool(lessons: CurriculumLesson[]): Gen[] {
+  const terms = lessons.flatMap(l => l.terms); const pool = lessons.flatMap(lessonPool);
+  if (terms.length >= 4) { const v = vocab(terms); pool.push(v, v, v); } // key terms from the lessons, asked both ways
+  return pool;
+}
+function fromCurriculum(c: CurriculumCourse): Course {
+  const pools = c.units.map(u => unitPool(u.lessons));
+  const units: Unit[] = c.units.map((u, i) => ({ title: u.title, topics: u.summary, lessons: u.lessons, levels: [
+    pools[i], [...pools[i], ...pools[i], ...(pools[i - 1] ?? [])], [...pools[i], ...pools.slice(0, i + 1).flat()],
+  ] }));
+  return { id: c.id, name: c.name, subject: c.subject, level: c.level, emoji: c.emoji, category: c.category as Category, units };
+}
+const REWRITTEN = CURRICULUM.map(fromCurriculum);
+export const COURSES: Course[] = [...LEGACY.map(c => REWRITTEN.find(n => n.id === c.id) ?? c), ...REWRITTEN.filter(n => !LEGACY.some(c => c.id === n.id))];
+
+// ---------- Lessons ----------
+const textCache = new Map<string, Promise<LessonText[][] | null>>();
+/** Lesson text for a class (loaded on demand). */
+export function loadLessonText(courseId: string) {
+  let p = textCache.get(courseId);
+  if (!p) { p = LESSON_TEXT[courseId] ? LESSON_TEXT[courseId]().then(m => m.default).catch(() => null) : Promise.resolve(null); textCache.set(courseId, p); }
+  return p;
+}
+const LKEY = 'lumino:lessons';
+const lessonsDone = (): Record<string, number> => { try { return JSON.parse(localStorage.getItem(LKEY) ?? '{}'); } catch { return {}; } };
+export const lessonId = (courseId: string, u: number, l: number) => `${courseId}~${u}~${l}`;
+export function isLessonDone(courseId: string, u: number, l: number) { return !!lessonsDone()[lessonId(courseId, u, l)]; }
+export function markLessonDone(courseId: string, u: number, l: number) { const d = lessonsDone(); d[lessonId(courseId, u, l)] = Date.now(); try { localStorage.setItem(LKEY, JSON.stringify(d)); } catch { /* ignore */ } }
+export function unitLessonsDone(c: Course, u: number) { return c.units[u].lessons.filter((_, l) => isLessonDone(c.id, u, l)).length; }
 
 /** Plan needed for a unit: Basic gets the first 2 units, Premium ~70% of units, Premium+ everything. */
 export function unitTier(course: Course, unitIdx: number): Tier {
@@ -67,8 +109,12 @@ export function buildCourseTest(id: string): (Test & { tier: Tier }) | null {
   const p = parseCourseTestId(id); if (!p) return null;
   const course = COURSES.find(c => c.id === p.courseId); const unit = course?.units[p.u]; const gens = unit?.levels[p.l];
   if (!course || !unit || !gens) return null;
-  const r = new Rng(hash(id));
-  const questions = Array.from({ length: 10 }, (_, i) => build(gens[i % gens.length], r, `${id}-${i}`));
+  const r = new Rng(hash(id)); const order = r.shuffle(gens); const seen = new Set<string>();
+  const questions = Array.from({ length: 10 }, (_, i) => {
+    let q = build(order[i % order.length], r, `${id}-${i}`);
+    for (let k = 1; k < 8 && seen.has(q.prompt + q.code); k++) q = build(order[(i + k) % order.length], r, `${id}-${i}`); // no repeats in one quiz
+    seen.add(q.prompt + q.code); return q;
+  });
   return { id, tier: unitTier(course, p.u), title: `${course.name} · Unit ${p.u + 1}: ${unit.title} · Level ${p.l + 1}`, subject: course.subject, level: course.level, author: 'Lumino', questions: r.shuffle(questions) };
 }
 function hash(s: string) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }

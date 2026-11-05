@@ -39,6 +39,7 @@ function Nav() {
           <Stack.Screen name="sign-in" options={{ headerShown: false }} />
           <Stack.Screen name="onboarding" options={{ headerShown: false }} />
           <Stack.Screen name="class/[id]" options={{ title: '' , headerTransparent: true }} />
+          <Stack.Screen name="lesson/[id]" options={{ title: '', headerTransparent: true }} />
           <Stack.Screen name="quiz/[id]" options={{ headerShown: false, presentation: 'fullScreenModal' }} />
           <Stack.Screen name="chat/[id]" options={{ title: 'Group' }} />
           <Stack.Screen name="tutor" options={{ title: 'Lumino AI', presentation: 'modal' }} />

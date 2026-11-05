@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { COURSES, CATEGORIES, unitTier, levelState, courseTestId, getCourseProgress, PASS } from '../lib/courses';
+import { COURSES, CATEGORIES, unitTier, levelState, courseTestId, getCourseProgress, PASS, isLessonDone, unitLessonsDone } from '../lib/courses';
 import { getMyClasses, setMyClasses } from '../lib/planner';
 import { usePlan } from '../lib/auth';
 import { canAccess, PLAN_INFO } from '../lib/plans';
@@ -38,13 +38,20 @@ export function CourseView() {
     <section className="focus">
       <Link to="/courses"><button className="ghost">← Classes</button></Link>
       <h2>{c.emoji} {c.name}</h2>
-      {c.id === 'ap-csa' && <p className="muted small">Units follow the AP CSA course structure used by CodeHS. All code questions are Java.</p>}
+      {(() => { // "Continue learning": the first lesson not finished yet
+        for (let ui = 0; ui < c.units.length; ui++) { if (!canAccess(plan, unitTier(c, ui))) break; const li = c.units[ui].lessons.findIndex((_, k) => !isLessonDone(c.id, ui, k));
+          if (li >= 0) return <Link to={`/courses/${c.id}/learn/${ui}/${li}`} className="card cta continue"><b>{ui === 0 && li === 0 ? '📖 Start learning' : '📖 Continue learning'}</b><p>Unit {ui + 1}: {c.units[ui].lessons[li].title}</p></Link>; }
+        return null; })()}
+      {c.units.some(u => u.lessons.length) && <p className="muted small">Each unit teaches first: read the lessons with Mr. Lumino, try the quick checks, then practice with 3 levels that get harder.</p>}
       <div className="units">{c.units.map((u, ui) => {
         const tier = unitTier(c, ui); const open = canAccess(plan, tier);
         return (
           <div key={ui} className={'unit' + (open ? '' : ' dim')}>
             <div className="unithead"><span className="unitnum">{ui + 1}</span><div><b>{u.title}</b><p className="muted small">{u.topics}</p></div>
               {!open && <Link to="/pricing" className="pill">🔒 {PLAN_INFO[tier].name}</Link>}</div>
+            {open && u.lessons.length > 0 && <div className="lessonlist">{u.lessons.map((ls, li) => <Link key={li} to={`/courses/${c.id}/learn/${ui}/${li}`} className={'lessonlink' + (isLessonDone(c.id, ui, li) ? ' done' : '')}>
+              <span className="lnum">{isLessonDone(c.id, ui, li) ? '✓' : li + 1}</span>{ls.title}</Link>)}
+              <span className="muted small">{unitLessonsDone(c, ui)} of {u.lessons.length} lessons done</span></div>}
             {open && <div className="levels">{LEVELS.map((name, li) => {
               const st = levelState(c.id, ui, li, prog);
               const label = st.passed ? `✅ ${Math.round(st.best * 100)}%` : st.attempts ? `Best ${Math.round(st.best * 100)}%` : '';

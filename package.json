@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsx scripts/build-courses.ts && tsc -b && vite build",
+    "courses": "tsx scripts/build-courses.ts",
     "lint": "oxlint",
     "preview": "vite preview",
     "check:bank": "tsx scripts/check-bank.ts && tsx scripts/check-courses.ts && tsx scripts/check-voice.ts",

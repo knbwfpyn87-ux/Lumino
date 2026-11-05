@@ -7,6 +7,7 @@ import { usePlan } from '@/lib/auth';
 import { on } from '@/lib/events';
 import { COURSES, unitTier, levelState, getCourseProgress, courseTestId, canAccess } from '@/lib/tests';
 import { PLAN_INFO } from '@shared/plans';
+import { isLessonDone } from '@shared/courses';
 
 // A vertical "path": units stacked top to bottom, each with 3 level bubbles.
 export default function ClassPath() {
@@ -19,7 +20,7 @@ export default function ClassPath() {
       <View style={{ height: 30 }} />
       <T size={44}>{c.emoji}</T>
       <T size={28} weight="900">{c.name}</T>
-      {c.id === 'ap-csa' && <T size={13} color={t.muted}>Units follow the AP CSA course structure used by CodeHS. Code questions are Java.</T>}
+      {c.units.some(u => u.lessons.length) && <T size={13} color={t.muted}>Each unit teaches first: read the lessons with Mr. Lumino, try the quick checks, then practice.</T>}
       {c.units.map((u, ui) => {
         const tier = unitTier(c, ui); const open = canAccess(plan, tier);
         return (
@@ -29,6 +30,10 @@ export default function ClassPath() {
               <View style={{ flex: 1 }}><T weight="800" size={17}>{u.title}</T><T size={12} color={t.muted}>{u.topics}</T></View>
               {!open && <Pill text={`🔒 ${PLAN_INFO[tier].name}`} />}
             </View>
+            {open && u.lessons.map((ls, li) => { const done = isLessonDone(c.id, ui, li);
+              return <Pressable key={`l${li}`} onPress={() => router.push(`/lesson/${c.id}~${ui}~${li}`)} style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 11, borderRadius: 14, backgroundColor: t.bg, opacity: pressed ? 0.7 : 1 })}>
+                <View style={{ width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: done ? t.ok : t.card, borderWidth: 2, borderColor: done ? t.ok : t.line }}><T size={12} weight="900" color={done ? '#fff' : t.text}>{done ? '✓' : li + 1}</T></View>
+                <T weight="700" style={{ flex: 1 }}>📖 {ls.title}</T></Pressable>; })}
             {open && <View style={{ flexDirection: 'row', gap: 10 }}>
               {[0, 1, 2].map(li => { const s = levelState(c.id, ui, li, prog);
                 return (

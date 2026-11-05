@@ -1,12 +1,14 @@
 import type { Gen } from '../generated';
-export type Unit = { title: string; topics: string; levels: Gen[][] };
+import type { CurriculumLesson } from './types';
+/** lessons: the unit's lessons (teach first, then practice); empty for classes not yet rewritten. */
+export type Unit = { title: string; topics: string; levels: Gen[][]; lessons: CurriculumLesson[] };
 export type Category = 'Math' | 'Science' | 'Computer Science' | 'English' | 'History & Social Studies' | 'World Languages' | 'Arts' | 'Test Prep' | 'IB' | 'College';
 export type Course = { id: string; name: string; subject: string; level: string; emoji: string; category: Category; units: Unit[] };
 export const CATEGORIES: Category[] = ['Math', 'Science', 'Computer Science', 'English', 'History & Social Studies', 'World Languages', 'Arts', 'Test Prep', 'IB', 'College'];
 
 /** Level 1 = this unit's skills, Level 2 = + the previous unit, Level 3 = everything so far. */
 export function ladder(units: { title: string; topics: string; gens: Gen[] }[]): Unit[] {
-  return units.map((u, i) => ({ title: u.title, topics: u.topics, levels: [
+  return units.map((u, i) => ({ title: u.title, topics: u.topics, lessons: [], levels: [
     u.gens,
     [...u.gens, ...u.gens, ...(units[i - 1]?.gens ?? u.gens)],
     [...u.gens, ...units.slice(0, i + 1).flatMap(x => x.gens)],

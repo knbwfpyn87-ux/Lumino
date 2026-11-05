@@ -120,15 +120,18 @@ const u10c: Gen = r => { const w = r.pick(WORDS).slice(0, r.int(4, 6)), rev = (s
     ? { prompt: `What does rev("${w}") return?`, code: `public static String rev(String s) {\n  if (s.length() <= 1) return s;\n  return rev(s.substring(1)) + s.substring(0, 1);\n}`, correct: v, wrong: [w, w.substring(1) + w[0], v.substring(1) + v[0]].filter((x, k, a) => x !== v && a.indexOf(x) === k).concat(v.toUpperCase()).slice(0, 3), explanation: `It moves the first letter to the end of the reversed rest: "${v}".` }
     : { prompt: `What does fib(${n}) return?`, code: `public static int fib(int n) {\n  if (n <= 1) return n;\n  return fib(n - 1) + fib(n - 2);\n}`, correct: String(fib(n)), wrong: [String(fib(n - 1)), String(fib(n + 1)), String(fib(n) + 1)], explanation: `Fibonacci: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34 … fib(${n}) = ${fib(n)}.` }; };
 
-export const CSA_UNITS = [
-  { title: 'Primitive Types', topics: 'variables, int/double, arithmetic, casting', levels: [[u1a], [u1a, u1b], [u1b, u1c]] },
-  { title: 'Using Objects', topics: 'String methods, Math class', levels: [[u2a, u2b], [u2b, u2c], [u2c, u1c]] },
-  { title: 'Boolean Expressions & if', topics: 'relational/logical operators, if/else-if, short-circuit', levels: [[u3a], [u3a, u3b], [u3b, u3c]] },
-  { title: 'Iteration', topics: 'for, while, nested loops, String traversal', levels: [[u4a], [u4a, u4b], [u4b, u4c]] },
-  { title: 'Writing Classes', topics: 'constructors, accessors/mutators, encapsulation, static', levels: [[u5b], [u5a, u5b], [u5a, u5c]] },
-  { title: 'Array', topics: 'indexing, traversal, enhanced for, algorithms', levels: [[u6a], [u6a, u6b], [u6b, u6c]] },
-  { title: 'ArrayList', topics: 'add, remove, set, traversing while removing', levels: [[u7a], [u7a, u7b], [u7b, u7c]] },
-  { title: '2D Array', topics: 'row-major traversal, rows/columns, diagonals', levels: [[u8a], [u8a, u8b], [u8b, u8c]] },
-  { title: 'Inheritance', topics: 'extends, super, overriding, polymorphism', levels: [[u9b], [u9a, u9b], [u9a, u9c]] },
-  { title: 'Recursion', topics: 'base case, tracing recursive calls', levels: [[u10a, u10b], [u10a, u10b, u10c], [u10c, u10a]] },
+export const CSA_UNITS: import('./ladder').Unit[] = [
+  { title: 'Primitive Types', topics: 'variables, int/double, arithmetic, casting', levels: [[u1a], [u1a, u1b], [u1b, u1c]] , lessons: [] },
+  { title: 'Using Objects', topics: 'String methods, Math class', levels: [[u2a, u2b], [u2b, u2c], [u2c, u1c]] , lessons: [] },
+  { title: 'Boolean Expressions & if', topics: 'relational/logical operators, if/else-if, short-circuit', levels: [[u3a], [u3a, u3b], [u3b, u3c]] , lessons: [] },
+  { title: 'Iteration', topics: 'for, while, nested loops, String traversal', levels: [[u4a], [u4a, u4b], [u4b, u4c]] , lessons: [] },
+  { title: 'Writing Classes', topics: 'constructors, accessors/mutators, encapsulation, static', levels: [[u5b], [u5a, u5b], [u5a, u5c]] , lessons: [] },
+  { title: 'Array', topics: 'indexing, traversal, enhanced for, algorithms', levels: [[u6a], [u6a, u6b], [u6b, u6c]] , lessons: [] },
+  { title: 'ArrayList', topics: 'add, remove, set, traversing while removing', levels: [[u7a], [u7a, u7b], [u7b, u7c]] , lessons: [] },
+  { title: '2D Array', topics: 'row-major traversal, rows/columns, diagonals', levels: [[u8a], [u8a, u8b], [u8b, u8c]] , lessons: [] },
+  { title: 'Inheritance', topics: 'extends, super, overriding, polymorphism', levels: [[u9b], [u9a, u9b], [u9a, u9c]] , lessons: [] },
+  { title: 'Recursion', topics: 'base case, tracing recursive calls', levels: [[u10a, u10b], [u10a, u10b, u10c], [u10c, u10a]] , lessons: [] },
 ];
+
+/** Every AP CSA generator by name, for lessons (gen: csa.u1a). */
+export const CSA_GENS = { u1a, u1b, u1c, u2a, u2b, u2c, u3a, u3b, u3c, u4a, u4b, u4c, u5a, u5b, u5c, u6a, u6b, u6c, u7a, u7b, u7c, u8a, u8b, u8c, u9a, u9b, u9c, u10a, u10b, u10c };
