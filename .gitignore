@@ -29,3 +29,6 @@ scratch-java/
 __pycache__/
 .claude/
 Lumino-upload.zip
+Lumino-*.zip
+shots/
+Lumino-*.zip
