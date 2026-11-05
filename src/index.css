@@ -593,3 +593,5 @@ button.choice.faded { opacity:.55; }
 /* nav-home is two-tone art (an <img>): make it white / yellow in dark mode like the other tab icons */
 [data-theme="dark"] .sidenav img.navhome { filter:brightness(0) invert(1); }
 [data-theme="dark"] .sidenav a.active img.navhome { filter:brightness(0) invert(83%) sepia(52%) saturate(1100%) hue-rotate(358deg) brightness(104%); }
+/* tool rows fill the width whatever the number of tiles */
+.panel .tools:not(.big) { grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); }

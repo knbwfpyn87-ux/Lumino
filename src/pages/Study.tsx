@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../components/Icon';
 import UIcon from '../components/UIcon';
+import { AI_ENABLED } from '../lib/features';
 import { award } from '../lib/progress';
 
 export default function Study() {
@@ -11,7 +12,7 @@ export default function Study() {
       <div className="tools big">
         {[['tool-flashcards', 'Flashcards', '/flashcards', 'Spaced-repetition decks', 'blue'], ['tool-notes', 'Notes', '/notes', 'Class notes', 'yellow'],
           ['tool-practice', 'Practice Tests', '/tests', 'SAT, AP & class tests', 'blue'], ['tool-timer', 'Focus Timer', '#timer', '25-minute sessions', 'yellow'],
-          ['tool-ai', 'AI Help', '/assistant', 'Lumino AI tutor', 'purple'], ['icon-classes', 'Classes', '/courses', 'Units that level up', 'blue'],
+          ...(AI_ENABLED ? [['tool-ai', 'AI Help', '/assistant', 'Lumino AI tutor', 'purple']] : []), ['icon-classes', 'Classes', '/courses', 'Units that level up', 'blue'],
           ['camera', 'Photo Quiz', '/photo-quiz/new', 'Snap a worksheet, solve as a group', 'yellow'], ['upload', 'Upload a Test', '/upload', 'Share with your group', 'blue']].map(([ic, l, to, d, c]) =>
           to.startsWith('#') ? <a key={l} href={to} onClick={e => { e.preventDefault(); document.getElementById('timer')?.scrollIntoView({ behavior: 'smooth' }); }} className={'tool ' + c}><UIcon name={ic} size={42} ink /><span>{l}</span><small className="muted">{d}</small></a>
           : <Link key={l} to={to} className={'tool ' + c}>{ic.includes('-') ? <UIcon name={ic} size={42} ink /> : <Icon name={ic} size={38} />}<span>{l}</span><small className="muted">{d}</small></Link>)}

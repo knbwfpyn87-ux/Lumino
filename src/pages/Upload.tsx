@@ -4,6 +4,7 @@ import { uploadTest, aiImportTest } from '../lib/api';
 import { usePlan } from '../lib/auth';
 import { Link } from 'react-router-dom';
 import { isCloud } from '../lib/supabase';
+import { AI_ENABLED } from '../lib/features';
 import { useAuth, myName } from '../lib/auth';
 import { award } from '../lib/progress';
 import { LEVELS, SUBJECTS } from '../lib/catalog';
@@ -45,12 +46,12 @@ export default function Upload() {
   return (
     <section>
       <h2>Upload a practice test</h2>
-      <div className="aiupload">
+      {AI_ENABLED && <div className="aiupload">
         <div><b>✨ AI upload</b> <span className="pill">Premium+</span><p className="muted small">Snap a worksheet or upload a PDF and AI turns it into a quiz. You review every answer before it's published.</p></div>
         {plan === 'pro' && isCloud
           ? <label className="drop small"><input type="file" accept="image/*,application/pdf" multiple hidden onChange={e => aiImport(e.target.files)} />{aiBusy ? 'Reading your file…' : '📄 Choose photos or a PDF'}</label>
           : <Link to="/pricing"><button className="ghost">{plan === 'pro' ? 'Available in the live version' : 'Unlock with Premium+'}</button></Link>}
-      </div>
+      </div>}
       <p className="muted">Import JSON <input type="file" accept=".json" onChange={e => e.target.files?.[0] && importJson(e.target.files[0])} /></p>
       <div className="row">
         <input placeholder="Test title" value={title} onChange={e => setTitle(e.target.value)} />

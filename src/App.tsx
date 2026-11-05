@@ -7,6 +7,7 @@ import TakeTest from './pages/TakeTest';
 import Upload from './pages/Upload';
 import Groups from './pages/Groups';
 import Assistant from './pages/Assistant';
+import { AI_ENABLED } from './lib/features';
 import Pricing from './pages/Pricing';
 import Account from './pages/Account';
 import { Terms, Privacy } from './pages/Legal';
@@ -30,16 +31,18 @@ import { SignIn, Onboarding } from './pages/Auth';
 
 import { LOGO } from './lib/logo';
 
-const NAV = [
+const AI_NAV = { to: '/assistant', label: 'AI Tutor', icon: 'nav-ai' };
+const NAV_BASE = [
   { to: '/', label: 'Home', icon: 'nav-home' }, { to: '/courses', label: 'Classes', icon: 'nav-classes' }, { to: '/study', label: 'Study', icon: 'nav-study' },
-  { to: '/friends', label: 'Friends', icon: 'nav-friends' }, { to: '/groups', label: 'Groups', icon: 'nav-groups' }, { to: '/assistant', label: 'AI Tutor', icon: 'nav-ai' },
+  { to: '/friends', label: 'Friends', icon: 'nav-friends' }, { to: '/groups', label: 'Groups', icon: 'nav-groups' },
 ];
+const NAV = AI_ENABLED ? [...NAV_BASE, AI_NAV] : NAV_BASE;
 
 export default function App() {
   const [theme, setTheme] = useState<string>(() => { try { return localStorage.getItem('lumino:theme') ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch { return 'light'; } });
   useEffect(() => { document.documentElement.dataset.theme = theme; try { localStorage.setItem('lumino:theme', theme); } catch { /* ignore */ } }, [theme]);
   const { session, profile, loading } = useAuth();
-  if (window.location.hash.startsWith('#/lumino-scene')) return <LuminoScene />;
+  if (AI_ENABLED && window.location.hash.startsWith('#/lumino-scene')) return <LuminoScene />;
   if (isCloud) {
     if (loading) return <div className="auth"><Brand name="logo-mascot" className="authlogo" /></div>;
     if (!session) return ['#/terms', '#/privacy'].includes(window.location.hash) ? <main>{window.location.hash === '#/terms' ? <Terms /> : <Privacy />}</main> : <SignIn logo={LOGO} />;
@@ -81,7 +84,7 @@ export default function App() {
           <Route path="/friends" element={<Friends />} />
           <Route path="/progress" element={<Home progressOnly />} />
           <Route path="/courses/:id" element={<CourseView />} />
-          <Route path="/assistant" element={<Assistant />} />
+          {AI_ENABLED && <Route path="/assistant" element={<Assistant />} />}
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/account" element={<Account />} />
           <Route path="/terms" element={<Terms />} />

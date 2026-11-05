@@ -11,6 +11,7 @@ import Icon from '../components/Icon';
 import UIcon from '../components/UIcon';
 import { UI } from '../lib/ui';
 import Brand from '../components/Brand';
+import { AI_ENABLED } from '../lib/features';
 
 const greet = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
 const COLORS = ['#7cc8ff', '#ff9aa2', '#c4b5fd', '#ffd666', '#86efac', '#fdba74', '#93c5fd'];
@@ -77,7 +78,7 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
         <div className="dashmain">
           <Link to={mine[0] ? `/courses/${mine[0]}` : '/courses'} className="hero" aria-label="Study now">
             <Brand name="mascot-hero" className="mascot" />
-            <div><h2>Study Smarter Together.</h2><p>AI-powered learning, built for you and your friends.</p></div>
+            <div><h2>Study Smarter Together.</h2><p>{AI_ENABLED ? 'AI-powered learning, built for you and your friends.' : 'Classes, practice and study rooms, built for you and your friends.'}</p></div>
             <img className="herowave" src={UI['wave-hero']} alt="" aria-hidden="true" />
           </Link>
 
@@ -102,7 +103,7 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
           <div className="panel">
             <div className="panelhead"><h3><UIcon name="icon-book" size={30} ink /> Study Tools</h3></div>
             <div className="tools">
-              {[['tool-flashcards', 'Flashcards', '/flashcards', 'blue'], ['tool-notes', 'Notes', '/notes', 'yellow'], ['tool-practice', 'Practice', '/tests', 'blue'], ['tool-timer', 'Focus Timer', '/study#timer', 'yellow'], ['tool-ai', 'AI Help', '/assistant', 'purple']].map(([ic, l, to, c]) =>
+              {[['tool-flashcards', 'Flashcards', '/flashcards', 'blue'], ['tool-notes', 'Notes', '/notes', 'yellow'], ['tool-practice', 'Practice', '/tests', 'blue'], ['tool-timer', 'Focus Timer', '/study#timer', 'yellow']].filter(Boolean).concat(AI_ENABLED ? [['tool-ai', 'AI Help', '/assistant', 'purple']] : []).map(([ic, l, to, c]) =>
                 <Link key={l} to={to} className={'tool ' + c}><UIcon name={ic} size={46} ink /><span>{l}</span></Link>)}
             </div>
           </div>
@@ -114,12 +115,12 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
             <div className="faces">{(friends.length ? friends : []).slice(0, 4).map((f, i) => <img key={f} className="face img" src={UI[FACE[i % FACE.length]]} alt={f} title={f} />)}<Link to="/friends" className="face add" aria-label="Add friends"><Icon name="plus" size={20} /></Link></div>
             <Link to={groups[0] ? `/groups?open=${groups[0].id}` : '/groups'} className="roomlink"><UIcon name="icon-video-room" size={28} ink /> <span>Start Study Room</span><Icon name="arrow" size={18} /></Link>
           </div>
-          <div className="panel">
+          {AI_ENABLED && <div className="panel">
             <div className="panelhead"><h3><UIcon name="icon-ai-yellow" size={32} ink className="keep" /> AI Tutor</h3></div>
             <form className="askbox" onSubmit={e => { e.preventDefault(); nav(`/assistant${ask.trim() ? `?q=${encodeURIComponent(ask.trim())}` : ''}`); }}>
               <input placeholder="Ask a question or get help..." value={ask} onChange={e => setAsk(e.target.value)} /><button className="sendimg" aria-label="Ask"><UIcon name="btn-send" size={44} /></button>
             </form>
-          </div>
+          </div>}
           <div className="panel">
             <div className="panelhead"><h3><UIcon name="icon-progress" size={32} ink /> Your Progress</h3><Link to="/progress" className="link small">This Week <Icon name="chevron" size={14} /></Link></div>
             <div className="progrow"><div className="bar big"><i style={{ width: `${weekPct}%` }} /></div><b>{weekPct}%</b></div>
