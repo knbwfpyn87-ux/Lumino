@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import rig from '../assets/lumino/rig.json';
+import art from '../assets/art.json';
+const rig = art.rig;
 
 // Mr. Lumino, built from the cut asset-pack layers (scripts/cut-mascot.py + build-rig.py).
-const files = import.meta.glob('../assets/lumino/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
-const SRC: Record<string, string> = Object.fromEntries(Object.entries(files).map(([k, v]) => [k.split('/').pop()!.replace('.png', ''), v]));
+const SRC = art.lumino as Record<string, string>;
 type R = typeof rig;
 type Face = keyof R['faces']; type Hand = keyof R['hands']; type Fx = keyof R['fx']; type Pose = keyof R['poses']; type Slot = keyof R['slots'];
 

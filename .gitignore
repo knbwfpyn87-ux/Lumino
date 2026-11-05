@@ -28,3 +28,4 @@ scratch-java/
 *.bundle
 __pycache__/
 .claude/
+Lumino-upload.zip
