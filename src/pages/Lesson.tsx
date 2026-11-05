@@ -9,6 +9,8 @@ import { speak, stopSpeaking, voiceOn } from '../lib/voice';
 import { award } from '../lib/progress';
 import { confetti } from '../components/Feedback';
 import Lab from '../components/Lab';
+import { DesmosDock, DesmosBlock } from '../components/Desmos';
+import { courseUsesDesmos } from '../lib/desmos';
 import { isLabDone, markLabDone } from '../lib/courses';
 
 /** What "Read to me" says for each block (null = skip). */
@@ -48,6 +50,7 @@ function BlockView({ b, active, onLab }: { b: Block; active: boolean; onLab: (ti
     case 'code': return <pre className={'code' + cls}><code>{b.text}</code></pre>;
     case 'ex': return <div className={cls}><Example b={b} /></div>;
     case 'lab': return <div className={cls}><Lab b={b} onDone={() => onLab(b.title)} /></div>;
+    case 'desmos': return <div className={cls}><DesmosBlock lines={b.lines} /></div>;
   }
 }
 
@@ -94,6 +97,7 @@ export default function Lesson() {
 
   return (
     <section className="focus lesson">
+      {courseUsesDesmos(c) && <DesmosDock />}
       <div className="row between"><Link to={`/courses/${c.id}`}><button className="ghost">← {c.name}</button></Link>
         <span className="muted small">Unit {u + 1} · Lesson {l + 1} of {unit.lessons.length}</span></div>
       <div className="lessondots">{unit.lessons.map((_, i) => <Link key={i} to={`/courses/${c.id}/learn/${u}/${i}`} className={'ldot' + (i === l ? ' on' : isLessonDone(c.id, u, i) ? ' done' : '')} aria-label={`Lesson ${i + 1}`} />)}</div>

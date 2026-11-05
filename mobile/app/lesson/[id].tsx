@@ -11,6 +11,8 @@ import { emit } from '@/lib/events';
 import { COURSES, unitTier, canAccess, courseTestId, levelState, getCourseProgress } from '@/lib/tests';
 import { loadLessonText, markLessonDone, isLessonDone, isLabDone, markLabDone, type Block, type LessonText } from '@shared/courses';
 import { Lab } from '@/components/Lab';
+import { DesmosBlock, DesmosButton } from '@/components/Desmos';
+import { courseUsesDesmos } from '@shared/desmos';
 import { PLAN_INFO } from '@shared/plans';
 import { LuminoSays } from '@/components/Lumino';
 import { speak, stopSpeaking, voiceOn } from '@/lib/voice';
@@ -59,6 +61,7 @@ function BlockView({ b, active, onLab }: { b: Block; active: boolean; onLab: (ti
     case 'code': return <View style={{ backgroundColor: t.code, borderRadius: 12, padding: 12 }}><T mono color="#e8ecff" size={14}>{b.text}</T></View>;
     case 'ex': return <Example b={b} />;
     case 'lab': return <Lab b={b} onDone={() => onLab(b.title)} />;
+    case 'desmos': return <DesmosBlock lines={b.lines} />;
   }
 }
 
@@ -107,6 +110,7 @@ export default function LessonScreen() {
       <View style={{ flexDirection: 'row', gap: 6 }}>{unit.lessons.map((_, i) => <View key={i} style={{ flex: 1, height: 6, borderRadius: 3, backgroundColor: i === l ? t.accent : isLessonDone(cid, u, i) ? t.ok : t.line }} />)}</View>
       <T size={12} weight="800" color={t.muted}>UNIT {u + 1} · LESSON {l + 1} OF {unit.lessons.length}</T>
       <T size={26} weight="900">{lesson.title}</T>
+      {courseUsesDesmos(c) && <DesmosButton />}
       {text === undefined ? <T color={t.muted}>Loading…</T> : text === null ? <T color={t.muted}>This lesson couldn't load.</T> : <>
         <LuminoSays key={String(id)} text={text.say} mood="teach" after="idle" size={100} />
         {voiceOn() && <Button kind="ghost" title={reading >= 0 ? '⏹ Stop reading' : '🔊 Read this lesson to me'} onPress={readAloud} />}

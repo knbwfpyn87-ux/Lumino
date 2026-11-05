@@ -18,6 +18,7 @@
 //   q: Quick-check question? | *right answer | wrong | wrong | wrong
 //   why: explanation shown after answering          qcode: then "| " lines = code for the question
 //   gen: linear, slope            (calculated practice generators, see registry.ts)
+//   desmos:                       (then "| " lines) example lines with an "Open in Desmos" button
 //   lab: / demo:                  an interactive virtual lab or real-world demo (see lab.ts for its lines)
 
 import { lintLab, type LabBlock } from './lab';
@@ -25,7 +26,7 @@ export type { LabBlock };
 
 export type Block =
   | { t: 'p'; text: string } | { t: 'h'; text: string } | { t: 'list'; items: string[] } | { t: 'key'; text: string }
-  | { t: 'ex'; problem: string; steps: string[]; answer: string } | { t: 'tip'; text: string } | { t: 'oops'; text: string } | { t: 'code'; text: string } | LabBlock;
+  | { t: 'ex'; problem: string; steps: string[]; answer: string } | { t: 'tip'; text: string } | { t: 'oops'; text: string } | { t: 'code'; text: string } | { t: 'desmos'; lines: string[] } | LabBlock;
 export type Check = { q: string; choices: string[]; answer: number; why: string; code?: string };
 export type LessonSrc = { title: string; say: string; blocks: Block[]; terms: [string, string][]; checks: Check[]; gens: string[] };
 export type UnitSrc = { title: string; summary: string; lessons: LessonSrc[] };
@@ -33,12 +34,12 @@ export type CourseMeta = { id: string; name: string; level: string; emoji: strin
 export type CourseSrc = CourseMeta & { units: UnitSrc[] };
 
 export class CourseSyntaxError extends Error {}
-const TAGS = new Set(['say', 'key', 'tip', 'oops', 'ex', 'code', 'term', 'q', 'why', 'qcode', 'gen', 'lab', 'demo', 'aim', 'set', 'out', 'plot', 'step', 'noise', 'result', 'sim']);
+const TAGS = new Set(['say', 'key', 'tip', 'oops', 'ex', 'code', 'term', 'q', 'why', 'qcode', 'gen', 'lab', 'demo', 'aim', 'set', 'out', 'plot', 'step', 'noise', 'result', 'sim', 'desmos']);
 
 export function parseCourse(text: string, file = 'course'): CourseSrc {
   const lines = text.replace(/\r/g, '').split('\n');
   let course: CourseSrc | null = null; let unit: UnitSrc | null = null; let lesson: LessonSrc | null = null;
-  let para: string[] = []; let codeTarget: { text: string } | Check | null = null;
+  let para: string[] = []; let codeTarget: { text: string } | { lines: string[] } | Check | null = null;
   const fail = (n: number, msg: string): never => { throw new CourseSyntaxError(`${file}:${n + 1}: ${msg}`); };
   const flush = () => { if (para.length && lesson) lesson.blocks.push({ t: 'p', text: para.join(' ') }); para = []; };
   const needLesson = (n: number) => lesson ?? fail(n, 'text outside a @lesson');
@@ -47,7 +48,7 @@ export function parseCourse(text: string, file = 'course'): CourseSrc {
     const line = raw.trim();
     if (raw.startsWith('| ') || raw === '|') { // code line
       if (!codeTarget) fail(n, '"| " code line without code: or qcode:');
-      const c = raw.slice(2); if ('q' in codeTarget!) codeTarget.code = codeTarget.code == null ? c : `${codeTarget.code}\n${c}`; else codeTarget!.text = codeTarget!.text ? `${codeTarget!.text}\n${c}` : c;
+      const c = raw.slice(2); if ('lines' in codeTarget!) { (codeTarget as { lines: string[] }).lines.push(c); return; } if ('q' in codeTarget!) codeTarget.code = codeTarget.code == null ? c : `${codeTarget.code}\n${c}`; else codeTarget!.text = codeTarget!.text ? `${codeTarget!.text}\n${c}` : c;
       return;
     }
     codeTarget = null;
@@ -75,6 +76,7 @@ export function parseCourse(text: string, file = 'course'): CourseSrc {
       case 'tip': flush(); L.blocks.push({ t: 'tip', text: rest('tip') }); return;
       case 'oops': flush(); L.blocks.push({ t: 'oops', text: rest('oops') }); return;
       case 'ex': flush(); L.blocks.push({ t: 'ex', problem: rest('ex'), steps: [], answer: '' }); return;
+      case 'desmos': { flush(); const b = { t: 'desmos' as const, lines: [] as string[] }; L.blocks.push(b); codeTarget = b; return; }
       case 'code': { flush(); const b = { t: 'code' as const, text: '' }; L.blocks.push(b); codeTarget = b; return; }
       case 'term': { const s = rest('term'); const i = s.indexOf(' = '); if (i < 1) fail(n, 'term: needs "word = definition"'); L.terms.push([s.slice(0, i).trim(), s.slice(i + 3).trim()]); return; }
       case 'q': {
@@ -126,10 +128,11 @@ export function lintCourse(c: CourseSrc, knownGens: Set<string>): string[] {
     u.lessons.forEach((l, li) => {
       if (!l.say) out.push(`${where(ui, li)}: missing say:`);
       l.blocks.forEach(b => { if (b.t === 'lab') out.push(...lintLab(b).map(e => `${where(ui, li)}: ${e}`)); });
-      const words = l.blocks.filter(b => b.t !== 'lab').map(b => b.t === 'list' ? b.items.join(' ') : b.t === 'ex' ? [b.problem, ...b.steps, b.answer].join(' ') : b.text).join(' ').split(/\s+/).length;
+      const words = l.blocks.filter(b => b.t !== 'lab').map(b => b.t === 'list' ? b.items.join(' ') : b.t === 'ex' ? [b.problem, ...b.steps, b.answer].join(' ') : b.t === 'desmos' ? '' : b.text).join(' ').split(/\s+/).length;
       if (l.blocks.length < 2 || words < 70) out.push(`${where(ui, li)}: teaching is too short (${words} words)`);
       if (l.checks.length < 2) out.push(`${where(ui, li)}: needs at least 2 q: checks`);
       l.checks.forEach((q, qi) => { if (!q.why) out.push(`${where(ui, li)} q${qi + 1}: missing why:`); });
+      l.blocks.forEach(b => { if (b.t === 'desmos' && !b.lines.length) out.push(`${where(ui, li)}: desmos: needs "| " lines`); });
       l.blocks.forEach(b => { if (b.t === 'ex' && (!b.steps.length || !b.answer)) out.push(`${where(ui, li)}: worked example needs > steps and = answer`); });
       l.gens.forEach(g => { if (!knownGens.has(g)) out.push(`${where(ui, li)}: unknown gen "${g}"`); });
     });

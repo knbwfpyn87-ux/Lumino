@@ -14,6 +14,9 @@ import Lumino from '../components/Lumino';
 import LuminoSays from '../components/LuminoSays';
 import { teachLine, verdict as verdictFor } from '../lib/lines';
 import { prefetchLine } from '../lib/voice';
+import { DesmosDock } from '../components/Desmos';
+import { courseUsesDesmos, testUsesDesmos } from '../lib/desmos';
+import { COURSES } from '../lib/courses';
 
 const TEACH_KEY = 'lumino:teacherMode';
 const getTeach = () => { try { return localStorage.getItem(TEACH_KEY) !== 'off'; } catch { return true; } };
@@ -30,6 +33,7 @@ export default function TakeTest() {
   if (test && !canAccess(plan, tierOf(test))) return <section><Locked tier={tierOf(test)} what={test.title} /></section>;
   if (!test) return loading ? <p className="muted">Loading…</p> : <p>Test not found. <Link to="/tests">Back</Link></p>;
   const qs = test.questions; const q = qs[i];
+  const pc = parseCourseTestId(test.id); const desmos = pc ? courseUsesDesmos(COURSES.find(c => c.id === pc.courseId)) : testUsesDesmos(test);
   const score = qs.filter(x => ans[x.id] === x.answer).length;
   const fmt = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
 
@@ -60,6 +64,7 @@ export default function TakeTest() {
   );
   return (
     <section className="focus">
+      {desmos && <DesmosDock />}
       <div className="row between"><Link to={course ? `/courses/${parseCourseTestId(test.id)!.courseId}` : '/tests'}><button className="ghost">✕ Quit</button></Link><span className="muted">⏱ {fmt}</span></div>
       <div className="bar"><i style={{ width: `${(Object.keys(ans).length / qs.length) * 100}%` }} /></div>
       <div className="row between"><p className="muted" style={{ margin: 0 }}>{test.title} · Question {i + 1} of {qs.length}</p>

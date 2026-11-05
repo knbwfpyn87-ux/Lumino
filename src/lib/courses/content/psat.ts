@@ -109,7 +109,7 @@ These moves are covered step by step in the SAT Math class, in the Desmos lesson
 - Systems: type both equations; the intersection is the solution. Parallel lines mean no solution.
 - Equivalent expressions: graph the original and each choice; the matching graph lies exactly on top.
 - Check your work: plug an answer choice into the equation on a new line.
-code:
+desmos:
 | y = 2x + 7
 | y = -x + 1
 | median([3, 8, 8, 12])

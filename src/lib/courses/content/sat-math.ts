@@ -63,7 +63,7 @@ key: The Desmos graphing calculator is built into Bluebook for every Math questi
 - Fractions: / makes a stacked fraction. Multiplication: * or just a space (2x works).
 - Arithmetic works on any line: type 0.15*80 and the answer appears.
 - Graph with x and y. If a question uses another letter, like t or n, rewrite it with x.
-code:
+desmos:
 | y = x^2 - 4x + 3
 | y = sqrt(x + 5)
 | 0.15*80
@@ -90,7 +90,7 @@ Type both equations exactly as given (Desmos accepts forms like 3x + 2y = 12). T
 - The same line: infinitely many solutions.
 ## Inequalities
 Type inequalities directly, such as y > 2x − 1. Desmos shades the solution region; for a system, the solution is where the shadings overlap. A point is a solution if it lies in that overlap (on a dashed boundary line doesn't count).
-code:
+desmos:
 | y = 3(x + 2)
 | y = 2x + 11
 ex: Solve 3(x + 2) = 2x + 11 with Desmos, then find x + 4.
@@ -122,7 +122,7 @@ key: Graph a quadratic and click it: Desmos shows the vertex (maximum or minimum
 Define a function on one line, like f(x) = 2x^2 − 3x, then type f(4) on another line to evaluate it. You can also graph f(x − 2) + 1 to see transformations.
 ## Sliders for unknown constants
 When a question has an unknown constant (k, a, c…), type it into the equation. Desmos offers to "add slider." Drag the slider until the graph does what the question describes, such as touching the x-axis once or becoming parallel to another line.
-code:
+desmos:
 | f(x) = x^2 - 6x + 5
 | f(4)
 | y = x^2 - 6x + c
@@ -153,7 +153,7 @@ key: Type a list in square brackets, then use statistics functions on it: mean, 
 - Change one value to see how the mean and median react to an outlier.
 ## Tables and regression
 Add a table (the + button), enter x₁ and y₁ values, then type y₁ ~ mx₁ + b for a linear fit. Desmos reports m, b and r². Use y₁ ~ ax₁^2 + bx₁ + c for a quadratic fit or y₁ ~ ab^x₁ for an exponential fit.
-code:
+desmos:
 | L = [12, 15, 15, 18, 40]
 | mean(L)
 | median(L)
