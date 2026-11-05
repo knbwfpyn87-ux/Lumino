@@ -33,7 +33,7 @@ jobs:
           git add -A
           git commit -q -m "Publish ${GITHUB_SHA::7}"
           git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
-      - name: Save the built site to site/ on main (for Pages "Deploy from a branch: main")
+      - name: Save the built site to site/ on main (for Pages deploy-from-main)
         run: |
           rm -rf site && cp -r dist site && rm -rf site/.git && touch .nojekyll
           git config user.name "github-actions[bot]"
