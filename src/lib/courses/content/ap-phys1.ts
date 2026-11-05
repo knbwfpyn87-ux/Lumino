@@ -353,6 +353,7 @@ set: k = 20 | Spring constant (N/m) | 5 to 100 by 5
 out: T = 2*pi*sqrt(m/k) | Period (s)
 out: f = 1/T | Frequency (Hz)
 plot: m, T
+sim: spring | m=m, k=k
 step: Record the period for 5 masses.
 step: Then try a stiffer spring.
 noise: 2

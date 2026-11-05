@@ -2,6 +2,7 @@
 // Labs: record trials into a data table (with a little measurement error), then the trend line and conclusion unlock.
 // Demos: the curve is always shown with a dot at your current choice.
 import { useMemo, useState } from 'react';
+import PhysicsView from './PhysicsView';
 import { labModel, startValues, snap, curve, bounds, measure, fmt, niceTicks, type LabBlock } from '../lib/courses';
 
 const W = 600, H = 280, PL = 52, PR = 14, PT = 14, PB = 40;
@@ -47,6 +48,7 @@ export default function Lab({ b, onDone }: { b: LabBlock; onDone?: () => void })
       <h4 className="labtitle">{b.title}</h4>
       <p className="labaim"><b>{isLab ? 'Goal: ' : ''}</b>{b.aim}</p>
       {b.steps.length > 0 && <>{!isLab && <p className="labtry">Try this:</p>}<ol className="labsteps">{b.steps.map((s, i) => <li key={i}>{s}</li>)}</ol></>}
+      {b.sim && <PhysicsView scene={b.sim.scene} params={Object.fromEntries(Object.entries(b.sim.map).map(([k, n]) => [k, n in v ? v[n] : Number(n)]))} />}
       <div className="labgrid">
         <div className="labcontrols">
           {b.sets.map(s => (

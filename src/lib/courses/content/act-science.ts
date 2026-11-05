@@ -32,6 +32,7 @@ set: L = 1 | Length (m) | 0.2 to 2 by 0.1
 set: m = 100 | Bob mass (g) | 50 to 500 by 50
 out: T = 2*pi*sqrt(L/g) | Period (s)
 plot: L, T
+sim: pendulum | L=L, m=m
 step: Experiment 1: change only the length and record 4 trials.
 step: Experiment 2: change only the mass. Did the period change?
 noise: 1

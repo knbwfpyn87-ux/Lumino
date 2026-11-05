@@ -56,6 +56,7 @@ set: m = 1 | Ball mass (kg) | 0.1 to 5 by 0.1
 out: t = sqrt(2*h/g) | Fall time (s)
 out: v = g*t | Impact speed (m/s)
 plot: h, t
+sim: drop | h=h, m=m
 step: Set a height and press Record. Repeat for at least 4 heights.
 step: Now keep the height fixed and change the mass. Does the time change?
 noise: 3
@@ -168,6 +169,7 @@ set: v = 15 | Launch speed (m/s) | 5 to 30 by 1
 out: R = v^2*sind(2*th)/g | Range (m)
 out: H = (v*sind(th))^2/(2*g) | Max height (m)
 plot: th, R
+sim: projectile | v=v, a=th
 step: Keep the speed fixed and record the range for at least 5 angles.
 step: Compare complementary angles such as 30° and 60°.
 noise: 3
@@ -301,6 +303,7 @@ set: m2 = 2 | Stationary cart mass (kg) | 0.5 to 5 by 0.5
 out: vf = m1*v1/(m1 + m2) | Speed after sticking (m/s)
 out: KElost = 0.5*m1*v1^2 - 0.5*(m1 + m2)*vf^2 | Kinetic energy lost (J)
 plot: m2, vf
+sim: collision | m1=m1, v1=v1, m2=m2, e=0
 step: Record the final speed for 4 different stationary-cart masses.
 step: Check that momentum before (m₁v₁) equals momentum after ((m₁ + m₂)v).
 noise: 3

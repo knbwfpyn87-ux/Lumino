@@ -9,11 +9,16 @@
 //   plot: L, T                                        graph T against slider L
 //   step: Press Record for 4 different lengths.       procedure (labs)
 //   noise: 2                                          labs only: ±% measurement error on recorded data
+//   sim: pendulum | L=L, a=amp                        optional live physics animation (scenes in src/lib/physics.ts);
+//                                                     each key=slider feeds a slider's value (or a fixed number) into the scene
 //   result: What the data shows (revealed after 3 trials, or on request in a demo).
 
 export type LabSet = { name: string; label: string; min: number; max: number; step: number; start: number };
 export type LabOut = { name: string; label: string; expr: string };
-export type LabBlock = { t: 'lab'; kind: 'lab' | 'demo'; title: string; aim: string; sets: LabSet[]; outs: LabOut[]; plot?: { x: string; y: string }; steps: string[]; noise: number; result: string };
+export type LabBlock = { t: 'lab'; kind: 'lab' | 'demo'; title: string; aim: string; sets: LabSet[]; outs: LabOut[]; plot?: { x: string; y: string }; steps: string[]; noise: number; result: string; sim?: { scene: string; map: Record<string, string> } };
+
+/** Scene names in src/lib/physics.ts (kept here so this file stays dependency-free). */
+export const SCENE_NAMES = ['drop', 'projectile', 'pendulum', 'spring', 'collision'];
 
 export const LAB_CONSTANTS: Record<string, number> = { pi: Math.PI, e: Math.E, g: 9.8, R: 8.314, k: 8.99e9, c: 3e8, h: 6.626e-34, NA: 6.022e23 };
 
@@ -114,6 +119,10 @@ export function lintLab(b: LabBlock): string[] {
   if (!b.outs.length) out.push(`${L}: needs at least one out: result`);
   if (b.kind === 'lab' && !b.steps.length) out.push(`${L}: needs step: lines`);
   if (!b.plot) out.push(`${L}: needs plot: x, y`);
+  if (b.sim) {
+    if (!SCENE_NAMES.includes(b.sim.scene)) out.push(`${L}: unknown sim scene "${b.sim.scene}" (${SCENE_NAMES.join(', ')})`);
+    for (const [k, v] of Object.entries(b.sim.map)) if (!b.sets.some(s => s.name === v) && !b.outs.some(o => o.name === v) && !Number.isFinite(Number(v))) out.push(`${L}: sim ${k}=${v} isn't a slider, result or number`);
+  }
   const names = new Set<string>();
   for (const s of b.sets) {
     if (!(s.min < s.max) || !(s.step > 0) || s.start < s.min || s.start > s.max) out.push(`${L}: slider ${s.name} has a bad range`);

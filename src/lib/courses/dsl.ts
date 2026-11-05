@@ -33,7 +33,7 @@ export type CourseMeta = { id: string; name: string; level: string; emoji: strin
 export type CourseSrc = CourseMeta & { units: UnitSrc[] };
 
 export class CourseSyntaxError extends Error {}
-const TAGS = new Set(['say', 'key', 'tip', 'oops', 'ex', 'code', 'term', 'q', 'why', 'qcode', 'gen', 'lab', 'demo', 'aim', 'set', 'out', 'plot', 'step', 'noise', 'result']);
+const TAGS = new Set(['say', 'key', 'tip', 'oops', 'ex', 'code', 'term', 'q', 'why', 'qcode', 'gen', 'lab', 'demo', 'aim', 'set', 'out', 'plot', 'step', 'noise', 'result', 'sim']);
 
 export function parseCourse(text: string, file = 'course'): CourseSrc {
   const lines = text.replace(/\r/g, '').split('\n');
@@ -87,11 +87,15 @@ export function parseCourse(text: string, file = 'course'): CourseSrc {
       case 'why': { const c = L.checks.at(-1); if (!c) fail(n, 'why: must follow q:'); c!.why = rest('why'); return; }
       case 'qcode': { const c = L.checks.at(-1); if (!c) fail(n, 'qcode: must follow q:'); codeTarget = c!; return; }
       case 'lab': case 'demo': flush(); L.blocks.push({ t: 'lab', kind: tag as 'lab' | 'demo', title: rest(tag), aim: '', sets: [], outs: [], steps: [], noise: 0, result: '' }); return;
-      case 'aim': case 'set': case 'out': case 'plot': case 'step': case 'noise': case 'result': {
+      case 'aim': case 'set': case 'out': case 'plot': case 'step': case 'noise': case 'result': case 'sim': {
         const lab = L.blocks.at(-1); if (lab?.t !== 'lab') fail(n, `${tag}: must follow lab: or demo:`);
         const b = lab as LabBlock; const s = rest(tag);
         if (tag === 'aim') b.aim = s; else if (tag === 'step') b.steps.push(s); else if (tag === 'result') b.result = s;
         else if (tag === 'noise') b.noise = Number(s);
+        else if (tag === 'sim') {
+          const [scene, pairs = ''] = s.split('|').map(z => z.trim());
+          b.sim = { scene, map: Object.fromEntries(pairs.split(',').map(z => z.split('=').map(y => y.trim())).filter(([k, v]) => k && v)) };
+        }
         else if (tag === 'plot') { const [x, y] = s.split(',').map(z => z.trim()); b.plot = { x, y }; }
         else if (tag === 'set') {
           const m = /^(\w+)\s*=\s*(-?[\d.e]+)\s*\|\s*(.+?)\s*\|\s*(-?[\d.e]+)\s+to\s+(-?[\d.e]+)\s+by\s+([\d.e]+)$/.exec(s);
