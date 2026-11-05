@@ -13,6 +13,14 @@ ex: Find the area between y = x and y = x² on [0, 1].
 > Top is x, bottom is x²: ∫₀¹ (x − x²) dx
 > = 1/2 − 1/3
 = 1/6
+demo: Pumping out a water tank
+aim: A cylindrical tank of radius 2 m is full of water to height H. How much work does it take to pump all the water out over the top?
+set: H = 3 | Tank height (m) | 0.5 to 10 by 0.5
+out: W = 1000*g*pi*4*H^2/2 | Work (J)
+out: kWh = W/3.6e6 | Work (kWh)
+plot: H, W
+step: Slice the water into thin layers: a layer at height y must be lifted H − y. Integrate ρg·π(2)²(H − y) dy.
+result: W = ∫₀ᴴ ρgπr²(H − y) dy = ρgπr²H²/2. Doubling the height quadruples the work, because there's twice as much water and it must be lifted twice as far on average.
 term: washer method = finding volume using outer and inner radii
 term: shell method = finding volume by summing cylindrical shells
 term: arc length = the length of a curve between two points
@@ -51,6 +59,15 @@ ex: Find the sum of 6 + 3 + 1.5 + …
 > a = 6, r = 1/2
 > 6 ÷ (1 − 1/2)
 = 12
+demo: Medicine building up in the body
+aim: A patient takes 100 mg every day, and a fraction of the drug remains in the body each day. How much is present right after dose n?
+set: n = 5 | Number of doses | 1 to 30 by 1
+set: r = 0.5 | Fraction remaining after a day | 0.1 to 0.9 by 0.05
+out: A = 100*(1 - r^n)/(1 - r) | Amount after dose n (mg)
+out: steady = 100/(1 - r) | Long-run level (mg)
+plot: n, A
+step: Write the amounts as a geometric series 100 + 100r + 100r² + …. What does it converge to?
+result: The partial sums 100(1 − rⁿ)/(1 − r) approach 100/(1 − r), the steady state. With r = 0.5 the level settles at 200 mg, a convergent geometric series at work.
 term: geometric series = a series with a constant ratio between terms
 term: harmonic series = Σ1/n, which diverges
 term: ratio test = a test using lim |aₙ₊₁/aₙ| to decide convergence

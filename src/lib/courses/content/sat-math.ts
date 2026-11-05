@@ -34,6 +34,16 @@ ex: If 3(x + 2) = 2x + 11, what is the value of x + 4?
 > Solve: 3x + 6 = 2x + 11, so x = 5
 > Answer the actual question: x + 4
 = 9 (not 5!)
+demo: Pacing a module
+aim: Each SAT Math module gives you 35 minutes for 22 questions. Plan your pace.
+set: k = 11 | Questions answered | 0 to 22 by 1
+set: s = 85 | Seconds per question | 30 to 150 by 5
+out: used = k*s/60 | Minutes used
+out: left = 35 - k*s/60 | Minutes left
+out: perq = if(k < 22, (35 - k*s/60)/(22 - k), 0) | Minutes left per remaining question
+plot: k, left
+step: What pace leaves 5 minutes to check your work at the end?
+result: 35 minutes ÷ 22 questions is about 95 seconds each. Moving at about 80 seconds on easier questions banks time for the harder ones near the end of the module.
 term: plugging in answers = testing each answer choice in the problem to find the one that works
 term: picking numbers = substituting easy numbers for variables to test expressions
 q: You've spent 3 minutes on a question. Best move? | *Guess, mark it for review and move on | Keep working until solved | Skip it with no answer | Restart the module
@@ -71,6 +81,13 @@ ex: A plumber charges C = 75h + 60, where h is hours. What does 60 represent?
 = A flat fee of $60 charged even before any work is done
 Parallel lines have equal slopes; perpendicular slopes multiply to −1. To find the slope from two points, use (y₂ − y₁)/(x₂ − x₁).
 tip: For questions about a line's equation from a table, find the slope from two rows, then plug in one point to find b.
+demo: Temperature conversion line
+aim: Fahrenheit and Celsius are related by the linear function F = 1.8C + 32.
+set: C = 20 | Temperature (°C) | -40 to 100 by 1
+out: F = 1.8*C + 32 | Temperature (°F)
+plot: C, F
+step: Interpret the slope and the y-intercept. Where are the two scales equal?
+result: The slope 1.8 means each 1 °C rise is a 1.8 °F rise; the intercept 32 is the freezing point. Solving C = 1.8C + 32 gives −40, where both scales read the same.
 term: slope = the rate of change of a linear function
 term: y-intercept = the value of y when x is 0; the starting value
 term: rate of change = how much the output changes per unit of input
@@ -130,6 +147,14 @@ ex: A car worth $24,000 loses 12% of its value each year. Write its value after 
 > Decay factor: 1 − 0.12 = 0.88
 = V = 24,000(0.88)ᵗ
 Linear functions change by a constant amount; exponential functions change by a constant percent (factor).
+demo: A growing town
+aim: A town of 12,000 people grows by a fixed percentage each year. Model it as P = 12,000(1 + r)ᵗ.
+set: t = 10 | Years | 0 to 40 by 1
+set: r = 3 | Growth rate (% per year) | 0.5 to 8 by 0.5
+out: P = 12000*(1 + r/100)^t | Population
+plot: t, P
+step: Compare linear growth (adding 360 people a year) with 3% growth after 40 years.
+result: Exponential growth multiplies by the same factor (1.03) each year, so it eventually beats any linear growth. SAT questions often ask you to read the initial value and growth factor from the equation.
 term: growth factor = the number multiplied each period in an exponential function
 term: exponential decay = decrease by a constant percent per period
 term: initial value = the starting amount a in f(x) = a(b)ˣ
@@ -170,6 +195,15 @@ ex: A $80 jacket is marked up 25%, then discounted 10%. Final price?
 > 100 × 0.90
 = $90
 oops: A 50% increase followed by a 50% decrease does NOT return to the original. 100 → 150 → 75.
+demo: Cost of a road trip
+aim: Plan the fuel cost of a 300-mile trip from your car's gas mileage and the price of gas.
+set: mpg = 30 | Gas mileage (miles per gallon) | 10 to 60 by 1
+set: p = 3.5 | Gas price ($ per gallon) | 2 to 6 by 0.1
+out: gal = 300/mpg | Gallons used
+out: cost = gal*p | Fuel cost ($)
+plot: mpg, cost
+step: Set up the units: miles ÷ (miles/gallon) × (dollars/gallon) = dollars.
+result: Units cancel to give dollars: 300 ÷ 30 × $3.50 = $35. Cost is inversely proportional to gas mileage, so improving from 20 to 40 mpg halves the cost.
 term: proportion = an equation stating two ratios are equal
 term: percent change = the change in a value divided by the original value, times 100
 term: unit rate = a rate with a denominator of one unit, like miles per hour
@@ -263,6 +297,14 @@ ex: Find the center and radius of x² + y² − 6x + 4y = 12
 > (x − 3)² + (y + 2)² = 25
 = center (3, −2), radius 5
 A tangent line is perpendicular to the radius at the point of tangency. A central angle equals its arc; an inscribed angle is half its arc.
+demo: Will the truck fit through the tunnel?
+aim: A tunnel's cross-section is a semicircle. How tall is the opening at a distance x from the center?
+set: x = 3 | Distance from the center (m) | 0 to 5 by 0.1
+set: r = 6 | Tunnel radius (m) | 5 to 8 by 0.5
+out: y = sqrt(r^2 - x^2) | Height of the tunnel there (m)
+plot: x, y
+step: A truck is 4 m wide and 4.5 m tall, driving in the middle. Check the height at x = 2.
+result: The circle x² + y² = r² gives y = √(r² − x²). With r = 6, at x = 2 the clearance is 5.66 m, so the 4.5 m truck fits; near the walls the height drops quickly.
 term: equation of a circle = (x − h)² + (y − k)² = r²
 term: sector = a region of a circle bounded by two radii and an arc
 term: tangent = a line touching a circle at exactly one point, perpendicular to the radius there

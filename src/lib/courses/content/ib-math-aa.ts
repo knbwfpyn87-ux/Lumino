@@ -12,6 +12,16 @@ ex: A geometric series has u₁ = 8 and r = 1/2. Find S∞.
 > |r| < 1, so it converges
 = S∞ = 8/(1 − 1/2) = 16
 tip: In Paper 1 (no calculator), simplify fractions and surds exactly. In Paper 2, use the GDC for heavy computation, but show your setup.
+demo: Paying off a car loan
+aim: Borrow money for a car at 6% a year, paid monthly. How do the payments and total interest depend on the loan length?
+set: yrs = 5 | Loan length (years) | 1 to 10 by 1
+set: P = 20000 | Amount borrowed ($) | 5000 to 50000 by 1000
+out: r = 0.06/12 | Monthly rate
+out: pay = P*r/(1 - (1 + r)^(-12*yrs)) | Monthly payment ($)
+out: interest = pay*12*yrs - P | Total interest ($)
+plot: yrs, interest
+step: Compare a 3-year and a 7-year loan for $20,000.
+result: The payment formula comes from the sum of a geometric series. Longer loans have smaller payments but much more total interest, which is the trade-off TVM solvers help you compare.
 term: arithmetic sequence = a sequence with a common difference
 term: geometric series = the sum of terms of a geometric sequence
 term: sum to infinity = the limit of a convergent geometric series, u₁/(1 − r)
@@ -66,6 +76,15 @@ Exponential f(x) = aˣ has horizontal asymptote y = 0; logarithmic f(x) = logₐ
 ex: Find the asymptotes of f(x) = (2x + 1)/(x − 3).
 > Vertical: x = 3
 = Horizontal: y = 2/1 = 2
+demo: Decibels and distance
+aim: Sound intensity from a speaker falls with distance. Loudness in decibels uses a logarithm: L = 10 log₁₀(I/10⁻¹²).
+set: d = 10 | Distance from the speaker (m) | 1 to 100 by 1
+set: P = 1 | Speaker power (W) | 0.01 to 10 by 0.01
+out: I = P/(4*pi*d^2) | Intensity (W/m²)
+out: L = 10*log(I/1e-12) | Loudness (dB)
+plot: d, L
+step: How many decibels do you lose each time you double your distance?
+result: Doubling the distance quarters the intensity, which is always a drop of about 6 dB, because log turns multiplication into subtraction: 10 log(1/4) ≈ −6.
 term: discriminant = b² − 4ac, determining the number of real roots of a quadratic
 term: vertical asymptote = a vertical line the graph approaches but doesn't cross
 term: reciprocal function = a function of the form f(x) = k/x
@@ -102,6 +121,17 @@ HL extends to vectors (lines and planes in 3D, scalar and vector products) and c
 ex: The depth of water is d(t) = 3 sin(πt/6) + 5 meters. Find the maximum depth and the period.
 > Maximum when sin = 1: 3 + 5
 = 8 m; period 2π/(π/6) = 12 hours
+demo: Will the pole fit in the box?
+aim: Find the longest straight pole that fits in a box, and the angle it makes with the base.
+set: a = 60 | Length (cm) | 10 to 120 by 5
+set: b = 40 | Width (cm) | 10 to 100 by 5
+set: c = 30 | Height (cm) | 10 to 100 by 5
+out: base = sqrt(a^2 + b^2) | Base diagonal (cm)
+out: d = sqrt(a^2 + b^2 + c^2) | Space diagonal (cm)
+out: ang = atand(c/base) | Angle with the base (°)
+plot: c, d
+step: Use Pythagoras twice: first across the base, then up to the opposite corner.
+result: The space diagonal is √(a² + b² + c²). The angle between it and the base comes from the right triangle formed by the base diagonal and the height: tan θ = c/√(a² + b²).
 term: amplitude = half the distance between maximum and minimum
 term: period = the horizontal length of one cycle
 term: principal axis = the horizontal line midway between maximum and minimum
@@ -137,6 +167,14 @@ Discrete random variables: E(X) = Σ x P(X = x). Binomial distribution X ~ B(n, 
 ex: X ~ B(10, 0.3). Find E(X).
 > E(X) = np
 = 3
+demo: Quality control on bolts
+aim: Bolts must be 10.0 ± 0.2 mm. Lengths are normal with the machine's mean and standard deviation.
+set: sd = 0.1 | Standard deviation (mm) | 0.02 to 0.3 by 0.01
+set: mu = 10 | Machine mean (mm) | 9.8 to 10.2 by 0.01
+out: ok = 100*(normcdf((10.2 - mu)/sd) - normcdf((9.8 - mu)/sd)) | Within tolerance (%)
+plot: sd, ok
+step: What standard deviation keeps 99% of bolts in tolerance when the mean is exactly 10.0?
+result: P(9.8 < X < 10.2) uses the normal CDF. With σ = 0.1 mm about 95% pass; you need σ ≈ 0.078 mm for 99%. A mean that drifts off-center lowers the pass rate quickly.
 term: binomial distribution = the distribution of successes in n independent trials with constant probability p
 term: normal distribution = a symmetric, bell-shaped continuous distribution
 term: conditional probability = the probability of A given B
@@ -174,6 +212,15 @@ ex: Find the area under y = 3x² from x = 0 to 2.
 > ∫₀² 3x² dx = [x³] from 0 to 2
 = 8
 Internal assessment: the mathematical exploration is a 12–20 page investigation of a topic you choose, worth 20% of your grade.
+demo: A particle on a track
+aim: A particle moves with velocity v(t) = 6t − t² m/s, starting at the origin. Find its displacement by integrating.
+set: t = 3 | Time (s) | 0 to 9 by 0.1
+out: v = 6*t - t^2 | Velocity (m/s)
+out: s = 3*t^2 - t^3/3 | Displacement (m)
+out: dist = if(t > 6, 36 + (36 - s), s) | Total distance (m)
+plot: t, s
+step: When does the particle turn around? Compare displacement and total distance at t = 9.
+result: Displacement s = ∫v dt = 3t² − t³/3. The particle turns at t = 6 (v = 0); after that it moves back, so distance traveled exceeds displacement: at t = 9, s = 0 but the distance is 72 m.
 term: definite integral = an integral with limits, giving net area
 term: displacement = the integral of velocity over time
 term: mathematical exploration = the IB Math internal assessment, an independent investigation

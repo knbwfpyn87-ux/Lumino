@@ -27,6 +27,14 @@ ex: If 3x + 7 = 22, what is 2x? Choices: 5, 10, 15, 20
 > Solve: 3x = 15, x = 5
 > The question asks for 2x
 = 10
+demo: Why you should never leave a blank
+aim: The ACT has no guessing penalty and four answer choices. See how guessing on remaining questions changes your expected score.
+set: b = 8 | Questions you'd leave blank | 0 to 20 by 1
+set: e = 1 | Choices you can eliminate first | 0 to 2 by 1
+out: gain = b/(4 - e) | Expected extra correct answers
+plot: b, gain
+step: How much does eliminating one wrong choice help?
+result: Each blind guess is worth 1/4 of a point on average, and eliminating one choice raises that to 1/3. With no penalty, guessing can only help, so fill in every answer.
 term: backsolving = testing answer choices to find the one that works
 term: picking numbers = replacing variables with simple numbers to test expressions
 q: A question asks for 2x and you find x = 6. You choose… | *12 | 6 | 3 | 36
@@ -63,6 +71,13 @@ ex: f(x) = x² − 1 and g(x) = 2x. Find f(g(3)).
 > g(3) = 6
 > f(6) = 36 − 1
 = 35
+demo: Fireworks height
+aim: A firework is launched from a 4 ft platform at 96 ft/s. Its height is h = −16t² + 96t + 4 feet.
+set: t = 2 | Time (s) | 0 to 6.1 by 0.05
+out: h = -16*t^2 + 96*t + 4 | Height (ft)
+plot: t, h
+step: Find the maximum height and when it occurs: t = −b/(2a).
+result: The vertex is at t = 96/32 = 3 s, at a height of 148 ft. ACT questions often ask for the vertex, the zeros or the value at a given time.
 term: quadratic formula = x = (−b ± √(b² − 4ac)) / 2a
 term: function = a rule giving exactly one output for each input
 term: logarithm = the exponent to which a base must be raised to get a number
@@ -81,6 +96,14 @@ Coordinate geometry: midpoint ((x₁ + x₂)/2, (y₁ + y₂)/2), distance √((
 ex: A rectangle is 6 by 8. How long is its diagonal?
 > 6² + 8² = 100
 = 10
+demo: Fencing a rectangular garden
+aim: You have 40 m of fence for a rectangular garden. Which shape encloses the most area?
+set: x = 6 | Width (m) | 1 to 19 by 0.5
+out: L = 20 - x | Length (m)
+out: A = x*(20 - x) | Area (m²)
+plot: x, A
+step: Try a long, thin rectangle and a square.
+result: With a fixed perimeter, area x(20 − x) is greatest when the rectangle is a square, 10 m × 10 m = 100 m². Long, thin rectangles enclose much less.
 term: Pythagorean theorem = a² + b² = c² for right triangles
 term: midpoint formula = the average of the endpoints' coordinates
 term: circle equation = (x − h)² + (y − k)² = r²
@@ -117,6 +140,14 @@ Averages: mean = sum ÷ count. If you know the average and the count, you know t
 ex: The average of 4 tests is 85. What score on a 5th test raises the average to 87?
 > Current sum: 4 × 85 = 340; needed sum: 5 × 87 = 435
 = 435 − 340 = 95
+demo: Up 20%, then down 20%
+aim: A $100 item's price goes up by a percentage, then down by the same percentage. Does it get back to $100?
+set: p = 20 | Percent change (%) | 0 to 90 by 5
+out: after = 100*(1 + p/100)*(1 - p/100) | Final price ($)
+out: net = after - 100 | Net change ($)
+plot: p, after
+step: Predict the final price at 50% before you look.
+result: The decrease is applied to a bigger number, so you always end lower: 100(1 + p)(1 − p) = 100(1 − p²). Up and down 20% leaves $96; 50% leaves just $75.
 term: percent change = the change divided by the original amount, times 100
 term: least common multiple = the smallest number that is a multiple of each given number
 term: mean = the sum of values divided by their count

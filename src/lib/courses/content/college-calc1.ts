@@ -13,6 +13,14 @@ ex: Find lim x→3 (x² − 9)/(x − 3).
 > Factor: (x − 3)(x + 3)/(x − 3) = x + 3
 > Substitute x = 3
 = 6
+demo: Machining tolerance (ε and δ)
+aim: A machinist cuts a square plate that must have area 4 cm² within ±ε. How precisely must the side be cut (within δ of 2 cm)?
+set: e = 0.5 | Allowed area error ε (cm²) | 0.01 to 1 by 0.01
+out: d = min(sqrt(4 + e) - 2, 2 - sqrt(4 - e)) | Allowed side error δ (cm)
+out: ratio = d/e | δ ÷ ε
+plot: e, d
+step: Make ε smaller. Can you always find a δ that works?
+result: For every ε > 0 there's a δ > 0 so that |x − 2| < δ guarantees |x² − 4| < ε, which is exactly the ε–δ definition of lim x→2 x² = 4. Near 2, δ ≈ ε/4 because the slope there is 4.
 term: limit = the value a function approaches as the input approaches a point
 term: one-sided limit = a limit as x approaches from only the left or the right
 term: indeterminate form = an expression like 0/0 that needs more work to evaluate
@@ -68,6 +76,15 @@ Related rates: write an equation linking quantities, differentiate with respect 
 ex: Differentiate y = (3x² + 1)⁵.
 > Outside: 5( )⁴; inside derivative: 6x
 = 30x(3x² + 1)⁴
+demo: Filling a conical tank
+aim: Water flows at 2 m³/min into an upside-down cone whose radius is half its height. How fast is the water level rising?
+set: h = 2 | Water depth (m) | 0.2 to 6 by 0.1
+set: Q = 2 | Inflow (m³/min) | 0.5 to 5 by 0.5
+out: V = pi*h^3/12 | Water volume (m³)
+out: dh = 4*Q/(pi*h^2) | dh/dt (m/min)
+plot: h, dh
+step: Differentiate V = πh³/12 with respect to time and solve for dh/dt.
+result: dV/dt = (πh²/4) dh/dt, so dh/dt = 4Q/(πh²). The level rises fast at first and slows as the cone widens, even though water flows in at a constant rate.
 term: chain rule = the derivative of f(g(x)) is f′(g(x)) · g′(x)
 term: implicit differentiation = differentiating an equation without solving for y first
 term: related rates = problems finding how fast one quantity changes from another's rate
@@ -87,6 +104,15 @@ Optimization: write the quantity to maximize or minimize as one variable, differ
 ex: Find two positive numbers summing to 20 with maximum product.
 > P = x(20 − x) = 20x − x²; P′ = 20 − 2x = 0
 = x = 10, so 10 and 10 (product 100)
+demo: Maximizing profit
+aim: A company sells x units at price 100 − 0.5x dollars, with costs of $500 plus $20 per unit.
+set: x = 50 | Units sold | 0 to 160 by 1
+out: R = x*(100 - 0.5*x) | Revenue ($)
+out: P = R - (500 + 20*x) | Profit ($)
+out: MP = 80 - x | Marginal profit P′(x) ($)
+plot: x, P
+step: Solve P′(x) = 0 and confirm it's a maximum with P″.
+result: Profit is maximized where marginal revenue equals marginal cost: P′(x) = 80 − x = 0 at x = 80, giving $2,700. P″ = −1 < 0 confirms a maximum.
 term: critical point = where f′ is zero or undefined
 term: inflection point = where concavity changes
 term: L'Hôpital's rule = for 0/0 or ∞/∞, lim f/g = lim f′/g′

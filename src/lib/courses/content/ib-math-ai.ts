@@ -12,6 +12,15 @@ ex: A car worth $20,000 depreciates 15% per year. Find its value after 3 years.
 > 20,000 × 0.85³
 = about $12,282.50
 Inflation reduces purchasing power; real interest rates account for it.
+demo: Car depreciation
+aim: A $25,000 car loses a fixed percentage of its value every year.
+set: n = 5 | Years | 0 to 15 by 1
+set: r = 15 | Depreciation rate (% per year) | 5 to 30 by 1
+out: V = 25000*(1 - r/100)^n | Value ($)
+out: lost = 25000 - V | Value lost ($)
+plot: n, V
+step: When is the car worth less than half its price?
+result: Depreciation is geometric: V = 25,000(1 − r)ⁿ. The car loses the most dollars in the first years. At 15% it's worth half after about 4.3 years.
 term: percentage error = the relative difference between an estimate and the exact value, as a percent
 term: compound interest = interest calculated on both the principal and previous interest
 term: depreciation = a decrease in value over time
@@ -65,6 +74,14 @@ Choose a model by examining the data pattern, context and residuals. Use the coe
 ex: Daylight hours peak at 15 in June and bottom at 9 in December. Find the amplitude and principal axis.
 > Amplitude = (15 − 9)/2 = 3
 = Principal axis y = 12
+demo: A rumor spreads
+aim: A rumor spreads through a school of 1,000 students, starting with one person. Model it with a logistic function.
+set: t = 6 | Days | 0 to 20 by 0.5
+set: k = 0.8 | Spreading rate k | 0.2 to 2 by 0.1
+out: N = 1000/(1 + 999*exp(-k*t)) | Students who have heard
+plot: t, N
+step: When has half the school heard? What does the curve level off at?
+result: Logistic models fit growth that slows as it approaches a limit (the carrying capacity, 1,000). Half have heard at t = ln(999)/k, about 8.6 days when k = 0.8.
 term: exponential model = a model of the form ka^x + c for growth or decay
 term: sinusoidal model = a model using sine or cosine for periodic data
 term: coefficient of determination = R², measuring how well a model fits data
@@ -101,6 +118,15 @@ Applications: placing new stores or emergency services, mapping cell phone tower
 ex: Two sites are at (0, 0) and (6, 0). Where is the boundary between their cells?
 > The perpendicular bisector of the segment
 = The vertical line x = 3
+demo: Which hospital is closer?
+aim: Hospitals sit at A(0, 0) and B(10, 0) km. For a house at (x, 3), find which is closer. The Voronoi edge between them is the perpendicular bisector.
+set: x = 3 | House x-coordinate (km) | -5 to 15 by 0.5
+out: dA = sqrt(x^2 + 9) | Distance to A (km)
+out: dB = sqrt((x - 10)^2 + 9) | Distance to B (km)
+out: diff = dA - dB | A minus B (km)
+plot: x, diff
+step: Find where both distances are equal. Does the house's y-coordinate change the answer?
+result: Points equally distant from A and B lie on the perpendicular bisector x = 5. Every house left of it belongs to A's Voronoi cell and goes to hospital A.
 term: Voronoi diagram = a partition of a plane into regions closest to each site
 term: site = a point around which a Voronoi cell is built
 term: perpendicular bisector = a line perpendicular to a segment through its midpoint
@@ -137,6 +163,15 @@ Internal assessment: the mathematical exploration often uses real data and stati
 ex: A chi-squared test for independence gives p = 0.02 at the 5% level. Conclusion?
 > 0.02 < 0.05
 = Reject H₀: there is evidence the variables are dependent
+demo: Is the die loaded?
+aim: Roll a die 120 times. A fair die gives about 20 sixes. Test H₀: p = 1/6 against Hₐ: p > 1/6.
+set: x = 27 | Number of sixes | 10 to 40 by 1
+out: z = (x - 20)/sqrt(120/6*5/6) | z-statistic
+out: P = 100*(1 - normcdf(z)) | p-value (%)
+out: rej = if(P < 5, 1, 0) | Reject H₀ at 5%? (1 = yes)
+plot: x, P
+step: What is the smallest number of sixes that gives significant evidence at the 5% level?
+result: Under H₀ the number of sixes has mean 20 and SD ≈ 4.08. You need about 27 sixes (p ≈ 4%) to reject H₀ at 5%. A small p-value means the result would be unusual for a fair die.
 term: null hypothesis = the hypothesis of no effect or independence
 term: p-value = the probability of results this extreme if H₀ is true
 term: chi-squared test = a test comparing observed and expected frequencies
@@ -173,6 +208,14 @@ ex: Estimate the area under a curve with y-values 2, 4, 5 at x = 0, 1, 2.
 > h = 1
 > (1/2)[2 + 5 + 2(4)]
 = 7.5 square units
+demo: Trapezoidal rule for a garden bed
+aim: A garden bed's edge follows y = x² from 0 to 3 m. Estimate its area with n trapezoids. The exact area is 9 m².
+set: n = 3 | Number of trapezoids | 1 to 30 by 1
+out: T = 9 + 4.5/n^2 | Trapezoidal estimate (m²)
+out: err = T - 9 | Error (m²)
+plot: n, T
+step: How does the error change when you double the number of trapezoids?
+result: The trapezoidal rule overestimates here because the curve is concave up. Its error shrinks with 1/n²: doubling n cuts the error to a quarter.
 term: definite integral = the accumulated area under a curve between two limits
 term: trapezoidal rule = a method for estimating area using trapezoids
 term: antiderivative = a function whose derivative is the given function

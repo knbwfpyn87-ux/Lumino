@@ -30,6 +30,14 @@ A discrete random variable has expected value E(X) = Σx·P(x). The binomial dis
 ex: A game pays $10 with probability 0.2 and $0 otherwise. Find E(X).
 > 10(0.2) + 0(0.8)
 = $2
+demo: Selling an extended warranty
+aim: A store sells a $50 warranty. If the product fails, a repair costs the store $300. What is the store's expected profit per warranty?
+set: p = 10 | Chance of failure (%) | 0 to 30 by 1
+out: E = 50 - p/100*300 | Expected profit ($)
+out: sd = 300*sqrt(p/100*(1 - p/100)) | Standard deviation ($)
+plot: p, E
+step: At what failure rate does the warranty break even?
+result: E(X) = Σx·P(x) = 50 − 300p. The store profits when the failure rate is below 16.7%. Selling many warranties makes the average result close to the expected value (law of large numbers).
 term: independent events = events where one doesn't affect the other's probability
 term: conditional probability = the probability of A given that B occurred
 term: expected value = the long-run average of a random variable
@@ -63,6 +71,16 @@ say: Inference uses a sample to draw conclusions about a population, with a stat
 key: A confidence interval is estimate ± critical value × standard error, for example x̄ ± t*·s/√n or p̂ ± z*·√(p̂(1 − p̂)/n). A 95% interval means 95% of such intervals capture the true parameter.
 Hypothesis tests: state H₀ and Hₐ, check conditions, compute a test statistic and p-value, and compare to α. If p < α, reject H₀. Type I error: rejecting a true H₀ (probability α). Type II error: failing to reject a false H₀. Power = 1 − P(Type II).
 Other tests: two-sample t, chi-square (goodness of fit, independence) and linear regression (slope, r, r²).
+demo: Is the coffee machine accurate?
+aim: A machine should dispense 250 mL (σ = 6 mL). A sample of 36 cups has mean x̄. Test H₀: μ = 250.
+set: xb = 252 | Sample mean (mL) | 245 to 255 by 0.1
+out: z = (xb - 250)/(6/sqrt(36)) | Test statistic z
+out: P = 100*2*(1 - normcdf(abs(z))) | Two-sided p-value (%)
+out: lo = xb - 1.96 | 95% CI low (mL)
+out: hi = xb + 1.96 | 95% CI high (mL)
+plot: xb, P
+step: How far from 250 must the sample mean be to reject H₀ at α = 0.05? Check whether 250 lies inside the confidence interval.
+result: With SE = 1 mL, a sample mean beyond 250 ± 1.96 gives p < 0.05. The test rejects exactly when 250 falls outside the 95% confidence interval, which links the two methods.
 term: confidence interval = a range of plausible values for a parameter
 term: p-value = the probability of results at least this extreme if H₀ is true
 term: Type I error = rejecting a true null hypothesis
