@@ -68,6 +68,15 @@ ex: Evaluate 2x² − 3x when x = −4
 > Multiply: 32 + 12
 = 44
 oops: (−4)² is 16, but −4² means −(4²) = −16. Parentheses matter!
+demo: Taxi fare
+aim: A taxi charges $3 to start plus $2.50 per mile, and you add a tip. Evaluate 3 + 2.5m for your ride, then add the tip.
+set: m = 4 | Miles | 0 to 30 by 0.5
+set: t = 15 | Tip (%) | 0 to 25 by 5
+out: fare = 3 + 2.5*m | Fare ($)
+out: total = fare*(1 + t/100) | Total with tip ($)
+plot: m, total
+step: Change the miles and watch which part of the expression changes.
+result: Substituting values into an expression gives the cost of any ride. The $3 is the constant term and $2.50 is the coefficient of m, the cost per mile.
 term: term = a number, a variable, or a product of them, separated from others by + or −
 term: like terms = terms with the same variables raised to the same powers
 term: coefficient = the number multiplying a variable, like 5 in 5x
@@ -143,6 +152,14 @@ ex: A gym charges $25 to join plus $15 per month. After how many months will you
 > 25 + 15m = 130
 > 15m = 105, so m = 7
 = 7 months
+demo: Saving for a bike
+aim: You want a $300 bike and already have $60. How many weeks will it take to save the rest?
+set: w = 20 | Saved per week ($) | 5 to 60 by 5
+set: g = 300 | Bike price ($) | 100 to 600 by 10
+out: weeks = (g - 60)/w | Weeks needed
+plot: w, weeks
+step: Write and solve the equation 60 + 20w = 300.
+result: Solve 60 + rx = goal for x: weeks = (goal − 60) ÷ rate. Doubling what you save each week halves the time.
 term: literal equation = an equation with two or more variables, such as a formula
 term: variable = a letter that stands for an unknown or changing quantity
 q: Solve A = bh for h | *h = A/b | h = Ab | h = A − b | h = b/A
@@ -164,6 +181,14 @@ ex: Solve −3x + 4 > 19
 = x < −5
 On a number line, use an open circle for < or > (the endpoint is not included) and a closed circle for ≤ or ≥ (it is included). Shade the side that works.
 tip: Test a number from your answer in the original inequality. For x < −5, try x = −6: −3(−6) + 4 = 22, and 22 > 19 ✓.
+demo: Concert budget
+aim: You have a budget for a concert: a $15 ticket fee plus $8 per snack. How many snacks can you buy?
+set: b = 50 | Budget ($) | 15 to 100 by 1
+out: max = floor((b - 15)/8) | Most snacks you can buy
+out: left = b - 15 - 8*max | Money left ($)
+plot: b, max
+step: Solve 15 + 8s ≤ 50. Why must the answer be rounded down?
+result: The inequality 15 + 8s ≤ b gives s ≤ (b − 15)/8. Because you can't buy part of a snack, you round down to a whole number, which makes the graph a staircase.
 term: inequality = a statement that compares two expressions using <, >, ≤ or ≥
 term: open circle = shows an endpoint that is not included on a number line graph
 term: closed circle = shows an endpoint that is included on a number line graph
@@ -252,6 +277,14 @@ ex: A plant is 4 cm tall on day 2 and 13 cm on day 5. Find the average rate of c
 > Change in time: 5 − 2 = 3 days
 > 9 ÷ 3
 = 3 cm per day
+demo: Road trip rate of change
+aim: A car drives at a steady speed. See how distance changes with time.
+set: t = 2 | Hours driven | 0 to 8 by 0.25
+set: s = 60 | Speed (mph) | 20 to 80 by 5
+out: d = s*t | Distance (miles)
+plot: t, d
+step: Pick two times and compute (change in distance) ÷ (change in time).
+result: The rate of change is the same between any two points: it equals the speed. A constant rate of change makes a linear function, and the steeper the line, the faster the car.
 term: domain = the set of all input values of a function
 term: range = the set of all output values of a function
 term: rate of change = how much the output changes for each unit change in the input
@@ -295,6 +328,14 @@ ex: Write the line with slope 3 through (2, 5) in slope-intercept form
 > Add 5: y = 3x − 1
 = y = 3x − 1
 Standard form is Ax + By = C. It's great for finding intercepts: set x = 0 to find the y-intercept and y = 0 to find the x-intercept.
+demo: Lemonade stand profit
+aim: Each cup sells for $1.50 and costs $0.40 to make, and you spent $20 on a stand. Graph profit = 1.10x − 20.
+set: x = 10 | Cups sold | 0 to 60 by 1
+set: p = 1.5 | Price per cup ($) | 0.5 to 3 by 0.25
+out: profit = (p - 0.4)*x - 20 | Profit ($)
+plot: x, profit
+step: What is the y-intercept and what does it mean? Find the break-even point.
+result: In y = mx + b, the slope m = price − cost is the profit per cup, and the intercept b = −20 is your starting cost. You break even where the line crosses zero (about 19 cups at $1.50).
 term: y-intercept = the point where a line crosses the y-axis (x = 0)
 term: x-intercept = the point where a line crosses the x-axis (y = 0)
 term: slope-intercept form = y = mx + b
@@ -377,6 +418,15 @@ ex: Adult tickets cost $8 and student tickets cost $5. 120 tickets sold for $750
 = 50 adult, 70 student
 A system of inequalities is solved by graphing each inequality and shading. The solution is the overlapping region. Use a dashed line for < or > and a solid line for ≤ or ≥.
 tip: To check a point, plug it into every inequality. It's a solution only if all of them are true.
+demo: Streaming plan break-even
+aim: Plan A costs $40 plus $5 per movie; Plan B costs $10 plus $10 per movie. Find where they cost the same.
+set: v = 3 | Movies rented | 0 to 12 by 1
+out: A = 40 + 5*v | Plan A ($)
+out: Bc = 10 + 10*v | Plan B ($)
+out: diff = A - Bc | A minus B ($)
+plot: v, diff
+step: Solve the system y = 40 + 5x and y = 10 + 10x.
+result: The two lines meet at x = 6, y = 70. Below 6 movies Plan B is cheaper; above 6, Plan A. The solution of a system is the point that satisfies both equations.
 term: solution region = the area where the shading of all inequalities in a system overlaps
 term: dashed line = a boundary line that is not included (for < or >)
 q: Two numbers add to 20 and differ by 6. What is the larger number? | *13 | 14 | 7 | 12
@@ -435,6 +485,15 @@ ex: A $500 investment grows 6% per year. How much after 3 years?
 > 1.06³ ≈ 1.191
 = about $595.51
 Linear functions add the same amount each step; exponential functions multiply by the same factor. Over time, exponential growth always overtakes linear growth.
+demo: Compound interest
+aim: Invest $1,000 at a yearly interest rate and watch it grow exponentially.
+set: t = 10 | Years | 0 to 40 by 1
+set: r = 5 | Interest rate (%) | 1 to 12 by 0.5
+out: A = 1000*(1 + r/100)^t | Balance ($)
+out: simple = 1000*(1 + r/100*t) | With simple interest ($)
+plot: t, A
+step: Compare the compound and simple balances after 30 years.
+result: Compound interest multiplies by the same factor each year, so growth speeds up over time. At 5%, money doubles about every 14 years; simple interest only adds the same amount each year.
 term: exponential growth = increase by the same percent each time period; growth factor greater than 1
 term: exponential decay = decrease by the same percent each time period; factor between 0 and 1
 term: growth factor = the number b multiplied each period in y = a · bˣ
@@ -458,6 +517,13 @@ ex: Multiply (x + 4)(x − 3)
 > Combine: x² + x − 12
 = x² + x − 12
 oops: (x + 3)² is not x² + 9. It's (x + 3)(x + 3) = x² + 6x + 9.
+demo: Open-top box from cardboard
+aim: Cut equal squares from the corners of a 20 cm × 30 cm sheet and fold up the sides. Which cut gives the biggest box?
+set: x = 3 | Square cut (cm) | 0 to 10 by 0.1
+out: V = x*(20 - 2*x)*(30 - 2*x) | Volume (cm³)
+plot: x, V
+step: Expand x(20 − 2x)(30 − 2x) into a polynomial. What degree is it?
+result: Volume is the cubic polynomial 4x³ − 100x² + 600x. Too small a cut makes a shallow box, too big a narrow one; the maximum is near x = 3.9 cm (about 1,056 cm³).
 term: polynomial = a sum of terms with variables raised to whole-number powers
 term: degree = the highest exponent in a polynomial
 term: binomial = a polynomial with two terms
@@ -516,6 +582,14 @@ ex: Find the vertex of y = x² − 6x + 5
 > y = 3² − 6(3) + 5 = −4
 = vertex (3, −4)
 Vertex form y = a(x − h)² + k shows the vertex (h, k) directly.
+demo: Basketball shot
+aim: A ball leaves a player's hands 2 m high. Its height is h = −4.9t² + vt + 2.
+set: t = 0.5 | Time (s) | 0 to 2 by 0.02
+set: v = 8 | Upward launch speed (m/s) | 4 to 12 by 0.5
+out: h = -4.9*t^2 + v*t + 2 | Height (m)
+plot: t, h
+step: Find the vertex: when does the ball reach its highest point?
+result: The path is a parabola opening down. The vertex is at t = v/9.8, and the ball passes the 3.05 m rim height twice: once rising and once falling.
 term: parabola = the U-shaped graph of a quadratic function
 term: vertex = the highest or lowest point of a parabola
 term: axis of symmetry = the vertical line through the vertex that splits a parabola in half
@@ -580,6 +654,14 @@ ex: Find the mean and median of 4, 8, 6, 10, 2
 > Sorted: 2, 4, 6, 8, 10; middle value 6
 = mean 6, median 6
 An outlier is a value far from the rest. The median and IQR resist outliers; the mean and range are pulled by them.
+demo: Mean versus median
+aim: Five test scores are 70, 72, 75, 78 and 80. Add a sixth score and see how the mean and median change.
+set: x = 76 | Sixth score | 0 to 100 by 1
+out: mean = (375 + x)/6 | Mean
+out: median = (min(max(x, 72), 75) + min(max(x, 75), 78))/2 | Median
+plot: x, mean
+step: Make the sixth score an outlier, like 10. Which measure moves more?
+result: The mean uses every value, so an outlier drags it a long way. The median depends only on the middle values, so it barely moves. Use the median for skewed data.
 term: mean = the sum of the values divided by the number of values
 term: median = the middle value of an ordered data set
 term: outlier = a value much larger or smaller than the rest of the data

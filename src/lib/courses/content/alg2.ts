@@ -12,6 +12,16 @@ ex: Describe y = −2(x + 3)² − 1 compared to y = x²
 > −1: shift down 1
 = Left 3, reflected, stretched by 2, down 1; vertex (−3, −1)
 oops: Inside changes go the opposite way. f(x − 4) moves the graph RIGHT 4, not left.
+demo: Transforming a parabola
+aim: A fountain's water follows y = a(x − h)² + k. Move the sliders and see how each parameter transforms the parent graph y = x².
+set: x = 0 | x | -5 to 5 by 0.1
+set: a = -1 | a (stretch and flip) | -3 to 3 by 0.25
+set: hh = 1 | h (horizontal shift) | -3 to 3 by 0.5
+set: k = 4 | k (vertical shift) | -4 to 6 by 0.5
+out: y = a*(x - hh)^2 + k | y
+plot: x, y
+step: Change one slider at a time and describe what happens to the graph.
+result: h shifts the graph left or right (watch the sign: x − h), k shifts it up or down, |a| > 1 stretches it, and a negative a flips it upside down. The vertex is at (h, k).
 term: parent function = the simplest function in a family, like y = x² for quadratics
 term: translation = shifting a graph left, right, up or down without changing its shape
 term: vertical stretch = multiplying the outputs by a number greater than 1, making the graph steeper
@@ -68,6 +78,14 @@ ex: Write y = x² + 6x + 2 in vertex form
 > Factor: (x + 3)² − 7
 = y = (x + 3)² − 7, vertex (−3, −7)
 Completing the square also solves equations: x² + 6x + 2 = 0 becomes (x + 3)² = 7, so x = −3 ± √7.
+demo: Pricing concert tickets
+aim: At $20 a ticket, 500 people come; each $1 increase loses 20 people. Find the price that maximizes revenue.
+set: p = 20 | Ticket price ($) | 5 to 40 by 0.5
+out: n = 500 - 20*(p - 20) | Tickets sold
+out: R = p*n | Revenue ($)
+plot: p, R
+step: Write R = p(900 − 20p) in vertex form by completing the square.
+result: Revenue is a downward parabola: R = −20(p − 22.5)² + 10,125. The vertex gives the best price, $22.50, for $10,125. Raising the price further loses too many customers.
 term: vertex form = y = a(x − h)² + k, where (h, k) is the vertex
 term: completing the square = adding (b/2)² to make a perfect square trinomial
 q: What number completes the square for x² − 10x? | *25 | 100 | −25 | 5
@@ -126,6 +144,14 @@ The degree is the highest exponent; the leading coefficient is the number in fro
 - Odd degree, negative: up on the left, down on the right.
 A polynomial of degree n has at most n real zeros and at most n − 1 turning points.
 A zero's multiplicity is how many times its factor appears. Odd multiplicity: the graph crosses the x-axis. Even multiplicity: it touches and turns around.
+demo: Roller coaster track
+aim: A section of track follows a cubic, y = a(x + 3)(x − 1)(x − 4)/10. Explore its zeros and end behavior.
+set: x = 0 | Horizontal position | -5 to 6 by 0.1
+set: a = 1 | Leading coefficient a | -2 to 2 by 0.25
+out: y = a*(x + 3)*(x - 1)*(x - 4)/10 | Track height
+plot: x, y
+step: Where does the track cross ground level? What happens at the far ends when a is negative?
+result: The factors give zeros at x = −3, 1 and 4. A cubic with positive leading coefficient falls on the left and rises on the right; a negative a reverses that end behavior.
 term: end behavior = what the y-values do as x goes to positive or negative infinity
 term: leading coefficient = the coefficient of the term with the highest degree
 term: multiplicity = the number of times a factor appears in a polynomial
@@ -199,6 +225,14 @@ ex: Solve √(x + 7) = x − 5
 > Check x = 2: √9 = 3 but 2 − 5 = −3 ✗
 = x = 9 (x = 2 is extraneous)
 oops: Squaring both sides can create extraneous solutions. Always check!
+demo: Skid marks and speed
+aim: Accident investigators estimate a car's speed from its skid marks with the formula s = √(30df).
+set: d = 100 | Skid length (ft) | 10 to 300 by 5
+set: f = 0.7 | Road friction (dry 0.7, wet 0.4) | 0.2 to 1 by 0.05
+out: s = sqrt(30*d*f) | Speed (mph)
+plot: d, s
+step: How long are the skid marks for a car going 60 mph on dry pavement? Solve the radical equation.
+result: Speed grows with the square root of distance, so doubling the speed makes skid marks four times as long. Solving 60 = √(30 × d × 0.7) gives d ≈ 171 ft.
 term: extraneous solution = a value that comes from solving but does not satisfy the original equation
 term: radical equation = an equation with a variable inside a radical
 q: Solve √(2x) = 6 | *x = 18 | x = 3 | x = 36 | x = 12
@@ -231,6 +265,14 @@ ex: $1,000 is invested at 5% compounded continuously. How much after 10 years?
 > A = 1000e^(0.05 × 10) = 1000e^0.5
 > e^0.5 ≈ 1.6487
 = about $1,648.72
+demo: Compounding more often
+aim: Invest $1,000 at 10% for one year. What happens as interest is compounded more and more often?
+set: n = 1 | Compounding periods per year | 1 to 365 by 1
+out: A = 1000*(1 + 0.1/n)^n | Balance after 1 year ($)
+out: cont = 1000*exp(0.1) | Continuous compounding ($)
+plot: n, A
+step: Compare yearly (1), monthly (12) and daily (365) compounding.
+result: More frequent compounding helps, but with diminishing returns. The balance approaches $1,000e^0.1 ≈ $1,105.17, continuous compounding. That limit is where the number e comes from.
 term: exponential function = a function where the variable is in the exponent, f(x) = a · bˣ
 term: e = an irrational number, about 2.71828, the base of continuous growth
 term: horizontal asymptote = a horizontal line a graph approaches but does not reach as x grows
@@ -294,6 +336,13 @@ ex: Find the asymptotes of f(x) = (3x − 1)/(x + 4)
 > Denominator zero at x = −4: vertical asymptote x = −4
 > Equal degrees: y = 3/1 = 3
 = x = −4 and y = 3
+demo: Average cost of making shirts
+aim: Printing shirts costs $500 to set up plus $2 per shirt. What is the average cost per shirt?
+set: x = 50 | Shirts printed | 10 to 1000 by 10
+out: C = (500 + 2*x)/x | Average cost ($ per shirt)
+plot: x, C
+step: What value does the average cost approach as you print more shirts?
+result: C(x) = (500 + 2x)/x has a horizontal asymptote at y = 2: the setup cost is spread over more shirts, but each still costs at least $2. There's a vertical asymptote at x = 0.
 term: rational function = a function that is a ratio of two polynomials
 term: vertical asymptote = a vertical line x = a that the graph approaches but never crosses
 term: hole = a missing point on a graph where a common factor cancels
@@ -370,6 +419,15 @@ ex: Find the 8th term of 3, 6, 12, 24, …
 = 384
 Sum of a finite geometric series: Sₙ = a₁(1 − rⁿ) ÷ (1 − r).
 If |r| < 1, an infinite geometric series converges to S = a₁ ÷ (1 − r). If |r| ≥ 1, it diverges (no finite sum).
+demo: Bouncing ball
+aim: A ball dropped from 10 m bounces back to a fraction of its height each time.
+set: n = 3 | Bounce number | 0 to 15 by 1
+set: r = 0.7 | Rebound ratio | 0.3 to 0.95 by 0.05
+out: h = 10*r^n | Height of bounce n (m)
+out: total = 10 + 2*10*r*(1 - r^n)/(1 - r) | Total distance traveled (m)
+plot: n, h
+step: What does the total distance approach as the number of bounces grows?
+result: Bounce heights form a geometric sequence 10rⁿ. The total distance is a geometric series that converges to 10 + 20r/(1 − r), finite even though the ball bounces forever (in theory).
 term: geometric sequence = a sequence where each term is multiplied by a constant ratio
 term: common ratio = the number each term is multiplied by in a geometric sequence
 term: converge = when an infinite series approaches a finite sum
@@ -426,6 +484,14 @@ ex: Describe y = 3 sin(2x) + 1
 > Midline: y = 1, so it ranges from −2 to 4
 = amplitude 3, period π, midline y = 1
 The tangent function y = tan x has period π and vertical asymptotes where cos x = 0.
+demo: Riding a Ferris wheel
+aim: A Ferris wheel 36 m across has its center 20 m up and turns once every few minutes. Track your height.
+set: t = 1 | Time (min) | 0 to 10 by 0.1
+set: T = 4 | Time for one turn (min) | 2 to 10 by 0.5
+out: h = 20 - 18*cos(2*pi*t/T) | Height (m)
+plot: t, h
+step: Identify the amplitude, midline and period from the graph.
+result: h = 20 − 18cos(2πt/T): amplitude 18 m, midline 20 m and period T. Sine and cosine model anything that repeats, from tides to sound waves.
 term: amplitude = half the distance between a wave's maximum and minimum
 term: period = the horizontal length of one complete cycle of a repeating function
 term: midline = the horizontal line halfway between a wave's maximum and minimum
@@ -499,6 +565,15 @@ A z-score tells how many standard deviations a value is from the mean: z = (x �
 ex: Test scores are normal with μ = 75 and σ = 8. What percent score between 67 and 83?
 > 67 and 83 are 1 standard deviation below and above
 = about 68%
+demo: Designing a doorway
+aim: Adult heights are roughly normal with mean 170 cm and standard deviation 10 cm. How tall must a door be?
+set: x = 190 | Height (cm) | 140 to 210 by 1
+set: mu = 170 | Mean height (cm) | 150 to 185 by 1
+out: z = (x - mu)/10 | z-score
+out: pct = 100*(1 - normcdf(z)) | People taller than this (%)
+plot: x, pct
+step: What height is taller than 99.9% of people?
+result: Converting to a z-score and using the normal curve, only about 2.3% of people are taller than 190 cm (z = 2). Designers aim for z ≈ 3 or more, which is why doors are about 200 cm tall.
 term: normal distribution = a symmetric, bell-shaped distribution of data
 term: standard deviation = a measure of how spread out data is from the mean
 term: z-score = the number of standard deviations a value is from the mean

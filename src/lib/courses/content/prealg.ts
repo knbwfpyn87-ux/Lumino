@@ -12,6 +12,14 @@ ex: Simplify −8 − (−3) + (−4)(2)
 > −5 + (−8)
 = −13
 tip: Think of a number line: adding a positive moves right, adding a negative moves left.
+demo: Bank account balance
+aim: You start with $40 and the same amount is added or taken out each month. Track your balance with integers.
+set: n = 3 | Months | 0 to 12 by 1
+set: c = -15 | Monthly change ($) | -50 to 50 by 5
+out: B = 40 + c*n | Balance ($)
+plot: n, B
+step: Set a negative monthly change. In which month does the balance go below zero?
+result: Each month adds the same integer (positive or negative), so the balance changes steadily. A negative balance means you owe money: −20 means you're $20 in debt.
 term: integer = a whole number or its opposite
 term: absolute value = the distance of a number from zero
 term: opposite = a number the same distance from zero on the other side, like 5 and −5
@@ -74,6 +82,16 @@ ex: A $60 jacket is 25% off. What's the sale price?
 ex: A price rises from $40 to $50. Percent change?
 > (50 − 40) ÷ 40 = 0.25
 = 25% increase
+demo: Sale price with tax
+aim: A $60 jacket is on sale. Find the final price after the discount and 8% sales tax.
+set: d = 25 | Discount (%) | 0 to 70 by 5
+set: p = 60 | Original price ($) | 10 to 200 by 5
+out: sale = p*(1 - d/100) | Sale price ($)
+out: total = sale*1.08 | Price with 8% tax ($)
+out: saved = p*1.08 - total | You save ($)
+plot: d, total
+step: Find the price at 25% off. Is a 50% discount twice as many dollars saved?
+result: Multiplying by (1 − discount) and then by 1.08 gives the final price. The total falls in a straight line as the discount grows, and 50% off saves exactly twice as much as 25% off.
 term: percent = a ratio out of 100
 term: discount = an amount subtracted from the original price
 term: percent change = the change divided by the original amount, as a percent
@@ -115,6 +133,15 @@ Inequalities use <, >, ≤, ≥. Solve them like equations, but flip the sign if
 ex: Solve −2x > 8
 > Divide by −2 and flip
 = x < −4
+demo: Choosing a gym plan
+aim: Gym A costs $40 a month plus $2 a visit; Gym B costs $10 a month plus $6 a visit. Which is cheaper for you?
+set: v = 5 | Visits per month | 0 to 20 by 1
+out: A = 40 + 2*v | Gym A cost ($)
+out: Bc = 10 + 6*v | Gym B cost ($)
+out: diff = A - Bc | A minus B ($)
+plot: v, diff
+step: Find the number of visits where both plans cost the same.
+result: Solving 40 + 2v = 10 + 6v gives v = 7.5. If you go fewer than about 7 times a month Gym B is cheaper; from 8 visits on Gym A wins. Equations help you make real choices.
 term: equation = a statement that two expressions are equal
 term: inverse operations = operations that undo each other
 term: inequality = a statement comparing expressions with <, >, ≤ or ≥
@@ -133,6 +160,15 @@ ex: A circular garden has a radius of 5 m. Find its area and circumference (use 
 > C = 2 × 3.14 × 5
 = 78.5 m² and 31.4 m
 Angles: a straight line is 180°, a right angle is 90°, and a triangle's angles add to 180°.
+demo: Is the bigger pizza a better deal?
+aim: Compare pizza sizes using area, since you eat the area, not the diameter.
+set: d = 12 | Diameter (inches) | 6 to 20 by 1
+set: p = 14 | Price ($) | 5 to 30 by 1
+out: A = pi*(d/2)^2 | Area (square inches)
+out: per = A/p | Square inches per dollar
+plot: d, A
+step: Compare a 12-inch pizza for $14 with an 18-inch pizza for $20.
+result: Area grows with the square of the diameter: an 18-inch pizza has 2.25 times the area of a 12-inch one. Usually the large is far better value per square inch.
 term: perimeter = the distance around a figure
 term: area = the amount of space inside a two-dimensional figure
 term: circumference = the distance around a circle
@@ -190,6 +226,13 @@ ex: A bag has 3 red and 5 blue marbles. What's the probability of drawing red?
 - Experimental probability comes from actually doing trials; theoretical probability comes from reasoning.
 - For independent events, multiply probabilities: P(heads and rolling a 6) = 1/2 × 1/6 = 1/12.
 - A sample space lists all possible outcomes; a tree diagram helps organize them.
+demo: Rolling for a six
+aim: How likely are you to roll at least one six if you get several rolls?
+set: n = 3 | Number of rolls | 1 to 20 by 1
+out: P = (1 - (5/6)^n)*100 | Chance of at least one six (%)
+plot: n, P
+step: How many rolls do you need for a better-than-even chance?
+result: Use the complement: P(at least one six) = 1 − P(no sixes) = 1 − (5/6)ⁿ. You need 4 rolls to pass 50%, and the chance never quite reaches 100%.
 term: probability = a number from 0 to 1 describing how likely an event is
 term: sample space = the set of all possible outcomes
 term: independent events = events where one doesn't affect the other

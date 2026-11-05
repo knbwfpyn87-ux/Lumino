@@ -46,7 +46,7 @@ export default function Lab({ b, onDone }: { b: LabBlock; onDone?: () => void })
       <div className="lbtag">{isLab ? '🧪 Virtual lab' : '📐 Real-world demo'}</div>
       <h4 className="labtitle">{b.title}</h4>
       <p className="labaim"><b>{isLab ? 'Goal: ' : ''}</b>{b.aim}</p>
-      {isLab && b.steps.length > 0 && <ol className="labsteps">{b.steps.map((s, i) => <li key={i}>{s}</li>)}</ol>}
+      {b.steps.length > 0 && <>{!isLab && <p className="labtry">Try this:</p>}<ol className="labsteps">{b.steps.map((s, i) => <li key={i}>{s}</li>)}</ol></>}
       <div className="labgrid">
         <div className="labcontrols">
           {b.sets.map(s => (

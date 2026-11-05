@@ -656,3 +656,4 @@ button.choice.faded { opacity:.55; }
 .labtable th, .labtable td { padding:5px 8px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; } .labtable th { color:var(--muted); font-size:.78rem; }
 .labresult { background:var(--accent-soft); border-radius:12px; padding:10px 12px; animation:fadein .25s ease; }
 .lessonlink .labbadge { margin-left:auto; font-size:.8rem; }
+.labtry { margin:0 0 4px; font-weight:800; font-size:.85rem; color:var(--muted); }

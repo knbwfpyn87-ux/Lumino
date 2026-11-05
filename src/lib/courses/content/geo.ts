@@ -29,6 +29,15 @@ ex: Find the midpoint and length of the segment from (1, 2) to (7, 10)
 = midpoint (4, 6), length 10
 The distance formula is really the Pythagorean theorem: the horizontal and vertical changes are the legs of a right triangle.
 Segment addition: if B is between A and C, then AB + BC = AC.
+demo: Drone versus walking distance
+aim: A drone flies straight from (0, 0) to a point on a city grid, while you walk along the streets. Compare the distances.
+set: x = 3 | East (blocks) | 0 to 10 by 1
+set: y = 4 | North (blocks) | 0 to 10 by 1
+out: d = sqrt(x^2 + y^2) | Drone distance (blocks)
+out: walk = x + y | Walking distance (blocks)
+plot: x, d
+step: Find the drone distance to (3, 4). How much shorter is it than walking?
+result: The distance formula d = √((x₂ − x₁)² + (y₂ − y₁)²) comes from the Pythagorean theorem. Straight-line distance is always at most the walking distance along the grid.
 term: midpoint = the point that divides a segment into two congruent segments
 term: congruent segments = segments that have the same length
 term: segment addition postulate = if B is between A and C, then AB + BC = AC
@@ -73,6 +82,13 @@ ex: Statement: If an angle measures 30°, then it is acute. Is the converse true
 > A 50° angle is acute but not 30°: a counterexample
 = The converse is false
 When a statement and its converse are both true, combine them into a biconditional: "p if and only if q."
+demo: Handshake patterns
+aim: Everyone at a party shakes hands with everyone else once. Look for a pattern, then prove it.
+set: n = 5 | People | 2 to 30 by 1
+out: h = n*(n - 1)/2 | Handshakes
+plot: n, h
+step: Record the handshakes for 2, 3, 4 and 5 people. What pattern do you see (inductive reasoning)?
+result: The pattern 1, 3, 6, 10… suggests n(n − 1)/2. To prove it (deductive reasoning): each of n people shakes n − 1 hands, but that counts every handshake twice.
 term: hypothesis = the "if" part of a conditional statement
 term: conclusion = the "then" part of a conditional statement
 term: converse = the statement formed by swapping the hypothesis and conclusion
@@ -171,6 +187,16 @@ ex: Are the lines through (0, 1), (2, 5) and through (1, 0), (5, −2) perpendic
 = Yes, they are perpendicular
 The distance from a point to a line is measured along the perpendicular segment, the shortest path.
 tip: Vertical and horizontal lines are always perpendicular to each other.
+demo: Wheelchair ramp slope
+aim: A ramp must rise to a doorway. Building codes allow a slope of at most 1:12 (about 8.3%).
+set: rise = 50 | Rise (cm) | 10 to 100 by 5
+set: run = 600 | Run (cm) | 100 to 1500 by 50
+out: m = rise/run*100 | Slope (%)
+out: a = atand(rise/run) | Angle (°)
+out: ok = if(m < 8.34, 1, 0) | Meets code? (1 = yes)
+plot: run, m
+step: For a 50 cm rise, find the shortest ramp that meets code.
+result: Slope = rise ÷ run. A 50 cm rise needs at least 600 cm of run. A gentle slope of about 4.8° is much easier to climb than it sounds.
 term: slope = rise over run; the ratio of vertical change to horizontal change
 term: opposite reciprocals = two numbers whose product is −1, like 3 and −1/3
 q: A line has slope −4. What is the slope of a line perpendicular to it? | *1/4 | −1/4 | 4 | −4
@@ -209,6 +235,15 @@ A dilation with center at the origin and scale factor k maps (x, y) → (kx, ky)
 ex: Dilate triangle with vertices (2, 1), (4, 3), (0, 5) by a scale factor of 3
 > Multiply every coordinate by 3
 = (6, 3), (12, 9), (0, 15)
+demo: Enlarging a photo
+aim: Dilate a 4 × 6 inch photo by a scale factor. How do the side lengths and area change?
+set: k = 2 | Scale factor | 0.25 to 4 by 0.25
+out: w = 4*k | Width (in)
+out: L = 6*k | Length (in)
+out: A = w*L | Area (in²)
+plot: k, A
+step: Compare the area at scale factors 2 and 3 with the original 24 in².
+result: A dilation multiplies every length by k but area by k². Doubling the size of a photo needs four times as much paper.
 term: dilation = a transformation that enlarges or reduces a figure by a scale factor
 term: scale factor = the ratio of a length in the image to the matching length in the pre-image
 term: enlargement = a dilation with a scale factor greater than 1
@@ -243,6 +278,15 @@ ex: A triangle has angles of 48° and 67°. Find the third angle and the exterio
 > Exterior angle: 48° + 67° = 115° (or 180° − 65°)
 = third angle 65°, exterior angle 115°
 Triangles can be classified by angles (acute, right, obtuse) or by sides (scalene: no equal sides, isosceles: at least two, equilateral: all three).
+demo: Roof truss angles
+aim: A roof truss is an isosceles triangle. Change the roof's pitch angle and find the angle at the peak.
+set: a = 35 | Base angle (°) | 10 to 80 by 1
+set: span = 8 | Span (m) | 4 to 14 by 1
+out: top = 180 - 2*a | Peak angle (°)
+out: h = span/2*tand(a) | Roof height (m)
+plot: a, top
+step: Check that the three angles always add to 180°.
+result: The triangle angle sum gives peak = 180° − 2 × base angle. Steeper roofs shed snow better but need taller, more expensive trusses.
 term: exterior angle = an angle formed by one side of a triangle and the extension of an adjacent side
 term: remote interior angles = the two interior angles not next to a given exterior angle
 term: scalene triangle = a triangle with no congruent sides
@@ -336,6 +380,15 @@ ex: Can sides of 4, 7 and 12 form a triangle?
 = No triangle
 In any triangle, the longest side is opposite the largest angle, and the shortest side is opposite the smallest angle.
 If two sides are 5 and 9, the third side x must satisfy 9 − 5 < x < 9 + 5, so 4 < x < 14.
+demo: Building a triangle fence
+aim: You have boards 5 m and 8 m long. What lengths can the third board be to close a triangle?
+set: c = 6 | Third side (m) | 1 to 15 by 0.5
+out: s = (5 + 8 + c)/2 | Semi-perimeter (m)
+out: A = sqrt(max(s*(s - 5)*(s - 8)*(s - c), 0)) | Enclosed area (m²)
+out: ok = if(c > 3, if(c < 13, 1, 0), 0) | Makes a triangle? (1 = yes)
+plot: c, A
+step: Find the shortest and longest third sides that still make a triangle.
+result: Triangle inequality: the third side must be between 8 − 5 = 3 and 8 + 5 = 13. At the limits the triangle flattens and its area (by Heron's formula) drops to zero.
 term: triangle inequality theorem = the sum of the lengths of any two sides of a triangle is greater than the third
 q: Which set of lengths can form a triangle? | *5, 6, 10 | 2, 3, 6 | 4, 4, 8 | 1, 2, 3
 why: 5 + 6 = 11 > 10. The others fail.
@@ -352,6 +405,14 @@ ex: Find each interior angle of a regular octagon
 > Each: 1080° ÷ 8
 = 135°
 For a regular polygon, each exterior angle is 360° ÷ n. If each exterior angle is 24°, the polygon has 360 ÷ 24 = 15 sides.
+demo: Which regular tiles fit together?
+aim: Regular polygon tiles meet at a point. Which shapes tile a floor with no gaps?
+set: n = 6 | Number of sides | 3 to 12 by 1
+out: angle = (n - 2)*180/n | Interior angle (°)
+out: fit = 360/angle | Tiles meeting at a point
+plot: n, angle
+step: Find every n for which the tiles-at-a-point value is a whole number.
+result: Interior angle = (n − 2) × 180°/n. Only triangles (6 per point), squares (4) and hexagons (3) divide 360° exactly, which is why bees build hexagonal honeycombs.
 term: polygon = a closed figure made of straight segments
 term: regular polygon = a polygon with all sides and all angles congruent
 term: convex polygon = a polygon with no angles pointing inward
@@ -450,6 +511,14 @@ ex: In triangle ABC, DE ∥ BC with D on AB and E on AC. AD = 4, DB = 6, AE = 5.
 > 4 · EC = 30
 = EC = 7.5
 Similar triangles also let you measure things you can't reach, like a tree's height using its shadow and your own shadow.
+demo: Measuring a tree with shadows
+aim: You're 1.6 m tall and cast a 2 m shadow. Use similar triangles to find a tree's height from its shadow.
+set: s = 15 | Tree's shadow (m) | 2 to 40 by 0.5
+set: you = 2 | Your shadow (m) | 0.5 to 5 by 0.1
+out: h = 1.6*s/you | Tree height (m)
+plot: s, h
+step: Set up the proportion 1.6/2 = h/15.
+result: Sun rays hit you and the tree at the same angle, so the triangles are similar and corresponding sides are proportional. A 15 m shadow means a 12 m tree.
 term: triangle proportionality theorem = a line parallel to one side of a triangle divides the other two sides proportionally
 term: indirect measurement = using similar triangles to find lengths that are hard to measure directly
 q: A 6 ft person casts a 4 ft shadow. A tree casts a 20 ft shadow at the same time. How tall is the tree? | *30 ft | 13.3 ft | 26 ft | 24 ft
@@ -507,6 +576,15 @@ ex: A ramp makes a 10° angle with the ground and is 20 ft long. How high does i
 = about 3.5 ft
 To find an angle from sides, use the inverse functions: if tan A = 0.75, then A = tan⁻¹(0.75) ≈ 36.9°.
 The angle of elevation is measured up from horizontal; the angle of depression is measured down from horizontal.
+demo: Ladder against a wall
+aim: A 6 m ladder leans against a wall. Safety guides recommend an angle of about 75°.
+set: a = 75 | Angle with the ground (°) | 30 to 85 by 1
+set: L = 6 | Ladder length (m) | 2 to 10 by 0.5
+out: h = L*sind(a) | Height reached (m)
+out: base = L*cosd(a) | Distance from wall (m)
+plot: a, h
+step: At 75°, find the height using sine and the base distance using cosine.
+result: sin θ = opposite/hypotenuse gives the height and cos θ = adjacent/hypotenuse gives the base. At 75° a 6 m ladder reaches 5.8 m with its foot 1.55 m from the wall (the 4-to-1 rule).
 term: sine = in a right triangle, the ratio of the opposite side to the hypotenuse
 term: cosine = in a right triangle, the ratio of the adjacent side to the hypotenuse
 term: tangent = in a right triangle, the ratio of the opposite side to the adjacent side
@@ -565,6 +643,15 @@ ex: A pizza has radius 8 in. Find the area of a 45° slice.
 = 8π ≈ 25.1 square inches
 The equation of a circle with center (h, k) and radius r is (x − h)² + (y − k)² = r².
 oops: In (x − 3)² + (y + 2)² = 25, the center is (3, −2), not (3, 2), and the radius is 5, not 25.
+demo: Lawn sprinkler coverage
+aim: A sprinkler sweeps through an angle with a spray radius. How much lawn does it water?
+set: th = 90 | Sweep angle (°) | 10 to 360 by 10
+set: r = 8 | Spray radius (m) | 2 to 15 by 0.5
+out: A = th/360*pi*r^2 | Area watered (m²)
+out: arc = th/360*2*pi*r | Arc length at the edge (m)
+plot: th, A
+step: How does doubling the radius change the area, compared with doubling the angle?
+result: Sector area = (θ/360) × πr² and arc length = (θ/360) × 2πr. Area is proportional to the angle but to the square of the radius, so a bigger radius matters more.
 term: arc length = the distance along an arc, a fraction of the circumference
 term: sector = a region of a circle bounded by two radii and an arc
 term: circumference = the distance around a circle, 2πr
@@ -627,6 +714,14 @@ ex: A cone has radius 6 and height 10. Find its volume.
 = 120π ≈ 377 cubic units
 Cavalieri's Principle: if two solids have the same height and the same cross-section area at every level, they have the same volume.
 If a solid is scaled by a factor k, its volume is multiplied by k³.
+demo: Designing a soda can
+aim: A can must hold 355 cm³. Choose the radius that uses the least aluminum.
+set: r = 3.3 | Radius (cm) | 1.5 to 8 by 0.1
+out: h = 355/(pi*r^2) | Height (cm)
+out: S = 2*pi*r^2 + 2*pi*r*h | Surface area (cm²)
+plot: r, S
+step: Find the radius with the smallest surface area. Compare its height and diameter.
+result: Volume πr²h is fixed, so a wider can is shorter. Surface area is smallest near r = 3.8 cm, when the height equals the diameter. Real cans are taller for grip and stacking.
 term: volume = the number of cubic units a solid contains
 term: Cavalieri's principle = solids with equal heights and equal cross-sectional areas at every level have equal volumes
 q: A cylinder and a cone have the same radius and height. The cone's volume is… | *1/3 of the cylinder's | the same | 1/2 of the cylinder's | 3 times the cylinder's

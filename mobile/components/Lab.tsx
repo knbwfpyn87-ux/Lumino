@@ -68,7 +68,8 @@ export function Lab({ b, onDone }: { b: LabBlock; onDone?: () => void }) {
       <T size={11} weight="900" color={t.muted} style={{ letterSpacing: 0.6 }}>{isLab ? '🧪 VIRTUAL LAB' : '📐 REAL-WORLD DEMO'}</T>
       <T size={18} weight="900">{b.title}</T>
       <T>{isLab ? 'Goal: ' : ''}{b.aim}</T>
-      {isLab && b.steps.map((s, i) => <T key={i} size={15} color={t.muted}>{i + 1}. {s}</T>)}
+      {!isLab && b.steps.length > 0 && <T size={13} weight="900" color={t.muted}>TRY THIS</T>}
+      {b.steps.map((s, i) => <T key={i} size={15} color={t.muted}>{i + 1}. {s}</T>)}
       {b.sets.map(s => <Slider key={s.name} s={s} value={vals[s.name]} onChange={x => setVals({ ...vals, [s.name]: x })} />)}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{b.outs.map(o => <View key={o.name} style={{ flexGrow: 1, flexBasis: 130, backgroundColor: t.accentSoft, borderRadius: 12, padding: 10 }}>
         <T size={12} weight="700" color={t.muted}>{o.label}</T><T size={20} weight="900">{fmt(v[o.name])}</T></View>)}</View>
