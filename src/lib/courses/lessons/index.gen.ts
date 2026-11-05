@@ -12,4 +12,6 @@ export const LESSON_TEXT: Record<string, () => Promise<{ default: LessonText[][]
   'eng9': () => import('./eng9.gen'),
   'geo': () => import('./geo.gen'),
   'phys': () => import('./phys.gen'),
+  'sat-math': () => import('./sat-math.gen'),
+  'sat-rw': () => import('./sat-rw.gen'),
 };
