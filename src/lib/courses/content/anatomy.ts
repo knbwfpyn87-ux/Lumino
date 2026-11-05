@@ -31,6 +31,15 @@ Four tissue types:
 - Connective: supports and connects (bone, cartilage, blood, fat).
 - Muscle: contracts to produce movement (skeletal, cardiac, smooth).
 - Nervous: sends electrical signals (neurons).
+lab: Cooling down after exercise
+aim: Measure core body temperature after exercise. How does negative feedback bring it back to 37 °C?
+set: t = 5 | Time after exercise (min) | 0 to 60 by 1
+set: rise = 2 | Temperature rise from exercise (°C) | 0.5 to 3 by 0.5
+out: T = 37 + rise*exp(-t/12) | Core temperature (°C)
+plot: t, T
+step: Record the temperature every 10 minutes.
+noise: 1
+result: Sweating and wider skin blood vessels remove heat fastest when the temperature is furthest from the set point, so it returns smoothly to about 37 °C. That's negative feedback.
 term: negative feedback = a response that reverses a change to restore balance
 term: epithelial tissue = tissue that covers body surfaces and lines organs
 term: connective tissue = tissue that supports and connects other tissues
@@ -62,6 +71,18 @@ key: Three muscle types: skeletal (voluntary, attached to bones by tendons), car
 Muscles can only pull, not push, so they work in pairs: when the biceps contracts, the triceps relaxes.
 Sliding filament theory: inside muscle fibers, actin and myosin filaments slide past each other to shorten the muscle. This requires ATP and calcium, triggered by signals from motor neurons.
 Exercise builds muscle strength and endurance; muscles weaken without use (atrophy).
+lab: The forearm as a lever
+aim: How hard must the biceps pull to hold a weight in your hand?
+set: m = 5 | Mass held (kg) | 1 to 20 by 1
+set: dl = 35 | Hand distance from elbow (cm) | 20 to 40 by 1
+set: di = 4 | Biceps attachment distance (cm) | 3 to 6 by 0.5
+out: F = m*g*dl/di | Biceps force (N)
+out: ratio = dl/di | Force multiplier
+plot: m, F
+step: Record the biceps force for 4 masses.
+step: Then move the attachment point farther from the elbow.
+noise: 2
+result: The forearm is a third-class lever: the muscle attaches close to the elbow, so it must pull about 9 times the load. The trade-off is speed and range of motion at the hand.
 term: skeletal muscle = voluntary muscle attached to bones
 term: tendon = connective tissue joining muscle to bone
 term: sliding filament theory = the model of muscle contraction where actin and myosin slide past each other
@@ -78,6 +99,15 @@ The central nervous system (CNS) is the brain and spinal cord. The peripheral ne
 key: Neurons send electrical impulses (action potentials) along axons. At synapses, they release neurotransmitters to signal the next cell.
 Parts of the brain: cerebrum (thinking, senses, voluntary movement), cerebellum (balance and coordination), and brainstem (breathing, heart rate). The autonomic nervous system controls involuntary functions: sympathetic (fight-or-flight) and parasympathetic (rest-and-digest).
 A reflex arc lets the spinal cord respond quickly without waiting for the brain, like pulling your hand from a hot stove.
+lab: Ruler drop reaction time
+aim: Catch a falling ruler and use how far it fell to calculate your reaction time.
+set: d = 15 | Distance the ruler fell (cm) | 5 to 30 by 1
+out: t = sqrt(2*d/100/g)*1000 | Reaction time (ms)
+plot: d, t
+step: Record the reaction time for at least 4 catches.
+step: A nerve impulse travels about 1 m in 10–20 ms. What else takes time?
+noise: 2
+result: Typical reaction times are 150–250 ms. Only a small part is nerve conduction; most is the brain processing the signal (synapses) before sending a message to the hand muscles.
 term: neuron = a nerve cell that transmits electrical signals
 term: synapse = the junction where a neuron passes a signal to another cell
 term: cerebellum = the brain region that coordinates balance and movement
@@ -131,6 +161,17 @@ key: Air path: nose/mouth → pharynx → larynx → trachea → bronchi → bro
 Oxygen diffuses from alveoli into the blood; carbon dioxide diffuses from blood into the alveoli to be exhaled.
 The diaphragm contracts and moves down to pull air in (inhalation); it relaxes and moves up to push air out (exhalation).
 The brainstem controls breathing rate mainly by sensing CO₂ levels in the blood. Smoking damages alveoli and cilia that clean the airways.
+lab: Spirometer and breathing
+aim: Measure breathing rate and tidal volume to find how much air moves in and out each minute.
+set: f = 12 | Breaths per minute | 8 to 40 by 1
+set: TV = 0.5 | Tidal volume (L) | 0.3 to 3 by 0.1
+out: VE = f*TV | Minute ventilation (L/min)
+out: VA = f*(TV - 0.15) | Air reaching alveoli (L/min)
+plot: f, VE
+step: Record ventilation at rest (12 breaths, 0.5 L), then during exercise.
+step: Compare fast shallow breathing with slow deep breathing at the same ventilation.
+noise: 3
+result: Ventilation = rate × tidal volume, rising from about 6 L/min to over 100 L/min in hard exercise. About 0.15 L of each breath stays in the airways (dead space), so deep breaths are more efficient.
 term: alveoli = tiny air sacs in the lungs where gas exchange occurs
 term: diaphragm = the dome-shaped muscle that drives breathing
 term: trachea = the windpipe leading to the lungs
@@ -149,6 +190,15 @@ key: Digestive path: mouth → esophagus → stomach → small intestine → lar
 - Small intestine: most digestion and absorption happen here, through villi that increase surface area. The liver makes bile to break up fats, and the pancreas supplies enzymes.
 - Large intestine: absorbs water.
 The urinary system filters blood through the kidneys' nephrons, removing wastes like urea and balancing water and salts. Urine travels through the ureters to the bladder.
+lab: Bile and surface area
+aim: Break a 1 cm cube of fat into smaller pieces, as bile does, and calculate the surface area lipase can work on.
+set: s = 5 | Piece size (mm) | 0.1 to 10 by 0.1
+out: SA = 6*10^3/s/100 | Total surface area (cm²)
+out: n = (10/s)^3 | Number of pieces
+plot: s, SA
+step: Record the surface area for at least 4 piece sizes.
+noise: 1
+result: Halving the piece size doubles the total surface area. Bile emulsifies fat into tiny droplets, so lipase has far more surface to act on and digestion is much faster.
 term: villi = finger-like projections in the small intestine that absorb nutrients
 term: bile = a liver fluid that breaks fats into small droplets
 term: nephron = the filtering unit of the kidney

@@ -37,6 +37,15 @@ ex: Does fertilizer increase plant growth? Identify the variables.
 > Keep the same: light, water, soil, pot size (controlled)
 = Independent: fertilizer; dependent: height
 A theory in science is a well-tested explanation supported by lots of evidence, like the cell theory or the theory of evolution. It's much stronger than a guess.
+lab: Fertilizer and plant growth
+aim: Design an experiment: give bean plants different amounts of fertilizer and measure their growth after two weeks.
+set: F = 4 | Fertilizer (g per pot) | 0 to 15 by 0.5
+out: G = 3 + 4*F*exp(-F/5) | Growth (cm)
+plot: F, G
+step: The independent variable is fertilizer; the dependent variable is growth. Keep light, water and pot size the same.
+step: Record the growth for at least 5 fertilizer amounts, including 0 g as a control.
+noise: 6
+result: Growth increases with fertilizer up to about 5 g, then falls: too much fertilizer damages roots. The 0 g control shows growth without fertilizer, and repeated trials reduce the effect of random variation.
 term: hypothesis = a testable, possible explanation for an observation
 term: independent variable = the factor a scientist deliberately changes in an experiment
 term: dependent variable = the factor measured in an experiment
@@ -114,6 +123,16 @@ ex: Why does a high fever become dangerous?
 > High temperature can change enzyme shapes
 > Denatured enzymes can't bind their substrates
 = Essential reactions slow down or stop
+lab: Catalase and temperature
+aim: Measure how fast the enzyme catalase breaks down hydrogen peroxide at different temperatures and pH values.
+set: T = 25 | Temperature (°C) | 0 to 80 by 1
+set: pH = 7 | pH | 2 to 12 by 0.5
+out: rate = 100*exp(-((T - 37)/14)^2)*if(T > 50, exp(-(T - 50)/6), 1)*exp(-((pH - 7)/1.8)^2) | Oxygen made (mL/min)
+plot: T, rate
+step: Keep the pH at 7 and record the rate at 6 temperatures.
+step: Then hold the temperature at 37 °C and try acidic and basic pH values.
+noise: 5
+result: The rate rises with temperature as molecules collide more often, peaks near the optimum (37 °C), then crashes as the enzyme denatures. pH far from the optimum also changes the active site's shape and slows the reaction.
 term: enzyme = a protein that speeds up a chemical reaction
 term: catalyst = a substance that speeds up a reaction without being used up
 term: active site = the part of an enzyme where the substrate binds
@@ -178,6 +197,15 @@ ex: A red blood cell is placed in salt water (hypertonic). What happens?
 > More solute outside the cell
 > Water moves out by osmosis
 = The cell shrinks
+lab: Osmosis in potato cores
+aim: Soak potato cores in sucrose solutions of different concentrations and measure their change in mass.
+set: c = 0.2 | Sucrose concentration (mol/L) | 0 to 1 by 0.05
+out: dm = 22*(0.3 - c)/(0.3 + c) | Change in mass (%)
+plot: c, dm
+step: Record the percentage change in mass for at least 5 concentrations.
+step: Find where the line crosses zero.
+noise: 6
+result: In dilute solutions water enters the cells by osmosis and the cores gain mass; in concentrated solutions they lose water. The line crosses zero near 0.3 mol/L, the concentration that's isotonic with the potato cells.
 term: selectively permeable = allowing some substances to cross but not others
 term: diffusion = movement of particles from high to low concentration
 term: osmosis = diffusion of water across a membrane
@@ -212,6 +240,16 @@ Photosynthesis happens in chloroplasts. The green pigment chlorophyll absorbs li
 - Calvin cycle (in the stroma): uses ATP, NADPH and CO₂ to build glucose.
 Factors that affect the rate of photosynthesis include light intensity, CO₂ level and temperature.
 oops: The oxygen plants release comes from splitting water, not from carbon dioxide.
+lab: Elodea and light intensity
+aim: Count the oxygen bubbles from pondweed under different light intensities and CO₂ levels.
+set: I = 40 | Light intensity (% of full sun) | 0 to 100 by 5
+set: C = 0.04 | CO₂ concentration (%) | 0.01 to 0.2 by 0.01
+out: rate = 60*C/(C + 0.04)*I/(I + 25) | Bubbles per minute
+plot: I, rate
+step: Keep the CO₂ fixed and record the bubble rate at 5 light intensities.
+step: Then raise the CO₂ and repeat a high light intensity.
+noise: 6
+result: The rate rises with light, then levels off when another factor (CO₂) becomes limiting. Adding CO₂ raises the plateau. This shows the idea of limiting factors in photosynthesis.
 term: photosynthesis = the process plants use to turn light, water and CO₂ into glucose and oxygen
 term: chlorophyll = the green pigment that absorbs light for photosynthesis
 term: Calvin cycle = the stage of photosynthesis that uses CO₂ to build sugar
@@ -250,6 +288,17 @@ Phases of mitosis (PMAT):
 - Anaphase: sister chromatids are pulled apart to opposite ends.
 - Telophase: new nuclei form.
 Cytokinesis then splits the cytoplasm, making two cells.
+lab: Onion root tip: mitotic index
+aim: Count cells in each stage under the microscope and estimate how long each stage of the cell cycle lasts.
+set: n = 12 | Cells in mitosis (out of 100) | 1 to 40 by 1
+set: L = 24 | Cell cycle length (hours) | 12 to 36 by 1
+out: MI = n/100*100 | Mitotic index (%)
+out: tm = n/100*L*60 | Time in mitosis (min)
+plot: n, tm
+step: Record the time in mitosis for at least 4 different counts.
+step: Most cells you count are in interphase. What does that tell you?
+noise: 3
+result: The fraction of cells in a stage equals the fraction of the cycle spent in it. Most cells are in interphase because it's the longest stage, where the cell grows and copies its DNA.
 term: interphase = the stage when a cell grows and copies its DNA
 term: mitosis = division of the nucleus that produces two identical nuclei
 term: cytokinesis = division of the cytoplasm into two cells
@@ -324,6 +373,15 @@ ex: Cross Tt × Tt. What fraction of offspring will be short (tt)?
 > Phenotype ratio 3 tall : 1 short
 = 1/4 short (25%)
 A test cross crosses an organism showing the dominant trait with a homozygous recessive one (tt) to find out whether it's TT or Tt.
+lab: Carrier parents and their children
+aim: Two carriers (Aa × Aa) have children. What is the chance at least one child shows the recessive trait?
+set: n = 3 | Number of children | 1 to 10 by 1
+out: P = (1 - 0.75^n)*100 | At least one aa child (%)
+out: E = n*0.25 | Expected aa children
+plot: n, P
+step: Record the probability for families of 1 to 10 children.
+step: Is the chance for each individual child changing?
+result: Each child independently has a 1/4 chance of being aa, but the chance that at least one is affected grows with family size: 1 − (3/4)ⁿ. Probabilities for independent events multiply.
 term: Punnett square = a grid used to predict the possible offspring of a cross
 term: test cross = crossing an organism with a homozygous recessive one to find its genotype
 term: monohybrid cross = a cross that follows one trait
@@ -399,6 +457,15 @@ ex: Why is an insertion usually worse than a substitution?
 > A substitution changes one codon
 > An insertion shifts the reading frame of every codon after it
 = It changes many amino acids instead of one
+lab: UV light and bacteria
+aim: Expose plates of bacteria to UV light for different doses and count survivors and mutant colonies.
+set: D = 20 | UV dose (J/m²) | 0 to 100 by 5
+out: S = 100*exp(-D/25) | Survival (%)
+out: M = 2 + 3*D | Mutants per million cells
+plot: D, S
+step: Record survival for at least 5 UV doses, including a 0 dose control.
+noise: 5
+result: Survival falls exponentially with dose while the mutation rate rises. UV damages DNA (forming thymine dimers); cells that can't repair it die and some that survive carry mutations.
 term: mutation = a change in the DNA sequence
 term: frameshift mutation = an insertion or deletion that shifts how codons are read
 term: mutagen = something that causes mutations, like UV radiation
@@ -422,6 +489,17 @@ ex: Bacteria and antibiotics
 > The antibiotic kills the others
 > Resistant bacteria survive and multiply
 = The population becomes resistant over time
+lab: Selection against a recessive trait
+aim: Each generation, individuals with the aa phenotype fail to reproduce. Track the allele frequency over time.
+set: t = 10 | Generations | 0 to 60 by 1
+set: q0 = 0.5 | Starting frequency of a | 0.1 to 0.9 by 0.05
+out: q = q0/(1 + t*q0) | Frequency of a
+out: aa = q^2*100 | aa individuals (%)
+plot: t, q
+step: Record the frequency of a every 10 generations.
+step: Notice how fast it falls at first and how slowly later.
+noise: 2
+result: The allele declines quickly at first, then slowly, because when it's rare it hides in heterozygous carriers where selection can't see it. Harmful recessive alleles can persist for many generations.
 term: natural selection = the process where organisms with helpful traits survive and reproduce more
 term: adaptation = an inherited trait that helps an organism survive in its environment
 term: fitness = an organism's ability to survive and reproduce
@@ -513,6 +591,17 @@ Species interactions:
 - Commensalism: one benefits, the other is unaffected (barnacles on a whale).
 - Parasitism: one benefits, the other is harmed (ticks on a dog).
 Ecological succession is the gradual change in a community over time, like a forest regrowing after a fire.
+lab: Yeast in a flask
+aim: Count yeast cells in a flask of sugar solution over time. Does the population keep growing?
+set: t = 8 | Time (hours) | 0 to 30 by 1
+set: r = 0.5 | Growth rate (per hour) | 0.1 to 1 by 0.05
+set: K = 500 | Carrying capacity (cells/mm³) | 100 to 1000 by 50
+out: N = K/(1 + (K - 10)/10*exp(-r*t)) | Yeast cells (per mm³)
+plot: t, N
+step: Record the population every 3–4 hours.
+step: Change the carrying capacity and see where the curve levels off.
+noise: 5
+result: Growth is nearly exponential at first, then slows and levels off at the carrying capacity (an S-shaped logistic curve) as food runs low and waste builds up.
 term: carrying capacity = the largest population an environment can support
 term: limiting factor = something that limits the growth of a population
 term: mutualism = a relationship where both species benefit
@@ -553,6 +642,16 @@ ex: Trace blood from the body to the lungs and back
 > Body → right atrium → right ventricle → lungs (pick up oxygen)
 > Lungs → left atrium → left ventricle → body
 = Two loops: one to the lungs, one to the body
+lab: Exercise and cardiac output
+aim: Measure heart rate and estimate how much blood the heart pumps at rest and during exercise.
+set: HR = 70 | Heart rate (beats/min) | 50 to 200 by 5
+set: SV = 70 | Stroke volume (mL) | 50 to 130 by 5
+out: CO = HR*SV/1000 | Cardiac output (L/min)
+plot: HR, CO
+step: Record cardiac output at rest (about 70 bpm), then at 4 higher heart rates.
+step: Trained athletes have larger stroke volumes. Try 100 mL.
+noise: 3
+result: Cardiac output = heart rate × stroke volume, rising from about 5 L/min at rest to over 20 L/min in hard exercise, delivering more oxygen to working muscles.
 term: alveoli = tiny air sacs in the lungs where gas exchange occurs
 term: artery = a blood vessel that carries blood away from the heart
 term: vein = a blood vessel that carries blood back to the heart

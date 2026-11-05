@@ -52,6 +52,16 @@ ex: Convert 3.5 km to meters using dimensional analysis
 > Multiply by the conversion factor 1000 m / 1 km
 > 3.5 × 1000
 = 3,500 m
+lab: Density of aluminum
+aim: Measure the mass of aluminum blocks with different volumes. What does the graph's slope tell you?
+set: V = 10 | Block volume (cm³) | 1 to 50 by 1
+out: m = 2.70*V | Mass (g)
+out: d = m/V | Density (g/cm³)
+plot: V, m
+step: Choose a block size and press Record. Record at least 5 blocks.
+step: Look at the density column. Does it change with size?
+noise: 2
+result: Mass is proportional to volume, so the graph is a straight line through the origin. Its slope is the density, about 2.70 g/cm³, an intensive property that's the same for any size of aluminum.
 term: significant figures = the digits in a measurement that are known with certainty plus one estimated digit
 term: accuracy = how close a measurement is to the true value
 term: precision = how close repeated measurements are to each other
@@ -94,6 +104,14 @@ ex: Chlorine is 75% Cl-35 and 25% Cl-37. Find its average atomic mass.
 > 0.25 × 37 = 9.25
 = 35.5 amu
 Atomic models through history: Dalton (solid spheres), Thomson (plum pudding, discovered electrons), Rutherford (gold foil experiment showed a tiny dense nucleus), Bohr (electrons in fixed energy levels), and the modern quantum model (electron clouds called orbitals).
+lab: Mass spectrometer: chlorine isotopes
+aim: Change the abundance of chlorine-35 versus chlorine-37 and see how the average atomic mass changes.
+set: p = 76 | Chlorine-35 abundance (%) | 0 to 100 by 1
+out: A = (34.97*p + 36.97*(100 - p))/100 | Average atomic mass (u)
+plot: p, A
+step: Record the average atomic mass for at least 4 abundances, including 76%.
+step: Compare your result at 76% with the periodic table value for chlorine (35.45).
+result: Average atomic mass is a weighted average of the isotope masses. Real chlorine is about 76% Cl-35, which gives 35.45 u, closer to 35 because that isotope is more common.
 term: isotope = an atom of an element with a different number of neutrons
 term: atomic mass = the weighted average mass of an element's isotopes
 term: gold foil experiment = Rutherford's experiment showing atoms have a small, dense, positive nucleus
@@ -152,6 +170,16 @@ ex: Which is larger, Na or Cl? Which has higher ionization energy?
 > Both are in period 3; Cl is further right
 > Across a period, radius shrinks and ionization energy grows
 = Na is larger; Cl has higher ionization energy
+lab: Pull on the outer electron
+aim: Model how strongly the nucleus attracts an outer electron as nuclear charge and atomic radius change.
+set: Z = 3 | Effective nuclear charge | 1 to 8 by 0.5
+set: r = 150 | Atomic radius (pm) | 40 to 250 by 5
+out: F = Z/(r/100)^2 | Relative attraction
+plot: Z, F
+step: Keep the radius fixed and record the attraction for 4 nuclear charges (moving across a period).
+step: Then keep the charge fixed and increase the radius (moving down a group).
+noise: 1
+result: Attraction rises with effective nuclear charge and falls with the square of distance. That's why ionization energy and electronegativity increase across a period and decrease down a group.
 term: atomic radius = the size of an atom, from the nucleus to the outer electrons
 term: ionization energy = the energy needed to remove an electron from an atom
 term: electronegativity = an atom's ability to attract electrons in a bond
@@ -207,6 +235,15 @@ VSEPR theory: electron pairs around a central atom spread as far apart as possib
 - Lone pairs bend things: water is bent, ammonia is trigonal pyramidal.
 A bond is polar when electrons are shared unequally (different electronegativities). A molecule is polar if it has polar bonds AND an uneven shape. CO₂ has polar bonds but is nonpolar because it's symmetric.
 key: Intermolecular forces, from strongest to weakest: hydrogen bonding, dipole–dipole, London dispersion. Stronger forces mean higher boiling points.
+lab: Boiling points of alkanes
+aim: Heat straight-chain alkanes and record their boiling points. How does chain length affect intermolecular forces?
+set: n = 4 | Carbon atoms | 1 to 10 by 1
+out: M = 14*n + 2 | Molar mass (g/mol)
+out: bp = 745.42*log(n + 4.4) - 689.46 | Boiling point (°C)
+plot: n, bp
+step: Record the boiling point for at least 5 alkanes, from methane (1) to decane (10).
+noise: 1
+result: Boiling point rises with chain length. Bigger molecules have more electrons and more surface contact, so their London dispersion forces are stronger and more energy is needed to separate them.
 term: VSEPR theory = the idea that electron groups around a central atom repel and spread out, determining shape
 term: polar molecule = a molecule with an uneven distribution of charge
 term: hydrogen bonding = a strong attraction between H bonded to N, O or F and a lone pair on another molecule
@@ -266,6 +303,17 @@ Breaking bonds takes energy; forming bonds releases energy.
 - Endothermic reactions absorb energy (feel cold): instant cold packs, photosynthesis.
 Activation energy is the energy needed to start a reaction. A catalyst lowers it and speeds up the reaction without being used up.
 Factors that speed up reactions: higher temperature, higher concentration, more surface area (smaller pieces), and catalysts. They all increase how often particles collide with enough energy (collision theory).
+lab: Burning a peanut (calorimetry)
+aim: Burn a peanut under a can of water and use the temperature rise to estimate its energy content.
+set: p = 1 | Peanut burned (g) | 0.2 to 2 by 0.1
+set: mw = 100 | Water in the can (g) | 50 to 300 by 10
+out: dT = p*25000*0.35/(mw*4.18) | Temperature rise (°C)
+out: E = mw*4.18*dT/p/1000 | Measured energy (kJ/g)
+plot: p, dT
+step: Record the temperature rise for at least 4 peanut masses.
+step: Compare your measured energy per gram with the label value of about 25 kJ/g.
+noise: 4
+result: q = mcΔT gives about 9 kJ/g, far less than the true 25 kJ/g, because most heat escapes to the air and the can. Real calorimeters insulate the sample to reduce this error.
 term: exothermic = releasing energy, usually as heat
 term: endothermic = absorbing energy from the surroundings
 term: activation energy = the minimum energy needed to start a reaction
@@ -321,6 +369,16 @@ ex: 2H₂ + O₂ → 2H₂O. You have 4 mol H₂ and 3 mol O₂. Which is limiti
 = H₂ is limiting; it makes 4 mol H₂O
 Theoretical yield is the maximum product from the limiting reactant. Actual yield is what you really get in the lab.
 key: Percent yield = actual yield ÷ theoretical yield × 100%.
+lab: Limiting reactant: making water
+aim: React hydrogen with a fixed amount of oxygen (2H₂ + O₂ → 2H₂O). When does adding more hydrogen stop helping?
+set: H = 2 | Hydrogen (mol) | 0 to 8 by 0.5
+set: O = 2 | Oxygen (mol) | 0.5 to 4 by 0.5
+out: W = min(H, 2*O) | Water made (mol)
+out: left = max(H - 2*O, 0) + max(O - H/2, 0) | Excess reactant left (mol)
+plot: H, W
+step: Keep the oxygen fixed and record the water made for at least 5 amounts of hydrogen.
+step: Find the point where the graph levels off.
+result: Water rises with hydrogen until H₂ reaches twice the O₂, then levels off: oxygen has become the limiting reactant, and any extra hydrogen is left over in excess.
 term: limiting reactant = the reactant that runs out first and limits the amount of product
 term: excess reactant = the reactant left over when a reaction is complete
 term: percent yield = actual yield divided by theoretical yield, times 100
@@ -355,6 +413,17 @@ ex: A gas is at 2.0 atm in 6.0 L. It is compressed to 3.0 L at constant temperat
 > Boyle: P₁V₁ = P₂V₂
 > 2.0 × 6.0 = P₂ × 3.0
 = P₂ = 4.0 atm
+lab: Syringe and pressure gauge
+aim: Squeeze a sealed syringe of air and read the pressure. How are pressure and volume related?
+set: V = 30 | Volume (mL) | 10 to 60 by 1
+set: T = 298 | Temperature (K) | 273 to 373 by 5
+out: P = 101.3*30/V*T/298 | Pressure (kPa)
+out: PV = P*V | P × V
+plot: V, P
+step: Keep the temperature fixed and record the pressure at 5 volumes.
+step: Look at the P × V column. Then warm the syringe and repeat one volume.
+noise: 2
+result: Pressure is inversely proportional to volume (Boyle's law), so P × V stays constant. Heating the gas raises the pressure at the same volume, as Gay-Lussac's law predicts.
 term: Boyle's law = at constant temperature, the pressure and volume of a gas are inversely proportional
 term: Charles's law = at constant pressure, the volume of a gas is proportional to its kelvin temperature
 term: combined gas law = P₁V₁/T₁ = P₂V₂/T₂
@@ -413,6 +482,16 @@ To dilute a solution, add more solvent. The moles of solute stay the same, so M�
 ex: How much 6.0 M HCl do you need to make 300 mL of 1.0 M HCl?
 > M₁V₁ = M₂V₂: 6.0 × V₁ = 1.0 × 300
 = V₁ = 50 mL (then add water to 300 mL)
+lab: Colorimeter: copper sulfate solutions
+aim: Shine light through blue copper sulfate solutions of different concentrations and measure the absorbance.
+set: c = 0.2 | Concentration (mol/L) | 0.01 to 0.5 by 0.01
+out: A = 2.8*c | Absorbance
+out: T = 100*10^(-A) | Light transmitted (%)
+plot: c, A
+step: Record the absorbance of at least 5 standard solutions.
+step: Use your line to find the concentration of a mystery solution with absorbance 0.84.
+noise: 3
+result: Absorbance is proportional to concentration (Beer's law, A = εbc), so the standards make a straight calibration line. A mystery absorbance of 0.84 means 0.30 mol/L.
 term: molarity = moles of solute per liter of solution
 term: concentration = the amount of solute in a given amount of solution
 term: dilution = making a solution less concentrated by adding solvent
@@ -487,6 +566,17 @@ ex: 25.0 mL of HCl is neutralized by 20.0 mL of 0.50 M NaOH. Find the HCl concen
 > 0.010 ÷ 0.0250 L
 = 0.40 M HCl
 Buffers resist pH changes by neutralizing small amounts of added acid or base. Your blood uses buffers to stay near pH 7.4.
+lab: Titration of HCl with NaOH
+aim: Add 0.10 M NaOH from a burette to 25.0 mL of 0.10 M HCl and track the pH.
+set: Vb = 10 | NaOH added (mL) | 0 to 50 by 0.5
+set: Cb = 0.1 | NaOH concentration (M) | 0.05 to 0.2 by 0.01
+out: x = (0.0025 - Cb*Vb/1000)/((25 + Vb)/1000) | Excess acid (mol/L)
+out: pH = -log((x + sqrt(x^2 + 4e-14))/2) | pH
+plot: Vb, pH
+step: Record the pH every 5 mL, then add drops near 25 mL.
+step: Find the equivalence point where the pH jumps.
+noise: 1
+result: The pH rises slowly, then jumps steeply around the equivalence point (25 mL for 0.10 M base), where moles of base equal moles of acid and the pH is 7. A stronger base reaches it sooner.
 term: neutralization = the reaction of an acid and base to form a salt and water
 term: titration = adding a solution of known concentration to find an unknown concentration
 term: indicator = a substance that changes color at a certain pH
@@ -528,6 +618,16 @@ ex: Iodine-131 has a half-life of 8 days. How much of a 100 g sample is left aft
 > 100 → 50 → 25 → 12.5
 = 12.5 g
 Fission splits heavy nuclei (nuclear power plants). Fusion joins light nuclei (the Sun). Both release huge amounts of energy.
+lab: Geiger counter and half-life
+aim: Measure the activity of a radioactive sample over time.
+set: t = 10 | Time (days) | 0 to 60 by 1
+set: h = 8 | Half-life (days) | 2 to 30 by 1
+out: A = 1000*0.5^(t/h) | Count rate (counts/min)
+plot: t, A
+step: Record the count rate every few days for at least 5 readings.
+step: Read off how long it takes the count to halve, and halve again.
+noise: 4
+result: Activity falls exponentially: it halves every half-life, whatever the starting amount. Iodine-131, used in medicine, has a half-life of about 8 days.
 term: radioactive decay = the spontaneous breakdown of an unstable nucleus
 term: half-life = the time it takes for half of a radioactive sample to decay
 term: fission = splitting a heavy nucleus into smaller nuclei

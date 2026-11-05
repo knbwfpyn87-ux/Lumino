@@ -28,6 +28,14 @@ key: Three rock types form in different ways:
 - Sedimentary rocks form when sediments are compacted and cemented (sandstone, limestone). They often contain fossils.
 - Metamorphic rocks form when heat and pressure change existing rock (marble from limestone, slate from shale).
 In the rock cycle, any rock type can become any other through weathering, erosion, melting, heat and pressure.
+lab: Cooling magma and crystal size
+aim: Cool molten rock at different rates and measure the size of the crystals that form.
+set: r = 1 | Cooling rate (°C per year) | 0.1 to 100 by 0.1
+out: s = 5/sqrt(r) | Crystal size (mm)
+plot: r, s
+step: Record crystal size for slow cooling (deep underground) and fast cooling (at the surface).
+noise: 5
+result: Slow cooling gives crystals time to grow, so intrusive rocks like granite have large crystals. Fast-cooled extrusive rocks like basalt have tiny crystals, and instantly quenched lava forms glassy obsidian.
 term: mineral = a natural inorganic solid with a definite composition and crystal structure
 term: igneous rock = rock formed from cooled magma or lava
 term: sedimentary rock = rock formed from compacted and cemented sediments
@@ -60,6 +68,15 @@ An earthquake happens when stress builds along a fault and rock suddenly slips. 
 key: Seismic waves: P waves are fastest and travel through solids and liquids; S waves are slower and only travel through solids; surface waves cause the most damage. Magnitude measures energy released.
 Volcanoes form where magma reaches the surface, at subduction zones, divergent boundaries and hot spots (like Hawaii). Magma with lots of silica is thick and explosive; low-silica magma (basalt) flows gently.
 The "Ring of Fire" around the Pacific Ocean has many earthquakes and volcanoes because of subduction zones.
+lab: Locating an earthquake
+aim: Use the delay between P-wave and S-wave arrivals on a seismogram to find the distance to the epicenter.
+set: lag = 20 | S minus P delay (s) | 1 to 120 by 1
+out: d = lag*6*3.5/(6 - 3.5) | Distance to epicenter (km)
+plot: lag, d
+step: Record the distance for at least 4 delays.
+step: Three stations' distances are needed to pinpoint the epicenter (triangulation).
+noise: 2
+result: P waves (about 6 km/s) outrun S waves (about 3.5 km/s), so the delay grows steadily with distance: about 8.4 km for every second of lag. Circles from three stations meet at the epicenter.
 term: fault = a break in Earth's crust where rocks move
 term: epicenter = the point on the surface above where an earthquake starts
 term: seismic waves = energy waves released by an earthquake
@@ -77,6 +94,15 @@ key: Uneven heating of Earth by the Sun drives weather. Warm air rises and cool 
 - Fronts: boundaries between air masses. Cold fronts bring short, intense storms; warm fronts bring longer, gentler rain.
 - Water cycle: evaporation, condensation (clouds) and precipitation.
 - The Coriolis effect, caused by Earth's rotation, curves winds and ocean currents.
+lab: Weather balloon
+aim: Launch a weather balloon and record the air pressure and temperature as it rises.
+set: h = 2 | Altitude (km) | 0 to 11 by 0.5
+out: P = 1013*exp(-h/8.4) | Air pressure (hPa)
+out: T = 15 - 6.5*h | Temperature (°C)
+plot: h, P
+step: Record pressure and temperature every 2 km up to 11 km.
+noise: 1
+result: Pressure falls exponentially with height (halving about every 5.5 km) because there's less air above. In the troposphere temperature drops about 6.5 °C per km, since air is heated from the ground.
 term: troposphere = the lowest layer of the atmosphere, where weather occurs
 term: air pressure = the weight of air pressing down on an area
 term: front = a boundary between two different air masses
@@ -109,6 +135,17 @@ key: Seasons are caused by Earth's 23.5° tilt, not by distance from the Sun. Wh
 - A solar eclipse occurs when the Moon blocks the Sun; a lunar eclipse when Earth's shadow falls on the Moon.
 - Tides are caused mainly by the Moon's gravity pulling on Earth's oceans. Most places get two high and two low tides each day.
 oops: Earth is actually closest to the Sun in January, during Northern Hemisphere winter. Distance doesn't cause seasons.
+lab: Sun angle and the seasons
+aim: Measure the noon Sun's height and the energy it delivers at different latitudes and times of year.
+set: lat = 40 | Latitude (° N) | 0 to 66 by 1
+set: dec = 23.4 | Sun's declination (°) | -23.4 to 23.4 by 0.1
+out: A = min(90 - lat + dec, 180 - (90 - lat + dec)) | Noon Sun angle (°)
+out: I = max(sind(A), 0)*100 | Energy per m² (% of overhead Sun)
+plot: lat, I
+step: Use declination +23.4° (June solstice) and record energy at 4 latitudes.
+step: Switch to −23.4° (December) and compare.
+noise: 1
+result: The Sun is higher in summer, so its energy is concentrated on a smaller area. Seasons come from Earth's 23.4° tilt changing the Sun's angle, not from changes in distance to the Sun.
 term: axial tilt = Earth's 23.5° tilt, which causes seasons
 term: lunar phase = the shape of the Moon's lit portion as seen from Earth
 term: solar eclipse = when the Moon blocks the Sun's light from reaching Earth
@@ -157,6 +194,15 @@ key: Weathering breaks rock into smaller pieces. Erosion moves those pieces. Dep
 - Chemical weathering changes rock's minerals (acid rain dissolving limestone, rusting).
 - Agents of erosion: water (the most powerful), wind, glaciers and gravity (landslides).
 Landforms created by these processes include canyons (like the Grand Canyon, carved by the Colorado River), deltas at river mouths, sand dunes, and U-shaped valleys carved by glaciers.
+lab: Stream table erosion
+aim: Run water through a stream table at different speeds and see the largest sediment it can move.
+set: v = 50 | Water speed (cm/s) | 5 to 300 by 5
+out: d = (v/40)^2 | Largest grain moved (mm)
+plot: v, d
+step: Record the largest grain moved at 5 speeds.
+step: Classify: clay < 0.004 mm, sand 0.06–2 mm, pebbles 4–64 mm.
+noise: 5
+result: Faster water carries much larger particles (competence rises roughly with the square of speed). When a river slows, it drops the biggest grains first, which is why deltas and floodplains sort sediment by size.
 term: weathering = the breaking down of rock into smaller pieces
 term: erosion = the movement of weathered material by water, wind, ice or gravity
 term: deposition = the dropping of sediment in a new location

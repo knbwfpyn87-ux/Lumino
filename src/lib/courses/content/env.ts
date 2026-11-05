@@ -7,6 +7,15 @@ say: Environmental science studies how living things and their environment inter
 An ecosystem includes living (biotic) and nonliving (abiotic) parts. Energy enters most ecosystems as sunlight, captured by producers through photosynthesis.
 key: Energy flows one way through food chains and webs: producers → primary consumers → secondary consumers → tertiary consumers. About 10% of energy passes to each next level; the rest is lost as heat.
 Decomposers break down dead material, returning nutrients to the soil. Because so much energy is lost, there are far fewer top predators than producers, which is shown by energy pyramids.
+lab: Energy pyramid
+aim: Follow 10,000 kJ of plant energy up a food chain. How much reaches each trophic level?
+set: n = 2 | Trophic level | 1 to 5 by 1
+set: eff = 10 | Transfer efficiency (%) | 5 to 20 by 1
+out: E = 10000*(eff/100)^(n - 1) | Energy available (kJ)
+plot: n, E
+step: Record the energy at all 5 trophic levels.
+step: Try a higher efficiency. How many levels can the chain support?
+result: Only about 10% passes to each level; the rest is lost as heat from respiration. That's why food chains rarely have more than 4–5 levels and top predators are rare.
 term: biotic factor = a living part of an ecosystem
 term: abiotic factor = a nonliving part of an ecosystem, like sunlight or water
 term: producer = an organism that makes its own food
@@ -44,6 +53,17 @@ The human population has grown to over 8 billion. Demographic transition: as cou
 ex: A deer population grows quickly, then levels off at 500. What does 500 represent?
 > Growth stops when resources limit the population
 = The carrying capacity
+lab: Population projection
+aim: Project a population of 8 billion forward at different growth rates.
+set: r = 1 | Growth rate (% per year) | 0.1 to 4 by 0.1
+set: t = 50 | Years | 0 to 100 by 5
+out: P = 8*exp(r/100*t) | Population (billions)
+out: Td = 70/r | Doubling time (years)
+plot: t, P
+step: Record the population after 0, 25, 50, 75 and 100 years at 1% growth.
+step: Compare the doubling time at 2% and 0.5%.
+noise: 1
+result: Exponential growth adds more people each year even at a constant rate. The rule of 70 gives the doubling time: 70 years at 1%, but only 35 years at 2%.
 term: carrying capacity = the largest population an environment can support
 term: limiting factor = something that restricts population growth
 term: exponential growth = growth by a constant percentage, producing a J-shaped curve
@@ -94,6 +114,17 @@ key: Nonrenewable sources: coal, oil, natural gas (fossil fuels) and nuclear pow
 - Solar and wind produce no emissions while running but depend on weather, so they need storage like batteries.
 - Hydroelectric dams provide steady power but disrupt rivers and fish migration.
 Energy conservation and efficiency (LED bulbs, insulation, efficient cars) are often the cheapest ways to reduce environmental impact.
+lab: Solar panel test
+aim: Measure how much energy a rooftop solar array produces each day.
+set: A = 20 | Panel area (m²) | 1 to 40 by 1
+set: eff = 20 | Panel efficiency (%) | 10 to 25 by 1
+set: sun = 5 | Peak sun hours per day | 2 to 8 by 0.5
+out: E = A*1*eff/100*sun | Energy per day (kWh)
+plot: A, E
+step: Record daily energy for at least 4 array sizes.
+step: Compare a sunny climate (7 hours) with a cloudy one (3 hours).
+noise: 5
+result: Output scales with area, efficiency and sunlight. A typical home uses about 30 kWh a day, so roughly 30 m² of panels can cover it in a sunny place.
 term: renewable energy = energy from sources that are naturally replenished
 term: fossil fuel = coal, oil or natural gas formed from ancient organisms
 term: energy efficiency = using less energy to do the same task
@@ -126,6 +157,15 @@ key: Greenhouse gases (CO₂, methane, nitrous oxide) trap heat. Since the Indus
 Effects: rising sea levels, melting ice, ocean acidification (oceans absorbing CO₂), more intense heat waves and storms, and shifting habitats.
 Mitigation reduces emissions: renewable energy, efficiency, electric vehicles and protecting forests. Adaptation prepares for changes: sea walls, drought-resistant crops and better planning.
 International agreements like the Paris Agreement set goals to limit warming. Individuals can help by conserving energy and making sustainable choices.
+lab: CO₂ and global temperature
+aim: Use a climate model to estimate warming for different atmospheric CO₂ levels.
+set: C = 420 | CO₂ (ppm) | 280 to 1000 by 10
+set: S = 3 | Climate sensitivity (°C per doubling) | 2 to 4.5 by 0.5
+out: dT = S*log2(C/280) | Warming since 1850 (°C)
+plot: C, dT
+step: Record the warming at 280 (pre-industrial), 420 (today), 560 and 840 ppm.
+step: Change the sensitivity to see the range scientists consider likely.
+result: Each doubling of CO₂ adds about the same warming (the effect is logarithmic). Today's 420 ppm already commits us to about 1.7 °C eventually; 560 ppm would bring about 3 °C.
 term: greenhouse gas = a gas that traps heat in the atmosphere
 term: ocean acidification = the lowering of ocean pH as it absorbs CO₂
 term: mitigation = actions that reduce the causes of climate change
