@@ -24,9 +24,12 @@ export const LESSON_TEXT: Record<string, () => Promise<{ default: LessonText[][]
   'eng9': () => import('./eng9.gen'),
   'geo': () => import('./geo.gen'),
   'phys': () => import('./phys.gen'),
+  'prealg': () => import('./prealg.gen'),
   'precalc': () => import('./precalc.gen'),
   'sat-math': () => import('./sat-math.gen'),
   'sat-rw': () => import('./sat-rw.gen'),
+  'stats': () => import('./stats.gen'),
+  'trig': () => import('./trig.gen'),
   'us-history': () => import('./us-history.gen'),
   'world-history': () => import('./world-history.gen'),
 };
