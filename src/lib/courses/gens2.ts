@@ -114,6 +114,28 @@ const balance: Gen = r => { const [eq, cs] = r.pick(EQS); const show = (c: numbe
 const specificHeat: Gen = r => { const m = r.pick([50, 100, 200, 250, 500]), dT = r.int(5, 40), c = 4.18, q = m * c * dT;
   return { prompt: `How much heat is needed to warm ${m} g of water by ${dT}°C? (c = 4.18 J/g·°C)`, correct: `${r2(q)} J`, wrong: [`${r2(m * dT)} J`, `${r2(q / 1000)} J`, `${r2(m * c)} J`], explanation: `q = mcΔT = ${m} × 4.18 × ${dT} = ${r2(q)} J.` }; };
 
+// ---------------- Calculus ----------------
+const productRule: Gen = r => { const a = r.int(1, 5), n = r.int(2, 4), b = r.nz(-6, 6), x = r.int(1, 3);
+  // f(x) = a x^n (x + b); f'(x) = a n x^(n-1)(x+b) + a x^n
+  const v = a * n * x ** (n - 1) * (x + b) + a * x ** n;
+  return { prompt: `If f(x) = ${a === 1 ? '' : a}x^${n}(x ${sgn(b)}), what is f′(${x})?`, correct: num(v), wrong: [num(a * n * x ** (n - 1)), num(a * n * x ** (n - 1) * (x + b)), num(v + a)], explanation: `Product rule: f′ = (${a * n}x^${n - 1})(x ${sgn(b)}) + (${a}x^${n})(1). At x = ${x}: ${a * n * x ** (n - 1) * (x + b)} + ${a * x ** n} = ${v}.` }; };
+const tangentLine: Gen = r => { const a = r.nz(-3, 3), b = r.int(-5, 5), c = r.int(-6, 6), x0 = r.int(-3, 3), y0 = a * x0 * x0 + b * x0 + c, m = 2 * a * x0 + b, k = y0 - m * x0;
+  const eq = (mm: number, kk: number) => `y = ${coef(mm, 'x') === '' ? '0' : mm === 0 ? '' : coef(mm, 'x')}${mm === 0 ? num(kk) : kk === 0 ? '' : ` ${sgn(kk)}`}`;
+  return { prompt: `What is the tangent line to f(x) = ${coef(a, 'x²')} ${sgn(b)}x ${sgn(c)} at x = ${num(x0)}?`.replace(' + 0x', '').replace(' − 0x', ''), correct: eq(m, k), wrong: [eq(m, y0), eq(a * x0, k), eq(m + 1, k - x0)].filter(w => w !== eq(m, k)).concat(eq(-m, k)), explanation: `f(${num(x0)}) = ${num(y0)} and f′(x) = ${coef(2 * a, 'x')} ${sgn(b)}, so the slope is ${num(m)}. y − ${neg(y0)} = ${num(m)}(x − ${neg(x0)}) → ${eq(m, k)}.` }; };
+const critical: Gen = r => { const p = r.int(-5, 3), q = p + r.int(1, 5), a = 1; // f'(x) = 3(x-p)(x-q) for f = x^3 - 1.5(p+q)x^2 + 3pq x
+  const B = -1.5 * (p + q), C = 3 * p * q;
+  if (!Number.isInteger(B)) return critical(r);
+  return { prompt: `Where does f(x) = x³ ${sgn(B)}x² ${sgn(C)}x have a local maximum?`.replace(' + 0x²', '').replace(' + 0x', '').replace(' − 0x', ''), correct: `x = ${num(p)}`, wrong: [`x = ${num(q)}`, `x = ${num((p + q) / 2)}`, `x = ${num(-p)}`].filter(w => w !== `x = ${num(p)}`).concat(`x = ${num(p - 1)}`), explanation: `f′(x) = 3x² ${sgn(2 * B)}x ${sgn(C)} = 3(x ${sgn(-p)})(x ${sgn(-q)}). f′ changes from + to − at x = ${num(p)}, so that's a local max (x = ${num(q)} is a local min).` }; };
+const riemann: Gen = r => { const n = r.pick([2, 4]), b = r.pick([2, 4]), dx = b / n, xs = Array.from({ length: n }, (_, i) => i * dx), left = xs.reduce((s, x) => s + x * x * dx, 0), right = xs.reduce((s, x) => s + (x + dx) ** 2 * dx, 0), useLeft = r.next() < 0.5;
+  return { prompt: `Estimate ∫ from 0 to ${b} of x² dx with a ${useLeft ? 'left' : 'right'} Riemann sum using ${n} equal subintervals.`, correct: r2(useLeft ? left : right), wrong: [r2(useLeft ? right : left), r2(b ** 3 / 3), r2((left + right) / 2 + 1)], explanation: `Width ${dx}. ${useLeft ? 'Left' : 'Right'} endpoints: ${xs.map(x => r2(useLeft ? x : x + dx)).join(', ')}. Sum of f × width = ${r2(useLeft ? left : right)}. (The exact value is ${r2(b ** 3 / 3)}.)` }; };
+const avgValue: Gen = r => { const a = r.int(1, 4), b = a + r.pick([2, 3, 4]), k = r.int(1, 3); // f(x) = k x on [a, b] -> avg = k(a+b)/2 ; or x^2
+  if (r.next() < 0.5) { const v = k * (a + b) / 2; return { prompt: `What is the average value of f(x) = ${k === 1 ? '' : k}x on [${a}, ${b}]?`, correct: r2(v), wrong: [r2(k * (b * b - a * a) / 2), r2(k * b), r2(v + k)], explanation: `Average = (1/(b − a)) ∫ f dx = (1/${b - a}) × ${r2(k * (b * b - a * a) / 2)} = ${r2(v)}.` }; }
+  const I = (b ** 3 - a ** 3) / 3, v = I / (b - a); return { prompt: `What is the average value of f(x) = x² on [${a}, ${b}]?`, correct: r2(v), wrong: [r2(I), r2((a * a + b * b) / 2), r2(b * b - a * a)], explanation: `∫ x² dx from ${a} to ${b} = ${r2(I)}. Divide by ${b - a}: ${r2(v)}.` }; };
+const expModel: Gen = r => { const y0 = r.pick([100, 200, 500, 50]), k = r.pick([0.1, 0.2, -0.1, 0.05, -0.2]), t = r.pick([5, 10]), v = Math.round(y0 * Math.exp(k * t) * 100) / 100;
+  return { prompt: `dy/dt = ${k}y and y(0) = ${y0}. What is y(${t})? (Round to 2 decimals.)`, correct: String(v), wrong: [String(Math.round(y0 * (1 + k * t) * 100) / 100), String(Math.round(y0 * Math.exp(k) * 100) / 100), String(Math.round(y0 * Math.exp(-k * t) * 100) / 100)], explanation: `The solution of dy/dt = ky is y = y₀e^(kt) = ${y0}e^(${r2(k * t)}) ≈ ${v}.` }; };
+
+export const CALC = { productRule, tangentLine, critical, riemann, avgValue, expModel };
+
 export const CHEM2 = { halfLife, idealGas, balance, specificHeat };
 
 export const ALG2 = { complex, remainder, ratExp, inverseLin, asymptote, expSolve };
