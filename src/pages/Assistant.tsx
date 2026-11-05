@@ -7,6 +7,7 @@ import { isCloud } from '../lib/supabase';
 import Locked from '../components/Locked';
 import Lumino from '../components/Lumino';
 import LuminoSays from '../components/LuminoSays';
+import { TUTOR_HELLO, assistantHello } from '../lib/lines';
 
 type Turn = { role: 'user' | 'assistant'; content: string };
 
@@ -25,7 +26,7 @@ export default function Assistant() {
 
   if (!a) return (
     <section>
-      <div className="tutorhead"><LuminoSays text="Hi! I'm Mr. Lumino. Pick a tutor and ask me anything. I'll walk you through it step by step." mood="wave" after="wave" size={150} />
+      <div className="tutorhead"><LuminoSays text={TUTOR_HELLO} mood="wave" after="wave" size={150} />
         <div><h2>Lumino AI Tutor</h2><p className="muted">{used}/{limit} messages used today</p></div></div>
       <div className="grid">{ASSISTANTS.map(x => { const open = canAccess(plan, x.tier); return (
         <div key={x.id} className={'card' + (open ? '' : ' dim')} onClick={() => open ? setActive(x.id) : (window.location.hash = '#/pricing')}>
@@ -54,7 +55,7 @@ export default function Assistant() {
       <div className="tutorstage">
         {busy ? <div className="lsays left"><Lumino mood="think" size={170} /><div className="lsays-bubble muted">Hmm, let me think…</div></div>
           : <LuminoSays key={turns.length} size={170} mood={lastMood} after={lastMood === 'talk' ? 'idle' : lastMood}
-              text={last?.role === 'assistant' ? last.content : turns.length ? '' : `Hi, I'm Mr. Lumino, your ${a.name}. ${a.blurb}. What are we learning today?`} />}
+              text={last?.role === 'assistant' ? last.content : turns.length ? '' : assistantHello(a)} />}
       </div>
       <p className="note">AI can make mistakes. Double-check important answers, and use it to learn, not to copy.</p>
       <div className="chat tall">

@@ -12,10 +12,11 @@ import { award, recordResult } from '../lib/progress';
 import { confetti } from '../components/Feedback';
 import Lumino from '../components/Lumino';
 import LuminoSays from '../components/LuminoSays';
+import { teachLine, verdict as verdictFor } from '../lib/lines';
+import { prefetchLine } from '../lib/voice';
 
 const TEACH_KEY = 'lumino:teacherMode';
 const getTeach = () => { try { return localStorage.getItem(TEACH_KEY) !== 'off'; } catch { return true; } };
-const PRAISE = ['That\'s right!', 'Nice work!', 'Exactly!', 'You got it!', 'Perfect!'];
 
 export default function TakeTest() {
   const { id } = useParams(); const [sp] = useSearchParams(); const groupId = sp.get('group') ?? undefined;
@@ -42,10 +43,7 @@ export default function TakeTest() {
   };
   const reset = () => { setDone(false); setAns({}); setI(0); setSecs(0); setRevealed({}); };
   const pct = score / qs.length;
-  const verdict = pct === 1 ? { mood: 'cheer' as const, line: `A perfect ${score} out of ${qs.length}! I'm so proud of you!` }
-    : pct >= .8 ? { mood: 'love' as const, line: `${score} out of ${qs.length}! Great job. Let's look at the one${qs.length - score > 1 ? 's' : ''} you missed so you nail ${qs.length - score > 1 ? 'them' : 'it'} next time.` }
-    : pct >= .5 ? { mood: 'teach' as const, line: `${score} out of ${qs.length}. Good effort! Scroll down and I'll show you where things went wrong.` }
-    : { mood: 'wrong' as const, line: `${score} out of ${qs.length}. That's okay, this is how we learn! Read my notes below, then try a fresh set.` };
+  const verdict = verdictFor(score, qs.length);
 
   if (done) return (
     <section className="focus">
@@ -72,9 +70,8 @@ export default function TakeTest() {
         return <button key={ci} disabled={shown} className={'choice' + (ans[q.id] === ci ? ' picked' : '') + (shown ? (ci === q.answer ? ' isright' : ans[q.id] === ci ? ' iswrong' : ' faded') : '')}
           onClick={() => { setAns({ ...ans, [q.id]: ci }); if (teach) setRevealed({ ...revealed, [q.id]: true }); else if (i < qs.length - 1) setTimeout(() => setI(i + 1), 250); }}>{String.fromCharCode(65 + ci)}. {c}</button>; })}</div>
       {teach && (() => { const ok = ans[q.id] === q.answer; const r = revealed[q.id];
-        const line = !r ? (i === 0 ? `Let's do this together! Pick the answer you think is right and I'll explain it.` : `Question ${i + 1}. Take your time.`)
-          : ok ? `${PRAISE[i % PRAISE.length]} ${q.explanation ?? ''}`.trim()
-          : `Not quite. The answer is ${String.fromCharCode(65 + q.answer)}, "${q.choices[q.answer]}". ${q.explanation ?? ''}`.trim();
+        const line = teachLine(i, q, !!r, ok);
+        if (!r) { prefetchLine(teachLine(i, q, true, true)); prefetchLine(teachLine(i, q, true, false)); }
         return <div className="teacherbox"><LuminoSays key={q.id + (r ? 'r' : '')} text={line} size={130} mood={!r ? 'teach' : ok ? 'correct' : 'wrong'} after={!r ? 'teach' : ok ? 'correct' : 'teach'} /></div>; })()}
       <div className="row between">
         <button className="ghost" disabled={i === 0} onClick={() => setI(i - 1)}>← Prev</button>

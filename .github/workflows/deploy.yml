@@ -23,6 +23,8 @@ jobs:
           VITE_LIVEKIT_URL: ${{ secrets.VITE_LIVEKIT_URL }}
           # AI stays hidden until launch: add a repository variable VITE_ENABLE_AI = true to turn it on
           VITE_ENABLE_AI: ${{ vars.VITE_ENABLE_AI }}
+          # Mr. Lumino's ElevenLabs voice: add a repository variable VITE_CLOUD_VOICE = on after the tts function is deployed
+          VITE_CLOUD_VOICE: ${{ vars.VITE_CLOUD_VOICE }}
       - name: Publish dist/ to the gh-pages branch
         run: |
           cd dist

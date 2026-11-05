@@ -9,3 +9,8 @@
 
 Re-make: install `kokoro-onnx soundfile`, download `kokoro-v1.0.onnx` + `voices-v1.0.bin` from the kokoro-onnx
 GitHub releases, voice the lines, then record with `node scripts/record-scene.js`.
+
+## ElevenLabs voice (chosen)
+Mr. Lumino's real voice is ElevenLabs. Pick or design the voice with `npm run voice -- find|design|audition` (needs `ELEVENLABS_API_KEY`),
+then `npm run voice -- prebake` records his fixed lines into `public/voice/`. Everything else is made on demand by the `tts` edge function
+and cached in the Supabase `voice` bucket, so each line is only paid for once. The Kokoro samples above stay as a free fallback option.

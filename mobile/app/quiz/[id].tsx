@@ -11,6 +11,7 @@ import { saveResult } from '@/lib/api';
 import { resolveTest, tierOf, canAccess } from '@/lib/tests';
 import { recordCourseResult, parseCourseTestId, courseTestId } from '@shared/courses';
 import { PLAN_INFO } from '@shared/plans';
+import { teachLine } from '@shared/lines';
 import Lumino, { LuminoSays } from '@/components/Lumino';
 
 export default function Quiz() {
@@ -88,7 +89,7 @@ export default function Quiz() {
         <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, padding: 18, paddingBottom: ins.bottom + 14, gap: 10, backgroundColor: right ? '#e7f8f0' : '#fde9ec', borderTopLeftRadius: 24, borderTopRightRadius: 24 }}>
           <T size={20} weight="900" color={right ? '#0b7a52' : '#b4233a'}>{right ? (combo >= 3 ? `On fire! ${combo} in a row 🔥` : 'Nice! ✨') : 'Not quite'}</T>
           <LuminoSays key={q.id} size={96} mood={right ? 'correct' : 'wrong'} after={right ? 'correct' : 'teach'}
-            text={right ? (q.explanation ?? 'You got it!') : `The answer is ${String.fromCharCode(65 + q.answer)}, "${q.choices[q.answer]}". ${q.explanation ?? ''}`.trim()} />
+            text={teachLine(i, q, true, right)} />
           <Button title={i < qs.length - 1 ? 'Continue' : 'See results'} onPress={next} />
         </View>
       )}

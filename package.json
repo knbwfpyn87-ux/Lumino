@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "check:bank": "tsx scripts/check-bank.ts && tsx scripts/check-courses.ts"
+    "check:bank": "tsx scripts/check-bank.ts && tsx scripts/check-courses.ts && tsx scripts/check-voice.ts",
+    "voice": "tsx scripts/voice/eleven.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",
