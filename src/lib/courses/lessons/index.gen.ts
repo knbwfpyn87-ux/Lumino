@@ -9,6 +9,7 @@ export const LESSON_TEXT: Record<string, () => Promise<{ default: LessonText[][]
   'ap-csa': () => import('./ap-csa.gen'),
   'ap-gov': () => import('./ap-gov.gen'),
   'ap-phys1': () => import('./ap-phys1.gen'),
+  'ap-psych': () => import('./ap-psych.gen'),
   'ap-stats': () => import('./ap-stats.gen'),
   'ap-world': () => import('./ap-world.gen'),
   'apush': () => import('./apush.gen'),
