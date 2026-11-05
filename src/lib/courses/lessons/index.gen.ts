@@ -2,4 +2,5 @@
 import type { LessonText } from '../types';
 export const LESSON_TEXT: Record<string, () => Promise<{ default: LessonText[][] }>> = {
   'alg1': () => import('./alg1.gen'),
+  'ap-csa': () => import('./ap-csa.gen'),
 };
