@@ -5,5 +5,6 @@ export const LESSON_TEXT: Record<string, () => Promise<{ default: LessonText[][]
   'alg2': () => import('./alg2.gen'),
   'ap-csa': () => import('./ap-csa.gen'),
   'bio': () => import('./bio.gen'),
+  'chem': () => import('./chem.gen'),
   'geo': () => import('./geo.gen'),
 };

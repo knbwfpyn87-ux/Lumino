@@ -2,7 +2,7 @@
 import { G, type Gen } from '../generated';
 import { STEM } from './gens';
 import { CSA_GENS } from './csa';
-import { ALG, GEO, ALG2 } from './gens2';
+import { ALG, GEO, ALG2, CHEM2 } from './gens2';
 import { BIO, CHEM, PHYS, EARTH, CS, ENG, HIST, LANG, ARTS, conj } from './banks';
 
 const banks = { BIO, CHEM, PHYS, EARTH, CS, ENG, HIST, LANG, ARTS } as Record<string, Record<string, Gen>>;
@@ -12,6 +12,7 @@ export const GENS: Record<string, Gen> = {
   ...Object.fromEntries(Object.entries(ALG).map(([k, g]) => [`alg.${k}`, g])),
   ...Object.fromEntries(Object.entries(GEO).map(([k, g]) => [`geo.${k}`, g])),
   ...Object.fromEntries(Object.entries(ALG2).map(([k, g]) => [`alg2.${k}`, g])),
+  ...Object.fromEntries(Object.entries(CHEM2).map(([k, g]) => [`chem.${k}`, g])),
   ...Object.fromEntries(Object.entries(CSA_GENS).map(([k, g]) => [`csa.${k}`, g])),
   ...Object.fromEntries(Object.entries(banks).flatMap(([b, gs]) => Object.entries(gs).map(([k, g]) => [`bank.${b}.${k}`, g]))),
   'conj.spanish': conj('Spanish'), 'conj.french': conj('French'),

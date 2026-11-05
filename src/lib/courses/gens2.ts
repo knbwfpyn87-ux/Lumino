@@ -101,6 +101,21 @@ const expSolve: Gen = r => { const b = r.pick([2, 3, 5, 4]), x = r.int(2, b === 
     ? { prompt: `Solve ${b}^x = ${v}`, correct: `x = ${x}`, wrong: [`x = ${v / b}`, `x = ${x + 1}`, `x = ${x - 1}`], explanation: `${v} = ${b}^${x}, so x = ${x}.` }
     : { prompt: `Solve log base ${b} of (x) = ${x}`, correct: `x = ${v}`, wrong: [`x = ${b * x}`, `x = ${x ** b}`, `x = ${v / b}`], explanation: `Rewrite in exponential form: x = ${b}^${x} = ${v}.` }; };
 
+// ---------------- Chemistry ----------------
+const halfLife: Gen = r => { const m = r.pick([80, 160, 200, 320, 400, 64, 96]), hl = r.pick([2, 5, 8, 10, 12, 30]), n = r.int(1, 4), left = m / 2 ** n;
+  return { prompt: `A ${m} g sample has a half-life of ${hl} days. How much is left after ${hl * n} days?`, correct: `${r2(left)} g`, wrong: [`${r2(m / (2 * n))} g`, `${r2(m - m / 2 ** n)} g`, `${r2(m / 2 ** (n + 1))} g`], explanation: `${hl * n} days is ${n} half-lives: ${m} × (1/2)^${n} = ${r2(left)} g.` }; };
+const idealGas: Gen = r => { const n = r.pick([0.5, 1, 2, 3, 4]), T = r.pick([273, 300, 350, 400]), V = r.pick([10, 20, 22.4, 40, 50]), R = 0.0821, P = n * R * T / V;
+  return { prompt: `What is the pressure of ${n} mol of gas at ${T} K in a ${V} L container? (R = 0.0821 L·atm/mol·K)`, correct: `${r2(P)} atm`, wrong: [`${r2(P / 2)} atm`, `${r2(n * T / V)} atm`, `${r2(P * 2)} atm`], explanation: `P = nRT ÷ V = ${n} × 0.0821 × ${T} ÷ ${V} = ${r2(P)} atm.` }; };
+const EQS: [string, number[]][] = [['_H₂ + _O₂ → _H₂O', [2, 1, 2]], ['_N₂ + _H₂ → _NH₃', [1, 3, 2]], ['_CH₄ + _O₂ → _CO₂ + _H₂O', [1, 2, 1, 2]], ['_Na + _Cl₂ → _NaCl', [2, 1, 2]], ['_Al + _O₂ → _Al₂O₃', [4, 3, 2]],
+  ['_Fe + _O₂ → _Fe₂O₃', [4, 3, 2]], ['_C₃H₈ + _O₂ → _CO₂ + _H₂O', [1, 5, 3, 4]], ['_KClO₃ → _KCl + _O₂', [2, 2, 3]], ['_Mg + _HCl → _MgCl₂ + _H₂', [1, 2, 1, 1]], ['_Zn + _HCl → _ZnCl₂ + _H₂', [1, 2, 1, 1]], ['_H₂O₂ → _H₂O + _O₂', [2, 2, 1]], ['_C₂H₆ + _O₂ → _CO₂ + _H₂O', [2, 7, 4, 6]]];
+const balance: Gen = r => { const [eq, cs] = r.pick(EQS); const show = (c: number[]) => { let i = 0; return eq.replace(/_/g, () => { const v = c[i++]; return v === 1 ? '' : String(v); }); };
+  const bad = (k: number) => cs.map((c, i) => (i === k ? c + 1 : c));
+  return { prompt: `Which equation is correctly balanced?`, correct: show(cs), wrong: [show(bad(0)), show(bad(cs.length - 1)), show(cs.map(() => 1))].filter(w => w !== show(cs)).concat(show(bad(1))), explanation: `Count atoms of each element on both sides: ${show(cs)} has the same number of each kind of atom on each side.` }; };
+const specificHeat: Gen = r => { const m = r.pick([50, 100, 200, 250, 500]), dT = r.int(5, 40), c = 4.18, q = m * c * dT;
+  return { prompt: `How much heat is needed to warm ${m} g of water by ${dT}°C? (c = 4.18 J/g·°C)`, correct: `${r2(q)} J`, wrong: [`${r2(m * dT)} J`, `${r2(q / 1000)} J`, `${r2(m * c)} J`], explanation: `q = mcΔT = ${m} × 4.18 × ${dT} = ${r2(q)} J.` }; };
+
+export const CHEM2 = { halfLife, idealGas, balance, specificHeat };
+
 export const ALG2 = { complex, remainder, ratExp, inverseLin, asymptote, expSolve };
 
 export const GEO = { midpoint, distance, polygonAngles, specialRight, trigRatio, similar, arcSector, volume, circleEq };
