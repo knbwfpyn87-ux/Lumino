@@ -25,7 +25,13 @@ def word_times(text, dur):
     lead, tail = 0.05, 0.12
     return [[i, round(lead + (dur - lead - tail) * t / total, 3)] for i, t in starts]
 
-todo = [l for l in json.load(open(lines_file)) if l['key'] not in manifest['lines']]
+wanted = json.load(open(lines_file)); keep = {l['key'] for l in wanted}
+for key in [k for k in manifest['lines'] if k not in keep]:  # lines whose wording changed: remove the old recording
+    del manifest['lines'][key]
+    if os.path.exists(os.path.join(out_dir, key + '.mp3')): os.remove(os.path.join(out_dir, key + '.mp3'))
+json.dump(manifest, open(mf, 'w'), separators=(',', ':'))
+todo = [l for l in wanted if l['key'] not in manifest['lines']]
+print(f'{len(todo)} lines to record', flush=True)
 tmp = tempfile.mkdtemp()
 for n, line in enumerate(todo, 1):
     audio, sr = k.create(line['text'], voice=style, speed=1.0, lang='en-us')

@@ -9,10 +9,20 @@ export const VOICE_MODEL = 'eleven_multilingual_v2';
 /** Lines longer than this use the device voice (keeps cost down for long AI-tutor replies). */
 export const CLOUD_MAX = 600;
 
-/** Clean text for speaking: no emoji, markdown, or code symbols read aloud. */
+/** Clean text for speaking: no emoji, markdown, or code symbols read aloud, and math read the way a teacher says it. */
 export function speakable(text: string) {
-  return text.replace(/```[\s\S]*?```/g, ' (see the code) ').replace(/[*_`#>]+/g, '').replace(/\p{Extended_Pictographic}/gu, '')
-    .replace(/\bMr\.\s/g, 'Mister ').replace(/−/g, ' minus ').replace(/÷/g, ' divided by ').replace(/×/g, ' times ').replace(/\s+/g, ' ').trim();
+  return text.replace(/```[\s\S]*?```/g, ' (see the code) ').replace(/[*_`#]+/g, '').replace(/^>+/gm, '').replace(/\p{Extended_Pictographic}/gu, '')
+    .replace(/\bMr\.\s/g, 'Mister ')
+    // math symbols
+    .replace(/(\d)\s*\/\s*(\d)/g, '$1 over $2').replace(/\^2\b|²/g, ' squared').replace(/\^3\b|³/g, ' cubed').replace(/\^\(?(-?\w+)\)?/g, ' to the power of $1')
+    .replace(/√\(?/g, ' square root of ').replace(/π/g, ' pi ').replace(/θ/g, ' theta ').replace(/°/g, ' degrees').replace(/%/g, ' percent')
+    .replace(/\)\s*\(/g, ') times (').replace(/C\+\+/g, 'C plus plus').replace(/\b([a-z])-(?=\d)/g, '$1 minus ').replace(/\s-\s/g, ' minus ')
+    .replace(/(^|[\s(=,[−+×÷*/<>≤≥"“])-(?=\d|\.\d|[a-zA-Z]\b)/g, '$1 negative ')
+    .replace(/\s*≠\s*/g, ' does not equal ').replace(/\s*≈\s*/g, ' is about ').replace(/\s*≤\s*/g, ' is at most ').replace(/\s*≥\s*/g, ' is at least ')
+    .replace(/\s+<\s+/g, ' is less than ').replace(/\s+>\s+/g, ' is greater than ').replace(/\s*=\s*/g, ' equals ')
+    .replace(/\s*−\s*/g, ' minus ').replace(/\s*÷\s*/g, ' divided by ').replace(/\s*[×·]\s*/g, ' times ').replace(/\s*\+\s*/g, ' plus ')
+    .replace(/\b(\d+)([a-z])\b/g, '$1 $2').replace(/[()]/g, ' ')
+    .replace(/(^|\s)(["“])\s+/g, '$1$2').replace(/\s+([,.!?;:])/g, '$1').replace(/\s+/g, ' ').trim();
 }
 
 // cyrb128-style 128-bit string hash (fast, deterministic, same result in every JS runtime incl. Hermes and Deno).
