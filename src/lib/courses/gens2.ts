@@ -96,7 +96,7 @@ const asymptote: Gen = r => { const a = r.nz(-6, 6), h = r.nz(-6, 6), k = r.int(
   if (deg === 0) return { prompt: `What is the vertical asymptote of f(x) = ${k} / (x ${sgn(-h)})?`, correct: `x = ${num(h)}`, wrong: [`x = ${num(-h)}`, `y = ${num(h)}`, `x = ${k}`], explanation: `The denominator is zero at x = ${num(h)}, so that's a vertical asymptote.` };
   if (deg === 1) return { prompt: `What is the horizontal asymptote of f(x) = (${coef(a, 'x')} + ${k}) / (x ${sgn(-h)})?`, correct: `y = ${num(a)}`, wrong: [`y = 0`, `x = ${num(h)}`, `y = ${k}`].filter(w => w !== `y = ${num(a)}`).concat(`y = ${num(-a)}`), explanation: `Degrees are equal, so the horizontal asymptote is the ratio of leading coefficients: y = ${num(a)}.` };
   return { prompt: `What is the horizontal asymptote of f(x) = ${k} / (x² + ${Math.abs(h)})?`, correct: 'y = 0', wrong: [`y = ${k}`, `x = ${Math.abs(h)}`, 'none'], explanation: `The denominator's degree is bigger, so the horizontal asymptote is y = 0.` }; };
-const expSolve: Gen = r => { const b = r.pick([2, 3, 5, 4]), x = r.int(2, b === 2 ? 7 : 4), v = b ** x, m = r.int(1, 3);
+const expSolve: Gen = r => { const b = r.pick([2, 3, 5, 4]), x = r.int(2, b === 2 ? 7 : 4), v = b ** x;
   return r.next() < 0.5
     ? { prompt: `Solve ${b}^x = ${v}`, correct: `x = ${x}`, wrong: [`x = ${v / b}`, `x = ${x + 1}`, `x = ${x - 1}`], explanation: `${v} = ${b}^${x}, so x = ${x}.` }
     : { prompt: `Solve log base ${b} of (x) = ${x}`, correct: `x = ${v}`, wrong: [`x = ${b * x}`, `x = ${x ** b}`, `x = ${v / b}`], explanation: `Rewrite in exponential form: x = ${b}^${x} = ${v}.` }; };
