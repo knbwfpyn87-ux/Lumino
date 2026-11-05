@@ -3,6 +3,7 @@ import type { LessonText } from '../types';
 export const LESSON_TEXT: Record<string, () => Promise<{ default: LessonText[][] }>> = {
   'alg1': () => import('./alg1.gen'),
   'alg2': () => import('./alg2.gen'),
+  'anatomy': () => import('./anatomy.gen'),
   'ap-bio': () => import('./ap-bio.gen'),
   'ap-calc-ab': () => import('./ap-calc-ab.gen'),
   'ap-calc-bc': () => import('./ap-calc-bc.gen'),
@@ -22,8 +23,10 @@ export const LESSON_TEXT: Record<string, () => Promise<{ default: LessonText[][]
   'calc': () => import('./calc.gen'),
   'chem': () => import('./chem.gen'),
   'discrete': () => import('./discrete.gen'),
+  'earth': () => import('./earth.gen'),
   'eng10': () => import('./eng10.gen'),
   'eng9': () => import('./eng9.gen'),
+  'env': () => import('./env.gen'),
   'geo': () => import('./geo.gen'),
   'linalg': () => import('./linalg.gen'),
   'phys': () => import('./phys.gen'),
