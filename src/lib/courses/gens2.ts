@@ -79,6 +79,30 @@ const circleEq: Gen = r => { const h = r.int(-8, 8), k = r.int(-8, 8), rad = r.i
   const xp = h === 0 ? 'x²' : `(x ${sgn(-h)})²`, yp = k === 0 ? 'y²' : `(y ${sgn(-k)})²`;
   return { prompt: `What are the center and radius of ${xp} + ${yp} = ${rad * rad}?`, correct: `center ${pt(h, k)}, radius ${rad}`, wrong: [`center ${pt(-h, -k)}, radius ${rad}`, `center ${pt(h, k)}, radius ${rad * rad}`, `center ${pt(k, h)}, radius ${rad}`].filter(w => w !== `center ${pt(h, k)}, radius ${rad}`).concat(`center ${pt(-h, k)}, radius ${rad * rad}`), explanation: `(x − h)² + (y − k)² = r² has center (h, k) and radius r = √${rad * rad} = ${rad}.` }; };
 
+// ---------------- Algebra II ----------------
+const cx = (a: number, b: number) => b === 0 ? num(a) : a === 0 ? `${b === 1 ? '' : b === -1 ? '−' : num(b)}i` : `${num(a)} ${b < 0 ? '−' : '+'} ${Math.abs(b) === 1 ? '' : Math.abs(b)}i`;
+const complex: Gen = r => { const a = r.nz(-6, 6), b = r.nz(-6, 6), c = r.nz(-6, 6), d = r.nz(-6, 6);
+  if (r.next() < 0.4) return { prompt: `Simplify (${cx(a, b)}) + (${cx(c, d)})`, correct: cx(a + c, b + d), wrong: [cx(a + c, b - d), cx(a * c, b * d), cx(a - c, b + d)], explanation: `Add real parts (${num(a)} + ${num(c)} = ${num(a + c)}) and imaginary parts (${num(b)} + ${num(d)} = ${num(b + d)}).` };
+  return { prompt: `Simplify (${cx(a, b)})(${cx(c, d)})`, correct: cx(a * c - b * d, a * d + b * c), wrong: [cx(a * c + b * d, a * d + b * c), cx(a * c, b * d), cx(a * c - b * d, a * d - b * c)], explanation: `FOIL, then use i² = −1: ${num(a * c)} + ${num(a * d + b * c)}i ${sgn(-b * d)} → ${cx(a * c - b * d, a * d + b * c)}.` }; };
+const remainder: Gen = r => { const a = r.nz(-3, 3), p = [r.int(1, 3), r.int(-5, 5), r.int(-6, 6), r.int(-9, 9)], v = ((p[0] * a + p[1]) * a + p[2]) * a + p[3];
+  const poly = `${coef(p[0], 'x³')} ${sgn(p[1])}x² ${sgn(p[2])}x ${sgn(p[3])}`.replace(/ [+−] 0x²| [+−] 0x(?!²)/g, '').replace(/([+−]) 1x/g, '$1 x');
+  return { prompt: `What is the remainder when ${poly} is divided by (x ${sgn(-a)})?`, correct: num(v), wrong: [num(((p[0] * -a + p[1]) * -a + p[2]) * -a + p[3]), num(v + p[3]), num(p[3])].filter(w => w !== num(v)).concat(num(v - 1)), explanation: `Remainder Theorem: the remainder is p(${num(a)}) = ${num(v)}.` }; };
+const ratExp: Gen = r => { const [base, root] = r.pick([[8, 3], [27, 3], [16, 4], [32, 5], [64, 3], [81, 4], [25, 2], [36, 2], [125, 3], [64, 2]]), n = r.pick([1, 2, 3].filter(k => k % root !== 0)), rt = Math.round(base ** (1 / root)), v = rt ** n;
+  return { prompt: `Evaluate ${base}^(${n}/${root})`, correct: String(v), wrong: [String(Math.round(base * n / root)), String(rt), String(v * rt)].filter(w => w !== String(v)).concat(String(v + 1)), explanation: `${base}^(${n}/${root}) = (${root === 2 ? '√' : root + 'th root of '}${base})^${n} = ${rt}^${n} = ${v}.` }; };
+const inverseLin: Gen = r => { const a = r.nz(-6, 6), b = r.nz(-9, 9);
+  const show = (m: string, c: number) => `f⁻¹(x) = ${m}${c === 0 ? '' : ` ${sgn(c)}`}`;
+  return { prompt: `Find the inverse of f(x) = ${coef(a, 'x')} ${sgn(b)}`, correct: `f⁻¹(x) = (x ${sgn(-b)}) / ${num(a)}`, wrong: [`f⁻¹(x) = (x ${sgn(b)}) / ${num(a)}`, show(`${num(a)}x`, -b), `f⁻¹(x) = 1 / (${coef(a, 'x')} ${sgn(b)})`], explanation: `Swap x and y: x = ${num(a)}y ${sgn(b)}. Solve for y: y = (x ${sgn(-b)}) / ${num(a)}.` }; };
+const asymptote: Gen = r => { const a = r.nz(-6, 6), h = r.nz(-6, 6), k = r.int(1, 5), deg = r.int(0, 2);
+  if (deg === 0) return { prompt: `What is the vertical asymptote of f(x) = ${k} / (x ${sgn(-h)})?`, correct: `x = ${num(h)}`, wrong: [`x = ${num(-h)}`, `y = ${num(h)}`, `x = ${k}`], explanation: `The denominator is zero at x = ${num(h)}, so that's a vertical asymptote.` };
+  if (deg === 1) return { prompt: `What is the horizontal asymptote of f(x) = (${coef(a, 'x')} + ${k}) / (x ${sgn(-h)})?`, correct: `y = ${num(a)}`, wrong: [`y = 0`, `x = ${num(h)}`, `y = ${k}`].filter(w => w !== `y = ${num(a)}`).concat(`y = ${num(-a)}`), explanation: `Degrees are equal, so the horizontal asymptote is the ratio of leading coefficients: y = ${num(a)}.` };
+  return { prompt: `What is the horizontal asymptote of f(x) = ${k} / (x² + ${Math.abs(h)})?`, correct: 'y = 0', wrong: [`y = ${k}`, `x = ${Math.abs(h)}`, 'none'], explanation: `The denominator's degree is bigger, so the horizontal asymptote is y = 0.` }; };
+const expSolve: Gen = r => { const b = r.pick([2, 3, 5, 4]), x = r.int(2, b === 2 ? 7 : 4), v = b ** x, m = r.int(1, 3);
+  return r.next() < 0.5
+    ? { prompt: `Solve ${b}^x = ${v}`, correct: `x = ${x}`, wrong: [`x = ${v / b}`, `x = ${x + 1}`, `x = ${x - 1}`], explanation: `${v} = ${b}^${x}, so x = ${x}.` }
+    : { prompt: `Solve log base ${b} of (x) = ${x}`, correct: `x = ${v}`, wrong: [`x = ${b * x}`, `x = ${x ** b}`, `x = ${v / b}`], explanation: `Rewrite in exponential form: x = ${b}^${x} = ${v}.` }; };
+
+export const ALG2 = { complex, remainder, ratExp, inverseLin, asymptote, expSolve };
+
 export const GEO = { midpoint, distance, polygonAngles, specialRight, trigRatio, similar, arcSector, volume, circleEq };
 
 export const ALG = { orderOps, evalExpr, likeTerms, distribute, factorTri, vertex, expGrowth, lineEq, absEq, sciNote };

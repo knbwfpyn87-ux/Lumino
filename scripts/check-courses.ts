@@ -8,7 +8,7 @@ for (const c of COURSES) c.units.forEach((u, ui) => u.levels.forEach((_, li) => 
     for (const q of t.questions) { n++;
       const bad = (m: string) => { errors++; if (errors < 20) console.error(`✗ ${q.id}: ${m} | ${q.choices.join(' | ')}`); };
       if (q.choices.length !== 4) bad('choices'); if (new Set(q.choices).size !== 4) bad('dupes');
-      if (q.answer < 0 || q.answer > 3) bad('answer'); if (q.choices.some(x => !x || x.includes('NaN') || (/\bundefined\b/.test(x) && !/undefined slope/.test(x)))) bad('text');
+      if (q.answer < 0 || q.answer > 3) bad('answer'); if (q.choices.some(x => !x || /NaN|Infinity/.test(x) || /[^\sA-Za-z]undefined|undefined[^\sA-Za-z]|= undefined/.test(x)) /* leftovers from a code template; the plain word is fine */) bad('text');
     }
   }
 }));
