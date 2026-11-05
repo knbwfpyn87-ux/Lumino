@@ -17,7 +17,7 @@ export default function Account() {
       {justPaid && <p className="note">🎉 Thanks for subscribing! It can take a few seconds to unlock. <a onClick={refresh}>Refresh</a></p>}
       <div className="item col">
         <b>{profile.username}</b>
-        <span className="muted">{session?.user.email} · {profile.role === 'teacher' ? 'Teacher' : 'Student'} · {profile.school_level === 'college' ? 'College' : 'High school'}</span>
+        <span className="muted">{[session?.user.email, profile.role === 'teacher' ? 'Teacher' : 'Student', profile.school_level === 'college' ? 'College' : 'High school'].filter(Boolean).join(' · ')}</span>
       </div>
       <h3>Plan</h3>
       <div className="item col">

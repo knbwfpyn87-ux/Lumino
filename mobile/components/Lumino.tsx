@@ -18,7 +18,6 @@ const MOODS: Record<LuminoMood, { face?: Face; pose?: Pose; hand?: [Hand, Slot];
   wave: { face: 'laugh', motion: 'bob', rays: true, hand: ['wave', 'right'] }, sleep: { face: 'sleepy', motion: 'breathe', fx: ['zzz'] },
   read: { pose: 'reading', motion: 'bob' }, idea: { pose: 'idea', motion: 'jump', fx: ['burst-small'] }, love: { face: 'love', motion: 'bob', rays: true, fx: ['sparkles'] },
 };
-const mouthFor = (ch?: string): Face => { if (!ch || !/[a-z]/i.test(ch)) return 'smile'; const c = ch.toLowerCase(); return 'a'.includes(c) ? 'laugh' : 'ouwq'.includes(c) ? 'surprised' : 'eiy'.includes(c) ? 'laugh' : 'smile'; };
 
 export default function Lumino({ mood = 'idle', talking = false, char, size = 160 }: { mood?: LuminoMood; talking?: boolean; char?: string; size?: number }) {
   const t = useTheme(); const dark = t.bg === '#0f111a'; const look = MOODS[mood];
@@ -28,14 +27,25 @@ export default function Lumino({ mood = 'idle', talking = false, char, size = 16
   useEffect(() => {
     if (still) return; anim.setValue(0); hand.setValue(0);
     const loop = (d: number) => Animated.loop(Animated.timing(anim, { toValue: 1, duration: d, easing: Easing.inOut(Easing.sin), useNativeDriver: true }));
-    const a = look.motion === 'shake' ? Animated.timing(anim, { toValue: 1, duration: 600, useNativeDriver: true }) : loop(look.motion === 'jump' ? 1100 : look.motion === 'breathe' ? 3200 : talking ? 900 : 2600);
+    const a = look.motion === 'shake' ? Animated.timing(anim, { toValue: 1, duration: 600, useNativeDriver: true }) : loop(look.motion === 'jump' ? 1200 : look.motion === 'breathe' ? 3200 : talking ? 1600 : 2600);
     const h = Animated.loop(Animated.timing(hand, { toValue: 1, duration: mood === 'wave' ? 550 : 1100, easing: Easing.inOut(Easing.sin), useNativeDriver: true }));
     a.start(); h.start(); return () => { a.stop(); h.stop(); };
   }, [mood, talking, still, look.motion, anim, hand]);
   useEffect(() => { if (talking || look.pose || still) return; let to: ReturnType<typeof setTimeout>; const go = () => { to = setTimeout(() => { setBlink(true); setTimeout(() => setBlink(false), 150); go(); }, 2400 + Math.random() * 2500); }; go(); return () => clearTimeout(to); }, [talking, look.pose, still]);
-  useEffect(() => { if (!talking || char !== undefined) { setBabble(null); return; } const seq: Face[] = ['laugh', 'smile', 'surprised', 'laugh', 'smile']; let i = 0; const id = setInterval(() => { i = (i + 1) % seq.length; setBabble(seq[i]); }, 130); return () => clearInterval(id); }, [talking, char]);
+  // Syllable-rhythm lip-sync (opens/closes ~6–7× a second; rests closed on pauses), not one shape per letter
+  const charRef = useRef(char); charRef.current = char;
+  useEffect(() => {
+    if (!talking || look.pose) { setBabble(null); return; }
+    let open = false; let to: ReturnType<typeof setTimeout>;
+    const step = () => { const c = (charRef.current ?? '').toLowerCase(), pause = /[.!?,;:]/.test(c);
+      if (pause || open) { setBabble('talk-closed'); open = false; } else { setBabble(/[ouw]/.test(c) ? 'talk-oh' : 'talk-open'); open = true; }
+      to = setTimeout(step, pause ? 220 : open ? 110 + Math.random() * 50 : 70 + Math.random() * 40); };
+    step(); return () => clearTimeout(to);
+  }, [talking, look.pose]);
 
-  const face: Face | undefined = look.pose ? undefined : blink ? 'happy' : talking ? (char !== undefined ? mouthFor(char) : babble ?? 'smile') : look.face;
+  const face: Face | undefined = look.pose ? undefined : blink ? 'happy' : talking ? babble ?? 'talk-closed' : look.face;
+  // All faces stay mounted (already decoded) and only the active one is visible, so shapes never flash in late
+  const faces = [...new Set([look.face ?? 'smile', 'smile', 'happy', 'talk-closed', 'talk-open', 'talk-oh'])] as Face[];
   const u = size / 100; const tri = anim.interpolate({ inputRange: [0, .5, 1], outputRange: [0, 1, 0] });
   const bodyT = look.motion === 'jump' ? [{ translateY: tri.interpolate({ inputRange: [0, 1], outputRange: [0, -12 * u] }) }]
     : look.motion === 'shake' ? [{ rotate: anim.interpolate({ inputRange: [0, .2, .4, .6, .8, 1], outputRange: ['0deg', '-4deg', '4deg', '-2deg', '1deg', '0deg'] }) }]
@@ -50,7 +60,7 @@ export default function Lumino({ mood = 'idle', talking = false, char, size = 16
         {look.pose ? (() => { const p = rig.poses[look.pose]; return img(p.src as never, (100 - p.w) / 2, 100 - p.h - 2, p.w, p.h); })() : <>
           {look.rays && img('rig-rays', L.rays.x, L.rays.y, L.rays.w, L.rays.h, { opacity: .9 })}
           {img((dark ? 'rig-body-dark' : 'rig-body'), L.body.x, L.body.y, L.body.w, L.body.h)}
-          {face && (() => { const f = rig.faces[face]; return img(f.src as never, f.cx - f.w / 2, f.cy - f.h / 2, f.w, f.h); })()}
+          {faces.map(fn => { const f = rig.faces[fn]; return <View key={fn} style={{ position: 'absolute', inset: 0, opacity: fn === face ? 1 : 0 }}>{img(f.src as never, f.cx - f.w / 2, f.cy - f.h / 2, f.w, f.h)}</View>; })}
         </>}
       </Animated.View>
       {look.hand && (() => { const [h, slot] = look.hand; const hd = rig.hands[h]; const s = rig.slots[slot]; const w = hd.w * s.s, hh = hd.h * s.s;

@@ -543,3 +543,53 @@ button.choice.faded { opacity:.55; }
 .star.on { color:#ffc928 !important; }
 .pickq { width:100%; margin-bottom:8px; } .pickgrid { max-height:280px; overflow:auto; }
 @media (max-width: 860px) { .cattabs { flex-wrap:nowrap; overflow-x:auto; } .cattabs button { white-space:nowrap; } }
+
+/* ---- Smoother Lumino ---- */
+.lumino .lum-move, .lumino .lum-set { position:absolute; inset:0; transform-origin:50% 92%; }
+.lumino .lum-set, .lumino .lum-pose { transition:opacity .22s ease; }
+.lumino .lum-set.off, .lumino .lum-pose.off, .lumino .lum-rays.off { opacity:0; }
+.lumino .lum-face { transition:none; }
+.lumino .lum-face.off { opacity:0; }
+.lumino .lum-rays { transition:opacity .3s ease; }
+.lumino .lum-handwrap, .lumino .lum-fxwrap { position:absolute; display:block; pointer-events:none; }
+.lumino .lum-handwrap { z-index:3; } .lumino .lum-fxwrap { z-index:4; }
+.lumino .lum-handwrap img, .lumino .lum-fxwrap img { width:100%; height:100%; display:block; }
+.lumino .lum-hand { transform-origin:50% 85%; filter:drop-shadow(0 2px 2px rgba(15,27,61,.12)); }
+@keyframes lum-in { from { opacity:0; transform:translateY(8%) scale(.6); } to { opacity:1; transform:none; } }
+.lum-in { animation:lum-in .32s cubic-bezier(.2,.9,.3,1.25) both; }
+@keyframes lum-sway { 0%,100% { transform:rotate(-1.4deg); } 50% { transform:rotate(1.4deg); } }
+.lum-sway { animation:lum-sway 1.6s ease-in-out infinite; }
+/* the outer bob is always running; inner moves blend on top */
+.lumino .lum-bob { animation:lum-bob 2.6s ease-in-out infinite; }
+@keyframes lum-jump { 0%,100% { transform:translateY(0) scale(1); } 18% { transform:translateY(0) scale(1.05,.94); } 42% { transform:translateY(-10%) scale(.98,1.03); } 66% { transform:translateY(0) scale(1.03,.97); } 82% { transform:translateY(0) scale(1); } }
+.lum-jump { animation:lum-jump 1.2s cubic-bezier(.45,0,.3,1) infinite; }
+@keyframes lum-wave { 0%,100% { transform:rotate(-12deg); } 50% { transform:rotate(16deg); } }
+.lum-wave { animation:lum-wave .7s ease-in-out infinite; }
+
+/* ---- Phone fixes ---- */
+@media (max-width: 860px) {
+  /* notifications: a sheet under the header, above the page, never over the logo */
+  .top { z-index:30; }
+  .bellwrap { position:static; }
+  .dropdown { position:absolute; left:14px; right:14px; top:calc(100% + 4px); width:auto; z-index:40; }
+  /* study tiles: wrap long captions inside the tile */
+  .tools.big { grid-template-columns:1fr 1fr; gap:10px; }
+  .tool { min-width:0; padding:16px 10px; }
+  .tool span, .tool small { white-space:normal; overflow-wrap:anywhere; text-align:center; line-height:1.3; }
+  .tools.big .tool small { padding:0; }
+  /* panel headers (e.g. Focus Timer): title on its own line, caption under it */
+  .panelhead { flex-wrap:wrap; gap:4px 10px; }
+  .panelhead h3 { flex:1 1 100%; }
+  .panelhead > span.muted { flex:1 1 100%; }
+  /* bottom tabs: 6 fit, labels never clip, home icon readable in dark mode */
+  .sidenav a span { white-space:nowrap; font-size:.66rem; }
+  .sidenav a.active, [data-theme="dark"] .sidenav a.active { background:var(--accent-soft); box-shadow:none; }
+}
+/* touch screens: no "stuck" hover highlight after tapping a tile */
+@media (hover: none) {
+  .tool:hover, .card:hover, .classrow:hover { transform:none; border-color:transparent; box-shadow:none; }
+  .card:hover { border-color:var(--line); }
+}
+/* nav-home is two-tone art (an <img>): make it white / yellow in dark mode like the other tab icons */
+[data-theme="dark"] .sidenav img.navhome { filter:brightness(0) invert(1); }
+[data-theme="dark"] .sidenav a.active img.navhome { filter:brightness(0) invert(83%) sepia(52%) saturate(1100%) hue-rotate(358deg) brightness(104%); }

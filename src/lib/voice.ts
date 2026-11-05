@@ -7,7 +7,8 @@ export function setVoiceOn(on: boolean) { try { localStorage.setItem(KEY, on ? '
 export function onVoiceChange(f: Listener) { subs.add(f); return () => { subs.delete(f); }; }
 
 // Prefer warm, natural-sounding English voices that ship with common devices.
-const PREFERRED = [/Samantha/i, /Google US English/i, /Aria.*Natural/i, /Jenny.*Natural/i, /Guy.*Natural/i, /Natural/i, /Alex/i, /Karen/i, /Daniel/i, /Google UK English/i];
+// Brighter, lighter voices first: they sound cuter when pitched up. Deeper voices are a last resort.
+const PREFERRED = [/Samantha/i, /Ava/i, /Allison/i, /Nicky/i, /Google US English/i, /Ana.*Natural/i, /Jenny.*Natural/i, /Aria.*Natural/i, /Zira/i, /Karen/i, /Natural/i, /Google UK English Female/i];
 let chosen: SpeechSynthesisVoice | null = null;
 function pickVoice(): SpeechSynthesisVoice | null {
   if (!voiceSupported) return null; if (chosen) return chosen;
@@ -32,7 +33,7 @@ export function speak(text: string, { onWord, onEnd, onStart }: { onWord?: (i: n
   if (!voiceSupported || !voiceOn() || !text.trim()) return false;
   const id = ++current; speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(speakable(text)); const v = pickVoice(); if (v) u.voice = v;
-  u.lang = v?.lang ?? 'en-US'; u.rate = 1.02; u.pitch = 1.2; // a touch brighter: he's a lightbulb
+  u.lang = v?.lang ?? 'en-US'; u.rate = 1.05; u.pitch = 1.45; // small, bright and bubbly: he's a lightbulb
   u.onstart = () => id === current && onStart?.();
   u.onboundary = e => { if (id === current && e.name !== 'sentence') onWord?.(e.charIndex); };
   u.onend = u.onerror = () => { if (id === current) onEnd?.(); };

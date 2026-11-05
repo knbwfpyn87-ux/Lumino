@@ -107,6 +107,27 @@
    "cy": 51.57,
    "w": 29.41,
    "h": 18.47
+  },
+  "talk-closed": {
+   "src": "face-talk-closed",
+   "cx": 51.33,
+   "cy": 54.47,
+   "w": 29.41,
+   "h": 19.15
+  },
+  "talk-open": {
+   "src": "face-talk-open",
+   "cx": 51.33,
+   "cy": 54.47,
+   "w": 29.41,
+   "h": 19.15
+  },
+  "talk-oh": {
+   "src": "face-talk-oh",
+   "cx": 51.33,
+   "cy": 54.47,
+   "w": 29.41,
+   "h": 19.15
   }
  },
  "hands": {

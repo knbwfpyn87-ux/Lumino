@@ -14,7 +14,7 @@ const dur = JSON.parse(fs.readFileSync(ttsDir + '/durations.json', 'utf8'));
   marks.forEach((m, i) => { const f = `${ttsDir}/clip-${m.k.replace(':', '-')}.wav`; if (!fs.existsSync(f)) return;
     inputs.push('-i', f); const delay = Math.max(0, m.t - t0 - TRIM); filters.push(`[${inputs.length / 2}:a]adelay=${delay}|${delay}[a${i}]`); });
   const labels = filters.map(f => f.match(/\[(a\d+)\]$/)[0]).join('');
-  const fc = filters.join(';') + `;${labels}amix=inputs=${filters.length}:normalize=0,loudnorm=I=-16:TP=-1.5,apad[aout]`;
+  const fc = filters.join(';') + `;${labels}amix=inputs=${filters.length}:normalize=0,volume=0dB,alimiter=limit=0.89,apad[aout]`;
   execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-ss', String(TRIM / 1000), '-i', webm, ...inputs, '-filter_complex', fc, '-map', '0:v', '-map', '[aout]',
     '-c:v', 'libx264', '-preset', 'slow', '-crf', '19', '-pix_fmt', 'yuv420p', '-r', '30', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', outMp4]);
   console.log(JSON.stringify({ scene, lines: marks.length, errs, offsets: marks.map(m => [m.k, m.t - t0 - TRIM]) }));

@@ -31,6 +31,24 @@ for f in ['smile', 'laugh', 'happy', 'xd', 'surprised', 'starry', 'skeptical', '
     rig['faces'][f] = {'src': f'face-{f}', 'cx': round(FACE_C[0] / STAGE * 100, 2), 'cy': round(cy / STAGE * 100, 2),
                        'w': round(im.width * FACE_S / STAGE * 100, 2), 'h': round(im.height * FACE_S / STAGE * 100, 2)}
 
+# Talking faces: the smile's eyes + three mouths (closed / open / round), on one shared canvas so the
+# eyes never move between mouth shapes. Cross-fading these blends only the mouth, which reads as smooth speech.
+import numpy as np
+def split(name):
+    a = np.asarray(Image.open(f'{D}/face-{name}.png')); rows = (a[..., 3] > 40).any(1); ys = np.nonzero(rows)[0]
+    gap = next(y for y in range(ys[0], ys[-1]) if rows[y] and not rows[y + 1])  # last row of the eyes
+    mouth_top = next(y for y in range(gap + 1, len(rows)) if rows[y])
+    return a[:gap + 1], a[mouth_top:]
+eyes, _ = split('smile'); mouths = {'talk-closed': split('smile')[1], 'talk-open': split('laugh')[1], 'talk-oh': split('surprised')[1]}
+GAP = 4; W = max(eyes.shape[1], *(m.shape[1] for m in mouths.values())); H = eyes.shape[0] + GAP + max(m.shape[0] for m in mouths.values())
+for n, m in mouths.items():
+    c = Image.new('RGBA', (W, H)); c.alpha_composite(Image.fromarray(eyes), ((W - eyes.shape[1]) // 2, 0))
+    c.alpha_composite(Image.fromarray(m), ((W - m.shape[1]) // 2, eyes.shape[0] + GAP)); c.save(f'{D}/face-{n}.png', optimize=True)
+sm = Image.open(f'{D}/face-smile.png'); smile_top = FACE_C[1] - sm.height * FACE_S / 2
+for n in mouths:
+    rig['faces'][n] = {'src': f'face-{n}', 'cx': round(FACE_C[0] / STAGE * 100, 2), 'cy': round((smile_top + H * FACE_S / 2) / STAGE * 100, 2),
+                       'w': round(W * FACE_S / STAGE * 100, 2), 'h': round(H * FACE_S / STAGE * 100, 2)}
+
 # Hands: where they float beside the bulb (center, scale)
 SLOTS = {'right': (T(570, 225), .8), 'left': (T(392, 230), .8), 'front': (T(494, 280), .78), 'chin': (T(530, 265), .7)}
 rig['hands'] = {}

@@ -26,60 +26,63 @@ const MOODS: Record<LuminoMood, Look> = {
   love:    { face: 'love', body: 'lum-bob', rays: true, fx: [['sparkles', 'lum-twinkle']] },
 };
 
-/** Mouth shape for the letter being spoken (simple lip-sync). */
-function mouthFor(ch: string | undefined, fallback: Face): Face {
-  if (!ch || !/[a-z]/i.test(ch)) return fallback;
-  const c = ch.toLowerCase();
-  if ('a'.includes(c)) return 'laugh';
-  if ('ouwq'.includes(c)) return 'surprised';
-  if ('eiy'.includes(c)) return 'xd' === fallback ? 'xd' : 'laugh';
-  return 'smile';
-}
-
 export default function Lumino({ mood = 'idle', talking = false, char, size = 220, dark, className = '', label }:
   { mood?: LuminoMood; talking?: boolean; char?: string; size?: number; dark?: boolean; className?: string; label?: string }) {
   const look = MOODS[mood];
   const [blink, setBlink] = useState(false);
   const [mouth, setMouth] = useState<Face | null>(null);
-  const tick = useRef(0);
+  const charRef = useRef<string | undefined>(char); charRef.current = char;
   const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Blink every few seconds when not talking
   useEffect(() => {
     if (talking || look.pose || mood === 'sleep' || reduce) return;
-    let t: number; const loop = () => { t = window.setTimeout(() => { setBlink(true); window.setTimeout(() => setBlink(false), 150); loop(); }, 2400 + Math.random() * 2600); };
+    let t: number; const loop = () => { t = window.setTimeout(() => { setBlink(true); window.setTimeout(() => setBlink(false), 140); loop(); }, 2400 + Math.random() * 2600); };
     loop(); return () => window.clearTimeout(t);
   }, [talking, look.pose, mood, reduce]);
 
-  // Lip-sync: follow the spoken letter if given, otherwise babble
+  // Lip-sync on a syllable rhythm (not per letter): the mouth opens and closes about 6–7 times a second,
+  // picks a round or wide shape from the upcoming vowel, and rests closed on pauses (spaces and punctuation).
   useEffect(() => {
     if (!talking || look.pose) { setMouth(null); return; }
-    if (char !== undefined) { setMouth(mouthFor(char, look.face ?? 'smile')); return; }
-    const seq: Face[] = ['laugh', 'smile', 'surprised', 'laugh', 'smile', 'laugh'];
-    const id = window.setInterval(() => { tick.current = (tick.current + 1 + Math.floor(Math.random() * 2)) % seq.length; setMouth(seq[tick.current]); }, 130);
-    return () => window.clearInterval(id);
-  }, [talking, char, look.pose, look.face]);
+    let open = false, t: number;
+    const step = () => {
+      const c = (charRef.current ?? '').toLowerCase();
+      const pause = /[.!?,;:]/.test(c);
+      if (pause || open) { setMouth('talk-closed'); open = false; }
+      else { setMouth(/[ouw]/.test(c) ? 'talk-oh' : 'talk-open'); open = true; }
+      t = window.setTimeout(step, pause ? 220 : open ? 110 + Math.random() * 50 : 70 + Math.random() * 40);
+    };
+    step(); return () => window.clearTimeout(t);
+  }, [talking, look.pose]);
 
   const face: Face | undefined = look.pose ? undefined : blink ? 'happy' : (mouth ?? look.face);
   const L = rig.layers; const pct = (n: number) => `${n}%`;
   const layer = (src: string, x: number, y: number, w: number, h: number, cls = '', key?: string) =>
     <img key={key ?? src} src={SRC[src]} alt="" draggable={false} className={'lum-l ' + cls} style={{ left: pct(x), top: pct(y), width: pct(w), height: pct(h) }} />;
+  // Every face this mood can show is mounted up front (already decoded) and cross-faded, so shapes never "pop".
+  const faces = [...new Set([look.face ?? 'smile', 'smile', 'happy', 'talk-closed', 'talk-open', 'talk-oh'])] as Face[];
+  const extra = look.body && look.body !== 'lum-bob' ? look.body.replace('lum-bob-fast', 'lum-sway') : '';
 
   return (
     <div className={`lumino ${reduce ? 'still' : ''} ${className}`} style={{ width: size, height: size }} role="img" aria-label={label ?? `Mr. Lumino (${mood})`}>
-      <div className={'lum-body ' + (reduce ? '' : look.body ?? '')}>
-        {look.pose ? (() => { const p = rig.poses[look.pose]; return layer(p.src, (100 - p.w) / 2, 100 - p.h - 2, p.w, p.h, 'lum-pose', 'pose-' + look.pose); })() : <>
-          {look.rays && layer(L.rays.src, L.rays.x, L.rays.y, L.rays.w, L.rays.h, 'lum-rays')}
+      {/* The bob never restarts between moods; mood-specific motion runs on an inner layer */}
+      <div className={'lum-body ' + (reduce ? '' : 'lum-bob')}><div className={'lum-move ' + (reduce ? '' : extra)} key={'move-' + mood}>
+        <div className={'lum-set' + (look.pose ? ' off' : '')}>
+          {layer(L.rays.src, L.rays.x, L.rays.y, L.rays.w, L.rays.h, 'lum-rays' + (look.rays ? '' : ' off'))}
           {dark === undefined ? <>
             {layer(L.body.src, L.body.x, L.body.y, L.body.w, L.body.h, 'light-only', 'body-l')}
             {layer(L['body-dark'].src, L['body-dark'].x, L['body-dark'].y, L['body-dark'].w, L['body-dark'].h, 'dark-only', 'body-d')}
           </> : layer(dark ? L['body-dark'].src : L.body.src, L.body.x, L.body.y, L.body.w, L.body.h)}
-          {face && (() => { const f = rig.faces[face]; return layer(f.src, f.cx - f.w / 2, f.cy - f.h / 2, f.w, f.h, 'lum-face', 'face'); })()}
-        </>}
-      </div>
+          {faces.map(fn => { const f = rig.faces[fn]; return layer(f.src, f.cx - f.w / 2, f.cy - f.h / 2, f.w, f.h, 'lum-face' + (fn === face ? '' : ' off'), 'face-' + fn); })}
+        </div>
+        {(Object.keys(rig.poses) as Pose[]).map(pk => { const p = rig.poses[pk]; return layer(p.src, (100 - p.w) / 2, 100 - p.h - 2, p.w, p.h, 'lum-pose' + (look.pose === pk ? '' : ' off'), 'pose-' + pk); })}
+      </div></div>
       {look.hand && (() => { const [h, slot, anim] = look.hand; const hd = rig.hands[h]; const s = rig.slots[slot]; const w = hd.w * s.s, hh = hd.h * s.s;
-        return <img key={'hand-' + h} src={SRC[hd.src]} alt="" draggable={false} className={'lum-l lum-hand ' + (reduce ? '' : anim)} style={{ left: pct(s.cx - w / 2), top: pct(s.cy - hh / 2), width: pct(w), height: pct(hh) }} />; })()}
-      {look.fx?.map(([k, anim]) => { const f = rig.fx[k]; return <img key={'fx-' + k + mood} src={SRC[f.src]} alt="" draggable={false} className={'lum-l lum-fx ' + (reduce ? '' : anim)} style={{ left: pct(f.cx - f.w / 2), top: pct(f.cy - f.h / 2), width: pct(f.w), height: pct(f.h) }} />; })}
+        return <span key={'hand-' + h} className={'lum-handwrap ' + (reduce ? '' : 'lum-in')} style={{ left: pct(s.cx - w / 2), top: pct(s.cy - hh / 2), width: pct(w), height: pct(hh) }}>
+          <img src={SRC[hd.src]} alt="" draggable={false} className={'lum-hand ' + (reduce ? '' : anim)} /></span>; })()}
+      {look.fx?.map(([k, anim]) => { const f = rig.fx[k]; return <span key={'fx-' + k + mood} className={'lum-fxwrap ' + (reduce ? '' : 'lum-in')} style={{ left: pct(f.cx - f.w / 2), top: pct(f.cy - f.h / 2), width: pct(f.w), height: pct(f.h) }}>
+        <img src={SRC[f.src]} alt="" draggable={false} className={'lum-fx ' + (reduce ? '' : anim)} /></span>; })}
     </div>
   );
 }

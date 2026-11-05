@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import UIcon from './UIcon';
 import { useAuth, myName } from '../lib/auth';
 import { useProgress } from './useProgress';
@@ -11,7 +11,9 @@ import Brand from './Brand';
 export default function TopBar({ logo: _logo }: { logo: string }) {
   const { profile } = useAuth(); const name = myName(profile); const p = useProgress(); const nav = useNavigate();
   const [q, setQ] = useState(''); const [searching, setSearching] = useState(false); const [open, setOpen] = useState(false); const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => { const f = (e: MouseEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); }; document.addEventListener('click', f); return () => document.removeEventListener('click', f); }, []);
+  // Close the notifications panel when the page changes (it used to stay open across pages on phones)
+  const loc = useLocation(); useEffect(() => { setOpen(false); setSearching(false); }, [loc.pathname]);
+  useEffect(() => { const f = (e: PointerEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); }; document.addEventListener('pointerdown', f); return () => document.removeEventListener('pointerdown', f); }, []);
   const due = db.decks().reduce((n, d) => n + d.cards.filter(isDue).length, 0);
   const soon = getUpcoming().filter(u => !u.done && new Date(u.due).getTime() - Date.now() < 3 * 864e5);
   const notes = [

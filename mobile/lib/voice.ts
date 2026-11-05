@@ -9,7 +9,7 @@ let voiceId: string | undefined; let looked = false;
 async function pick() {
   if (looked) return voiceId; looked = true;
   const all = (await Speech.getAvailableVoicesAsync().catch(() => [])).filter(v => v.language?.startsWith('en'));
-  const pref = [/Samantha/i, /Ava/i, /Allison/i, /Nicky/i, /Evan/i, /Alex/i];
+  const pref = [/Samantha/i, /Ava/i, /Allison/i, /Nicky/i, /Zoe/i, /Susan/i];
   for (const re of pref) { const v = all.find(x => re.test(x.name) && x.quality === Speech.VoiceQuality.Enhanced) ?? all.find(x => re.test(x.name)); if (v) return (voiceId = v.identifier); }
   return (voiceId = all.find(v => v.language === 'en-US')?.identifier);
 }
@@ -17,7 +17,7 @@ export const speakable = (t: string) => t.replace(/[*_`#>]+/g, '').replace(/\p{E
 export async function speak(text: string, h: { onStart?: () => void; onWord?: (i: number) => void; onEnd?: () => void }) {
   if (!voiceOn() || !text.trim()) return false;
   Speech.stop(); const voice = await pick();
-  Speech.speak(speakable(text), { voice, language: 'en-US', pitch: 1.2, rate: 1.0, onStart: h.onStart, onDone: h.onEnd, onStopped: h.onEnd, onError: h.onEnd,
+  Speech.speak(speakable(text), { voice, language: 'en-US', pitch: 1.45, rate: 1.03, onStart: h.onStart, onDone: h.onEnd, onStopped: h.onEnd, onError: h.onEnd,
     onBoundary: (e: { charIndex: number }) => h.onWord?.(e.charIndex) } as Speech.SpeechOptions);
   return true;
 }
