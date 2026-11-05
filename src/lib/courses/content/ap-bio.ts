@@ -13,6 +13,16 @@ Water is polar, so water molecules form hydrogen bonds with each other. This exp
 - Ice is less dense than liquid water, so lakes freeze from the top down.
 - Water is the "universal solvent" for polar and ionic substances.
 key: Hydrogen bonds are weak individually, but their large number gives water properties that make life possible.
+lab: Heating water and ethanol
+aim: Heat 200 g of water and 200 g of ethanol on identical 100 W hot plates. Which warms faster, and why?
+set: t = 3 | Heating time (min) | 0 to 10 by 0.5
+out: Tw = 20 + 100*t*60/(200*4.18) | Water temperature (°C)
+out: Te = min(20 + 100*t*60/(200*2.44), 78) | Ethanol temperature (°C)
+plot: t, Tw
+step: Record both temperatures every 2 minutes.
+step: Compare the rise per minute for each liquid.
+noise: 2
+result: Water warms much more slowly because its specific heat (4.18 J/g·°C) is high: energy goes into breaking hydrogen bonds. This stabilizes temperatures in organisms and coastal climates.
 term: hydrogen bond = a weak attraction between a partially positive hydrogen and a partially negative atom such as O or N
 term: cohesion = attraction between molecules of the same substance due to hydrogen bonding
 term: adhesion = attraction between water and other polar surfaces
@@ -90,6 +100,15 @@ ex: Compare SA:V for cubes with sides 1 cm and 3 cm
 Adaptations that increase surface area include microvilli in the intestine, root hairs and the folds of mitochondria.
 key: Fluid mosaic model: a phospholipid bilayer with embedded proteins that move laterally. Cholesterol helps regulate fluidity in animal cells.
 Small nonpolar molecules (O₂, CO₂) cross easily. Ions and large polar molecules need transport proteins. Aquaporins speed water movement.
+lab: Agar cube diffusion
+aim: Soak agar cubes of different sizes in vinegar for 10 minutes and see how much of each cube the acid reaches.
+set: s = 2 | Cube side (cm) | 0.5 to 4 by 0.1
+out: ratio = 6/s | Surface area : volume (per cm)
+out: reached = 100*(1 - max(s - 0.4, 0)^3/s^3) | Volume reached by diffusion (%)
+plot: s, reached
+step: Record the SA:V ratio and the percent reached for at least 5 cube sizes.
+noise: 3
+result: As a cube grows its volume increases faster than its surface area, so SA:V falls and diffusion reaches a smaller fraction of it. This limits cell size and explains why cells are small or folded.
 term: surface-area-to-volume ratio = the amount of surface relative to volume; decreases as a cell grows
 term: fluid mosaic model = a model of the membrane as a fluid phospholipid bilayer with embedded proteins
 term: aquaporin = a channel protein that allows water to cross the membrane quickly
@@ -163,6 +182,17 @@ say: Cellular respiration releases the energy stored in glucose. Most of the ATP
 - Chemiosmosis: H⁺ flows back through ATP synthase, making most of the ATP (oxidative phosphorylation).
 key: Oxygen's job is to accept electrons at the end of the electron transport chain. Without it, the chain backs up and only glycolysis can make ATP.
 In fermentation, NAD⁺ is regenerated from NADH so glycolysis can continue without oxygen. Variation in metabolic pathways (like different fermentation types) affects an organism's fitness in different environments.
+lab: Respirometer with peas
+aim: Measure oxygen consumed by germinating and dry peas at different temperatures.
+set: T = 20 | Temperature (°C) | 5 to 40 by 1
+set: germ = 1 | Germinating? (1 = yes, 0 = dry) | 0 to 1 by 1
+out: rate = (0.004 + 0.026*germ)*2^((T - 20)/10) | O₂ used (mL/min)
+out: V20 = rate*20 | O₂ used in 20 min (mL)
+plot: T, rate
+step: Record the rate for germinating peas at 4 temperatures.
+step: Switch to dry peas as a control and repeat.
+noise: 5
+result: Germinating seeds respire far faster than dormant ones, and the rate roughly doubles for every 10 °C rise (Q₁₀ ≈ 2) because enzyme-catalyzed reactions speed up with temperature.
 term: oxidative phosphorylation = ATP synthesis powered by the electron transport chain and chemiosmosis
 term: final electron acceptor = the molecule at the end of the ETC; oxygen in aerobic respiration
 term: NADH = an electron carrier that delivers high-energy electrons to the electron transport chain
@@ -202,6 +232,16 @@ ex: Blood glucose rises after a meal. Describe the feedback.
 > Glucose falls back to normal and insulin release decreases
 = Negative feedback restores the set point
 Disruptions to feedback cause disease. In type 1 diabetes, the immune system destroys insulin-producing cells; in type 2, cells respond poorly to insulin.
+lab: Glucose tolerance test
+aim: Track blood glucose after a sugary drink in people with different insulin sensitivity.
+set: t = 30 | Time after the drink (min) | 0 to 180 by 5
+set: S = 1 | Insulin sensitivity (1 = typical) | 0.3 to 1.5 by 0.1
+out: G = 90 + 60/S*(t/45)*exp(1 - t/45)*(1 + (1 - S)*t/90) | Blood glucose (mg/dL)
+plot: t, G
+step: Record glucose every 30 minutes for a typical person.
+step: Lower the sensitivity (as in type 2 diabetes) and compare.
+noise: 3
+result: Insulin brings glucose back toward 90 mg/dL by negative feedback within about 2 hours. With low insulin sensitivity the peak is higher and the return much slower.
 term: negative feedback = a response that counteracts a change, maintaining homeostasis
 term: positive feedback = a response that amplifies a change
 term: glucagon = a hormone that raises blood glucose
@@ -259,6 +299,15 @@ ex: AaBb × AaBb. What fraction of offspring are aabb?
 = 1/16
 A dihybrid cross of two heterozygotes gives a 9:3:3:1 phenotype ratio.
 Chi-square (χ²) tests whether observed results fit expected ratios: χ² = Σ (o − e)² / e. If χ² is greater than the critical value (for p = 0.05 and degrees of freedom = categories − 1), reject the null hypothesis.
+lab: Chi-square on a corn cob
+aim: Count purple and yellow kernels on an ear of corn from a monohybrid cross. Do the counts fit a 3:1 ratio?
+set: o = 290 | Purple kernels (out of 400) | 250 to 350 by 1
+out: chi = (o - 300)^2/300 + (100 - (400 - o))^2/100 | χ² value
+out: fit = if(chi < 3.84, 1, 0) | Fits 3:1? (1 = yes, p > 0.05)
+plot: o, chi
+step: Record χ² for at least 5 different counts.
+step: The critical value for 1 degree of freedom at p = 0.05 is 3.84.
+result: χ² = Σ(o − e)²/e. Counts within about ±17 of 300 give χ² below 3.84, so we fail to reject the 3:1 hypothesis; the difference is just chance. Bigger deviations suggest the hypothesis is wrong.
 term: law of segregation = the two alleles for a gene separate during gamete formation
 term: dihybrid cross = a cross following two genes at once
 term: chi-square test = a statistical test comparing observed results to expected results
@@ -334,6 +383,16 @@ Key biotechnology tools:
 - Restriction enzymes cut DNA at specific sequences; bacterial transformation inserts genes (like human insulin) into plasmids.
 - DNA sequencing reads the order of bases.
 key: In gel electrophoresis, DNA is negatively charged, so it moves toward the positive electrode, and shorter pieces move farther.
+lab: PCR amplification
+aim: Run a polymerase chain reaction and follow how many copies of a DNA segment you make.
+set: n = 10 | Cycles | 0 to 35 by 1
+set: eff = 0.9 | Efficiency per cycle | 0.5 to 1 by 0.05
+out: N = 10*(1 + eff)^n | DNA copies
+plot: n, N
+step: Record the copy number every 5 cycles.
+step: Lower the efficiency and compare after 30 cycles.
+noise: 4
+result: Each cycle (denature, anneal, extend) can double the DNA, so copies grow exponentially: 30 perfect cycles turn 10 copies into over 10 billion. That's why PCR can detect tiny samples.
 term: missense mutation = a substitution that changes one amino acid
 term: nonsense mutation = a substitution that creates an early stop codon
 term: PCR = polymerase chain reaction, a technique that copies a DNA segment many times
@@ -376,6 +435,17 @@ ex: 16% of a population shows a recessive trait. What fraction are carriers?
 = 0.48 (48% are heterozygous carriers)
 Hardy-Weinberg equilibrium requires: no mutations, random mating, no natural selection, a very large population (no genetic drift) and no gene flow.
 Genetic drift (random changes) has big effects in small populations, as in the bottleneck effect and founder effect.
+lab: Hardy–Weinberg calculator
+aim: Change the recessive allele frequency and see the expected genotype frequencies in a population at equilibrium.
+set: q = 0.3 | Frequency of a (q) | 0 to 1 by 0.01
+out: p = 1 - q | Frequency of A (p)
+out: AA = p^2*100 | AA (%)
+out: Aa = 2*p*q*100 | Aa carriers (%)
+out: aa = q^2*100 | aa (%)
+plot: q, Aa
+step: Record the genotype percentages for at least 5 values of q.
+step: When the aa phenotype is 1%, what percent are carriers?
+result: p² + 2pq + q² = 1. Heterozygotes peak at 50% when p = q = 0.5. When a recessive trait is rare (q² = 1%), carriers are still common (about 18%), which is why recessive alleles persist.
 term: Hardy-Weinberg equilibrium = a population whose allele frequencies do not change across generations
 term: genetic drift = random changes in allele frequencies, strongest in small populations
 term: gene flow = movement of alleles between populations through migration
@@ -415,6 +485,17 @@ ex: A population of 100 has r_max = 0.2 per year and K = 500. Find the logistic 
 > 20 × 0.8
 = 16 individuals per year
 Density-dependent factors (competition, disease, predation) intensify as populations grow.
+lab: Logistic population growth
+aim: Measure how fast a population grows at different sizes when resources are limited.
+set: N = 200 | Population size | 0 to 1000 by 10
+set: r = 0.4 | Intrinsic growth rate | 0.1 to 1 by 0.05
+set: K = 1000 | Carrying capacity | 500 to 1000 by 50
+out: dN = r*N*(1 - N/K) | Growth rate (individuals/year)
+plot: N, dN
+step: Record dN/dt for at least 5 population sizes.
+step: Find the population size where growth is fastest.
+noise: 3
+result: dN/dt = rN(K − N)/K. Growth is fastest at half the carrying capacity and falls to zero at K, where births equal deaths. Fisheries aim to keep stocks near K/2 for maximum sustainable yield.
 term: carrying capacity = the maximum population size an environment can sustain
 term: logistic growth = population growth that slows as it approaches carrying capacity
 term: endotherm = an animal that uses metabolic heat to regulate body temperature

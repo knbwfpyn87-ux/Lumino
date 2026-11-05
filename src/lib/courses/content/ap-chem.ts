@@ -14,6 +14,17 @@ ex: A compound is 40.0% C, 6.7% H and 53.3% O by mass. Find its empirical formul
 > In 100 g: 40.0/12.01 = 3.33 mol C; 6.7/1.008 = 6.65 mol H; 53.3/16.00 = 3.33 mol O
 > Divide by 3.33: C 1, H 2, O 1
 = CH₂O
+lab: Water of hydration
+aim: Heat a sample of hydrated copper(II) sulfate (CuSO₄·xH₂O) and use the mass lost to find x.
+set: x = 5 | Waters per formula unit (x) | 1 to 10 by 1
+set: m = 5 | Sample mass before heating (g) | 1 to 10 by 0.5
+out: after = m*159.6/(159.6 + 18.02*x) | Mass after heating (g)
+out: pct = 100*(m - after)/m | Water lost (%)
+plot: x, pct
+step: Record the mass after heating for several values of x.
+step: A real sample of 5.00 g left 3.20 g. Which x matches?
+noise: 1
+result: Moles of water ÷ moles of anhydrous salt gives x. A 5.00 g sample leaving 3.20 g matches x = 5 (36% water), so the formula is CuSO₄·5H₂O.
 term: mole = 6.022 × 10²³ particles of a substance
 term: mass spectrum = a graph showing the masses and relative abundances of an element's isotopes
 term: empirical formula = the simplest whole-number ratio of atoms in a compound
@@ -66,6 +77,14 @@ say: Bonds form because atoms are more stable together. Potential energy diagram
 - Covalent bonds: shared electrons between nonmetals. Polar if electronegativities differ.
 - Metallic bonds: cations in a sea of delocalized electrons, explaining conductivity and malleability. Alloys can be interstitial (small atoms fill gaps, like steel) or substitutional (similar-size atoms replace each other, like brass).
 key: On a potential energy vs. internuclear distance graph, the minimum energy is at the bond length; the depth of the well is the bond energy.
+lab: Potential energy of two H atoms
+aim: Bring two hydrogen atoms together and track the potential energy of the pair.
+set: r = 120 | Distance between nuclei (pm) | 50 to 300 by 2
+out: E = 436*(1 - exp(-0.019*(r - 74)))^2 - 436 | Potential energy (kJ/mol)
+plot: r, E
+step: Record the energy for at least 6 distances.
+step: Find the distance with the lowest energy.
+result: Energy is lowest at the bond length (74 pm), where attraction and repulsion balance. The depth of the well (436 kJ/mol) is the bond energy. Closer than this, nuclear repulsion makes energy rise steeply.
 term: lattice energy = the energy released when ions form a solid lattice; larger for higher charges and smaller ions
 term: bond length = the distance between nuclei at minimum potential energy
 term: interstitial alloy = an alloy where small atoms fill spaces between larger metal atoms
@@ -136,6 +155,18 @@ key: PV = nRT (R = 0.08206 L·atm/mol·K). Real gases deviate most at high press
 - Dalton's law: P_total = sum of partial pressures; partial pressure = mole fraction × total pressure.
 Solutions: molarity M = moles solute ÷ liters solution. "Like dissolves like." Separation techniques like chromatography and distillation exploit differences in IMFs.
 Spectroscopy: Beer–Lambert law, A = εbc. Absorbance is proportional to concentration, which lets you find an unknown concentration from a calibration curve.
+lab: Real gas versus ideal gas
+aim: Compress 1 mol of CO₂ at 300 K and compare its pressure with the ideal gas law.
+set: V = 1 | Volume (L) | 0.1 to 2 by 0.05
+set: T = 300 | Temperature (K) | 250 to 600 by 10
+out: Pi = 0.08206*T/V | Ideal pressure (atm)
+out: Pr = 0.08206*T/(V - 0.04267) - 3.64/V^2 | Real (van der Waals) pressure (atm)
+out: dev = 100*(Pr - Pi)/Pi | Difference (%)
+plot: V, Pr
+step: Record the ideal and real pressures at 5 volumes.
+step: Raise the temperature and check whether the gas behaves more ideally.
+noise: 1
+result: At large volumes CO₂ is nearly ideal. When compressed, attractions lower the pressure below ideal; at very small volumes the molecules' own size raises it. Gases are most ideal at high temperature and low pressure.
 term: ideal gas = a gas whose particles have no volume and no attractions
 term: mole fraction = moles of one component divided by total moles
 term: Beer–Lambert law = absorbance is proportional to concentration: A = εbc
@@ -175,6 +206,15 @@ Titration finds an unknown concentration. At the equivalence point, moles of aci
 ex: In Zn + Cu²⁺ → Zn²⁺ + Cu, what is oxidized?
 > Zn goes from 0 to +2: loses electrons
 = Zn is oxidized (and is the reducing agent)
+lab: Precipitating silver chloride
+aim: Add 0.10 M AgNO₃ to 25.0 mL of 0.10 M NaCl and weigh the dried AgCl precipitate.
+set: V = 10 | AgNO₃ added (mL) | 0 to 50 by 1
+out: m = min(V*0.1/1000, 0.0025)*143.32 | AgCl precipitate (g)
+plot: V, m
+step: Record the mass of precipitate for at least 5 volumes.
+step: Find the volume where adding more silver nitrate stops helping.
+noise: 2
+result: Mass increases until 25.0 mL, when moles of Ag⁺ equal moles of Cl⁻; then chloride is limiting and the mass stays at 0.358 g. Gravimetric analysis uses this to find unknown amounts.
 term: oxidation = loss of electrons; increase in oxidation number
 term: reduction = gain of electrons; decrease in oxidation number
 term: oxidizing agent = the substance that gains electrons and causes another to be oxidized
@@ -196,6 +236,17 @@ Integrated rate laws relate concentration to time:
 - Zero order: [A] vs. t is linear.
 - First order: ln[A] vs. t is linear; half-life t½ = 0.693/k is constant.
 - Second order: 1/[A] vs. t is linear.
+lab: Crystal violet fading
+aim: Track the color of crystal violet as it reacts with excess hydroxide, using a spectrometer.
+set: t = 120 | Time (s) | 0 to 600 by 10
+set: OH = 0.05 | [OH⁻] (mol/L) | 0.02 to 0.1 by 0.01
+out: CV = 2.5e-5*exp(-0.2*OH*t) | [crystal violet] (mol/L)
+out: lnCV = ln(CV) | ln[CV]
+plot: t, lnCV
+step: Record ln[CV] every 100 seconds.
+step: Double [OH⁻] and see how the slope changes.
+noise: 0.5
+result: ln[CV] vs time is a straight line, so the reaction is first order in crystal violet; the slope is −k. Doubling [OH⁻] doubles the slope, so it's also first order in hydroxide.
 term: rate law = an equation relating reaction rate to reactant concentrations
 term: reaction order = the exponent on a concentration in a rate law
 term: rate constant = the proportionality constant k in a rate law
@@ -232,6 +283,17 @@ ex: A reaction in 100 g of water raises the temperature by 5.0°C. Find q for th
 > The reaction released that heat
 = q_rxn = −2,090 J (exothermic)
 Phase changes absorb or release energy at constant temperature: melting and boiling are endothermic; freezing and condensing are exothermic. On a heating curve, flat sections are phase changes.
+lab: Heat of neutralization
+aim: Mix 50.0 mL of HCl with 50.0 mL of NaOH of equal concentration in a coffee-cup calorimeter.
+set: c = 1 | Concentration of each solution (M) | 0.5 to 2 by 0.1
+out: n = c*0.05 | Moles of water formed
+out: dT = 57.1*n*1000/(100*4.18) | Temperature rise (°C)
+out: dH = -100*4.18*dT/n/1000 | ΔH (kJ/mol)
+plot: c, dT
+step: Record the temperature rise for at least 4 concentrations.
+step: Calculate ΔH = −q/n for each and compare.
+noise: 3
+result: The temperature rise is proportional to moles reacted, but ΔH per mole stays about −57 kJ/mol for any strong acid–strong base pair, because the reaction is always H⁺ + OH⁻ → H₂O.
 term: enthalpy change = the heat absorbed or released at constant pressure, ΔH
 term: calorimetry = measuring heat flow in a reaction
 term: specific heat capacity = the energy needed to raise 1 g of a substance by 1°C
@@ -288,6 +350,13 @@ key: A system at equilibrium shifts to counteract any stress: changes in concent
 - Catalysts don't shift equilibrium; they just reach it faster.
 Solubility equilibria: for AgCl(s) ⇌ Ag⁺ + Cl⁻, Ksp = [Ag⁺][Cl⁻]. Molar solubility s satisfies Ksp = s² here.
 The common ion effect: adding an ion already in the equilibrium decreases solubility. AgCl is less soluble in NaCl solution than in pure water.
+lab: The common-ion effect
+aim: Measure how much AgCl dissolves in solutions that already contain chloride ions.
+set: c = 0.001 | NaCl already present (mol/L) | 0 to 0.1 by 0.001
+out: s = (-c + sqrt(c^2 + 4*1.8e-10))/2 | AgCl solubility (mol/L)
+plot: c, s
+step: Record the solubility in pure water and at 4 chloride concentrations.
+result: Adding a common ion shifts the equilibrium AgCl ⇌ Ag⁺ + Cl⁻ to the left (Le Chatelier), so solubility drops from 1.3 × 10⁻⁵ M in pure water to about Ksp/[Cl⁻].
 term: Le Chatelier's principle = an equilibrium shifts to relieve a stress placed on it
 term: solubility product = the equilibrium constant for dissolving a sparingly soluble salt, Ksp
 term: common ion effect = decreased solubility of a salt when a solution already contains one of its ions
@@ -328,6 +397,23 @@ Titration curves:
 ex: A weak acid titration reaches its half-equivalence point at pH 4.7. What is the acid's pKa?
 > At half-equivalence, [HA] = [A⁻]
 = pKa = 4.7
+lab: Titrating a weak acid
+aim: Titrate 25.0 mL of 0.10 M weak acid with 0.10 M NaOH and find its pKa from the curve.
+set: Vb = 12.5 | NaOH added (mL) | 0 to 40 by 0.5
+set: pKa = 4.76 | Acid pKa | 3 to 7 by 0.01
+out: Ka = 10^(-pKa) | Ka
+out: Vt = (25 + Vb)/1000 | Total volume (L)
+out: HA = max(0.0025 - Vb*0.0001, 0)/Vt | [HA]
+out: A = min(Vb*0.0001, 0.0025)/Vt | [A⁻]
+out: H1 = (-(A + Ka) + sqrt((A + Ka)^2 + 4*Ka*HA))/2 | [H⁺] from the acid
+out: OH = max(Vb*0.0001 - 0.0025, 0)/Vt | Excess [OH⁻]
+out: OHt = (OH + sqrt(OH^2 + 4*(1e-14/Ka*A + 1e-14)))/2 | Total [OH⁻]
+out: pH = -log(max(H1, 1e-14/OHt)) | pH
+plot: Vb, pH
+step: Record the pH at 0, 6, 12.5, 20, 25 and 30 mL.
+step: Compare the pH at the half-equivalence point (12.5 mL) with the pKa.
+noise: 0.5
+result: The curve starts above a strong acid's, has a flat buffer region, and the equivalence point is basic (about 8.7) because A⁻ is a weak base. At half-equivalence [HA] = [A⁻], so pH = pKa.
 term: buffer = a solution of a weak acid and its conjugate base that resists pH changes
 term: Henderson–Hasselbalch equation = pH = pKa + log([A⁻]/[HA])
 term: half-equivalence point = the point in a titration where half the acid has been neutralized; pH = pKa
@@ -365,6 +451,16 @@ ex: E°(Cu²⁺/Cu) = +0.34 V and E°(Zn²⁺/Zn) = −0.76 V. Find E°cell.
 > Cu²⁺ is reduced (cathode); Zn is oxidized (anode)
 > 0.34 − (−0.76)
 = +1.10 V
+lab: Zinc–copper cell and concentration
+aim: Change the ion concentrations in a Zn/Cu galvanic cell and read the voltmeter.
+set: Cu = 1 | [Cu²⁺] (mol/L) | 0.001 to 2 by 0.001
+set: Zn = 1 | [Zn²⁺] (mol/L) | 0.001 to 2 by 0.001
+out: E = 1.10 - 0.0592/2*log(Zn/Cu) | Cell voltage (V)
+plot: Cu, E
+step: Record the voltage at standard conditions (both 1 M).
+step: Then lower [Cu²⁺] and record at least 4 readings.
+noise: 0.5
+result: The Nernst equation E = E° − (0.0592/n) log Q fits the data: lowering the reactant [Cu²⁺] raises Q and lowers the voltage. A cell's voltage drops as it runs and approaches equilibrium (E = 0).
 term: galvanic cell = an electrochemical cell that produces electricity from a favorable redox reaction
 term: anode = the electrode where oxidation occurs
 term: cathode = the electrode where reduction occurs

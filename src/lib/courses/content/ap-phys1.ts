@@ -14,6 +14,18 @@ ex: A v–t graph is a straight line from (0 s, 2 m/s) to (4 s, 10 m/s). Find th
 > Area under the line: ½(2 + 10)(4) = 24 m
 = a = 2 m/s², Δx = 24 m
 Choosing a reference frame and a positive direction is the first step in every problem. Vectors (displacement, velocity, acceleration) have signs; scalars (distance, speed) don't.
+lab: Cart on an incline with a motion sensor
+aim: Release a cart from rest on a ramp and record its position over time.
+set: t = 1 | Time (s) | 0 to 3 by 0.1
+set: th = 5 | Ramp angle (°) | 2 to 20 by 1
+out: a = g*sind(th) | Acceleration (m/s²)
+out: x = 0.5*a*t^2 | Position (m)
+out: v = a*t | Velocity (m/s)
+plot: t, x
+step: Record the position every half second.
+step: Sketch the velocity–time graph from your data. What is its slope?
+noise: 2
+result: Position grows with t² (a parabola), so velocity grows linearly and the slope of the velocity graph is the constant acceleration g sin θ.
 term: reference frame = the coordinate system and point of view from which motion is measured
 term: instantaneous velocity = velocity at one instant; the slope of the tangent on an x–t graph
 term: displacement = change in position, a vector
@@ -86,6 +98,16 @@ ex: A block slides down a frictionless 30° incline. Find its acceleration.
 > a = 9.8 × 0.5
 = 4.9 m/s²
 Static friction is usually larger than kinetic friction, which is why it's harder to start pushing a heavy box than to keep it moving.
+lab: Block on an adjustable incline
+aim: Raise an incline with a wooden block on it and measure the block's acceleration.
+set: th = 30 | Incline angle (°) | 0 to 60 by 1
+set: mu = 0.3 | Coefficient of friction | 0.1 to 0.8 by 0.05
+out: a = max(g*(sind(th) - mu*cosd(th)), 0) | Acceleration (m/s²)
+plot: th, a
+step: Record the acceleration for at least 5 angles.
+step: Find the angle at which the block starts to slide.
+noise: 3
+result: The block stays put until tan θ exceeds μ, then accelerates at g(sin θ − μ cos θ). Measuring the angle where sliding begins is a simple way to find the coefficient of friction.
 term: coefficient of friction = μ, the ratio of friction force to normal force
 term: static friction = friction that prevents surfaces from starting to slide
 term: Hooke's law = the spring force is proportional to the stretch or compression, F = −kx
@@ -143,6 +165,17 @@ ex: A 0.2 kg ball compresses a spring (k = 500 N/m) by 0.1 m and is launched str
 > All becomes U_g at the top: 2.5 = 0.2 × 9.8 × h
 = h ≈ 1.28 m
 Power is the rate of energy transfer: P = W/t = Fv. Units: watts (J/s).
+lab: Stair-climbing power
+aim: Time yourself running up stairs and calculate your power output.
+set: t = 6 | Time to climb (s) | 2 to 20 by 0.5
+set: m = 60 | Your mass (kg) | 40 to 100 by 1
+set: h = 6 | Height of the stairs (m) | 3 to 15 by 0.5
+out: W = m*g*h | Work done (J)
+out: P = W/t | Power (W)
+plot: t, P
+step: Record your power for at least 4 climbing times.
+noise: 3
+result: The work (mgh) is the same however fast you climb, but power = work ÷ time, so running doubles your power compared with walking at half the speed. Athletes can briefly produce over 1,000 W.
 term: conservation of energy = in a closed system, total energy remains constant
 term: elastic potential energy = energy stored in a stretched or compressed spring, ½kx²
 term: power = the rate at which work is done or energy is transferred
@@ -183,6 +216,19 @@ ex: A 1,000 kg car at 20 m/s rear-ends a 1,500 kg car at rest; they lock togethe
 > Before: 1,000 × 20 = 20,000 kg·m/s
 > After: 2,500v = 20,000
 = v = 8 m/s
+lab: Elastic collisions on an air track
+aim: Send a glider into a stationary glider in a perfectly elastic collision. How do their speeds afterward depend on mass?
+set: m1 = 0.5 | Moving glider mass (kg) | 0.1 to 1 by 0.05
+set: m2 = 0.5 | Target glider mass (kg) | 0.1 to 1 by 0.05
+set: v1 = 2 | Initial speed (m/s) | 0.5 to 4 by 0.5
+out: u1 = (m1 - m2)/(m1 + m2)*v1 | Moving glider after (m/s)
+out: u2 = 2*m1/(m1 + m2)*v1 | Target glider after (m/s)
+out: K = 0.5*m1*u1^2 + 0.5*m2*u2^2 | Total KE after (J)
+plot: m2, u2
+step: Record both final velocities for at least 4 target masses.
+step: Check the total kinetic energy before and after.
+noise: 2
+result: Equal masses swap velocities. A light target shoots off faster; a heavy target barely moves while the incoming glider bounces back. Momentum and kinetic energy are both conserved.
 term: isolated system = a system with no net external force
 term: elastic collision = a collision where kinetic energy is conserved
 term: perfectly inelastic collision = a collision where objects stick together
@@ -222,6 +268,17 @@ ex: A solid disk and a hoop with the same mass and radius roll down a ramp. Whic
 > The disk has smaller rotational inertia
 > Less energy goes into spinning, more into moving forward
 = The solid disk wins
+lab: Hanging mass and a spinning disk
+aim: A string wrapped around a disk (radius 10 cm) is pulled by a hanging mass. Measure the acceleration to find the disk's rotational inertia.
+set: m = 0.2 | Hanging mass (kg) | 0.05 to 1 by 0.05
+set: I = 0.01 | Disk rotational inertia (kg·m²) | 0.002 to 0.05 by 0.002
+out: a = m*g/(m + I/0.01) | Acceleration of the mass (m/s²)
+out: alpha = a/0.1 | Angular acceleration (rad/s²)
+plot: m, a
+step: Record the acceleration for 5 hanging masses.
+step: Increase the rotational inertia and compare.
+noise: 3
+result: a = mg/(m + I/r²). The disk's rotational inertia acts like extra mass resisting acceleration, so a heavier or larger disk turns more slowly. Rearranging gives I from measured a.
 term: rotational inertia = an object's resistance to changes in rotation, depending on mass distribution
 term: Newton's second law for rotation = net torque equals rotational inertia times angular acceleration
 term: parallel axis theorem = I = I_cm + Md² for an axis a distance d from the center of mass
@@ -240,6 +297,17 @@ ex: A solid sphere (I = (2/5)mr²) rolls without slipping at 5 m/s. What fractio
 > Total = (1/2 + 1/5)mv² = (7/10)mv²
 = Rotational fraction = (1/5)/(7/10) = 2/7
 Work done by a torque: W = τΔθ.
+lab: Rolling race down a ramp
+aim: Release a hoop, a disk, a solid sphere and a sliding block from the same height. Which reaches the bottom fastest?
+set: b = 0.4 | Shape factor β (I = βmr²) | 0 to 1 by 0.1
+set: h = 1 | Ramp height (m) | 0.2 to 2 by 0.1
+out: v = sqrt(2*g*h/(1 + b)) | Speed at the bottom (m/s)
+out: frac = 1/(1 + b)*100 | Energy that is translational (%)
+plot: b, v
+step: Record the speed for β = 0 (sliding), 0.4 (sphere), 0.5 (disk) and 1 (hoop).
+step: Change the height. Does the finishing order change?
+noise: 2
+result: Rolling objects share energy between moving and spinning. The more mass far from the axis (larger β), the more energy goes into rotation and the slower it rolls: sphere beats disk beats hoop, for any mass or size.
 term: rotational kinetic energy = energy of rotation, ½Iω²
 term: rolling without slipping = rolling where the contact point is momentarily at rest; v = rω
 term: angular displacement = the angle through which an object rotates
@@ -278,6 +346,17 @@ ex: A pendulum is made 4 times longer. How does its period change?
 > √4 = 2
 = The period doubles
 Position in SHM is sinusoidal: x(t) = A cos(2πft). Speed is maximum at equilibrium; acceleration is maximum at the turning points.
+lab: Mass on a spring
+aim: Hang masses on a spring, set them bouncing, and time the oscillations.
+set: m = 0.2 | Mass (kg) | 0.05 to 1 by 0.05
+set: k = 20 | Spring constant (N/m) | 5 to 100 by 5
+out: T = 2*pi*sqrt(m/k) | Period (s)
+out: f = 1/T | Frequency (Hz)
+plot: m, T
+step: Record the period for 5 masses.
+step: Then try a stiffer spring.
+noise: 2
+result: T = 2π√(m/k): four times the mass doubles the period, and a stiffer spring oscillates faster. The amplitude doesn't affect the period, which is why springs and pendulums make good clocks.
 term: simple harmonic motion = oscillation where the restoring force is proportional to displacement
 term: period = the time for one complete oscillation
 term: amplitude = the maximum displacement from equilibrium
@@ -314,6 +393,18 @@ An object floats if its average density is less than the fluid's. A floating obj
 ex: A 0.002 m³ block is fully submerged in water (ρ = 1,000 kg/m³). Find the buoyant force.
 > F_b = 1,000 × 0.002 × 9.8
 = 19.6 N
+lab: Archimedes and the overflow can
+aim: Lower objects into a full overflow can and compare the buoyant force with the weight of water displaced.
+set: V = 100 | Object volume (cm³) | 10 to 500 by 10
+set: rho = 2.7 | Object density (g/cm³) | 0.5 to 8 by 0.1
+out: sub = min(rho, 1) | Fraction submerged
+out: Fb = 1000*V*1e-6*sub*g | Buoyant force (N)
+out: Wa = max(rho*V/1000*g - Fb, 0) | Apparent weight in water (N)
+plot: V, Fb
+step: Record the buoyant force for at least 5 volumes.
+step: Try a density below 1 g/cm³. What happens?
+noise: 2
+result: The buoyant force equals the weight of the water displaced (ρ_fluid V g). Dense objects sink but weigh less in water; objects less dense than water float with just enough submerged to balance their weight.
 term: density = mass per unit volume
 term: pressure = force per unit area
 term: buoyant force = the upward force a fluid exerts on an object, equal to the weight of displaced fluid
