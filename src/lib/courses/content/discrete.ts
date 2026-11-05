@@ -10,6 +10,15 @@ Truth tables list every combination of truth values. Two statements are logicall
 ex: When is "If it rains, then the game is canceled" false?
 > An implication is false only when the hypothesis is true and the conclusion is false
 = When it rains and the game is NOT canceled
+demo: AND versus OR in a search engine
+aim: 500 pages mention "cats" and 400 mention "dogs". How many results do AND and OR searches return?
+set: both = 100 | Pages mentioning both | 0 to 400 by 10
+out: AND = both | cats AND dogs
+out: OR = 500 + 400 - both | cats OR dogs
+out: XOR = 500 + 400 - 2*both | Exactly one of them
+plot: both, OR
+step: Why doesn't OR just give 500 + 400 = 900?
+result: AND is the intersection, OR is the union. Inclusion–exclusion gives |A ∪ B| = |A| + |B| − |A ∩ B|, because pages with both words would otherwise be counted twice.
 term: proposition = a statement that is either true or false
 term: implication = a statement of the form "if p, then q"
 term: contrapositive = the statement ¬q → ¬p, equivalent to p → q
@@ -51,6 +60,15 @@ A function f: A → B assigns each element of A exactly one element of B.
 ex: 30 students take math, 20 take art, 8 take both. How many take at least one?
 > 30 + 20 − 8
 = 42
+demo: Assigning students to seats
+aim: Assign n students to m = 12 seats. Count all possible assignments (functions) and those where no seat is shared (one-to-one functions).
+set: n = 5 | Students | 1 to 12 by 1
+out: all = 12^n | All functions (seats may be shared)
+out: inj = fact(12)/fact(12 - n) | One-to-one functions
+out: pct = 100*inj/all | Share that are one-to-one (%)
+plot: n, pct
+step: How does the share of one-to-one assignments change as more students arrive?
+result: There are mⁿ functions but only m!/(m − n)! injections. With 13 students no injection exists at all: the pigeonhole principle.
 term: union = the set of elements in either set
 term: intersection = the set of elements in both sets
 term: bijection = a function that is both one-to-one and onto
@@ -108,6 +126,14 @@ ex: What is 7¹⁰⁰ mod 6?
 > 1¹⁰⁰ = 1
 = 1
 Applications: checking digits (ISBNs, credit cards), hashing, and RSA encryption, which relies on the difficulty of factoring large numbers.
+demo: What day will it be?
+aim: Today is Monday (day 1). Use modular arithmetic to find the day of the week n days from now.
+set: n = 100 | Days from now | 0 to 400 by 1
+out: d = mod(1 + n, 7) | Day (0 = Sun, 1 = Mon, … 6 = Sat)
+out: weeks = floor(n/7) | Full weeks
+plot: n, d
+step: Which day will it be in 100 days? Why does the graph repeat?
+result: Days of the week work mod 7: 1 + 100 ≡ 3 (mod 7), so it'll be Wednesday. Only the remainder after dividing by 7 matters, which is why the pattern cycles.
 term: modulus = the number at which modular arithmetic wraps around
 term: congruence = a ≡ b (mod n) when a and b leave the same remainder
 term: RSA = a public-key encryption system based on modular arithmetic and prime factorization
@@ -126,6 +152,15 @@ ex: How many 5-card hands come from a 52-card deck?
 > Order doesn't matter: C(52, 5)
 = 2,598,960
 The pigeonhole principle: if n + 1 objects go into n boxes, some box gets at least two.
+demo: How strong is your password?
+aim: An attacker can try 10 billion passwords per second. How long would it take to try every password?
+set: L = 8 | Password length | 4 to 16 by 1
+set: c = 62 | Character choices | 10 to 95 by 1
+out: N = c^L | Possible passwords
+out: yrs = N/1e10/31536000 | Years to try them all
+plot: L, yrs
+step: Compare 8 lowercase letters (26) with 12 characters from 95 symbols.
+result: The multiplication principle gives cᴸ passwords. Each extra character multiplies the work by c, so length matters more than complexity: 8 lowercase letters fall in about 20 seconds, but 12 random characters from 95 symbols would take over a million years.
 term: permutation = an ordered arrangement
 term: combination = an unordered selection
 term: pigeonhole principle = if more items than boxes, some box holds two or more
@@ -162,6 +197,14 @@ key: Handshake theorem: the sum of all vertex degrees equals twice the number of
 - An Euler circuit uses every edge exactly once; it exists in a connected graph exactly when every vertex has even degree.
 - A Hamilton circuit visits every vertex exactly once.
 Directed graphs have edges with directions; weighted graphs have costs on edges (shortest-path algorithms like Dijkstra's use them).
+demo: Networking computers
+aim: Connect n computers. Compare connecting every pair directly with a tree network that just keeps them all connected.
+set: n = 10 | Computers | 2 to 50 by 1
+out: complete = n*(n - 1)/2 | Cables: every pair (complete graph)
+out: tree = n - 1 | Cables: a spanning tree
+plot: n, complete
+step: How many cables does each design need for 50 computers?
+result: A complete graph Kₙ has n(n − 1)/2 edges, which grows quadratically, while any spanning tree needs only n − 1. Real networks balance cost against redundancy.
 term: vertex = a point (node) in a graph
 term: edge = a connection between two vertices
 term: degree = the number of edges at a vertex

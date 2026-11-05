@@ -12,6 +12,13 @@ ex: f(x) = (x² − 1)/(x − 1). What is lim (x→1) f(x)?
 > (x + 1)(x − 1)/(x − 1) = x + 1
 = The limit is 2
 tip: Always try direct substitution first. Only use algebra tricks when you get 0/0.
+demo: A function with a hole
+aim: f(x) = (x² − 1)/(x − 1) is undefined at x = 1. What does it approach there?
+set: x = 0.5 | x | 0 to 2 by 0.01
+out: f = (x^2 - 1)/(x - 1) | f(x)
+plot: x, f
+step: Move x toward 1 from the left and from the right.
+result: f(1) is undefined (0/0, shown as "—"), but everywhere else f(x) = x + 1, so the limit as x → 1 is 2. The graph is a line with a hole.
 term: limit = the value a function approaches as the input approaches a number
 term: one-sided limit = a limit from only the left or only the right
 term: indeterminate form = 0/0, which means more work is needed to find the limit
@@ -64,6 +71,15 @@ ex: Differentiate y = (2x + 3)⁵.
 > Outside: 5( )⁴; inside derivative: 2
 = 10(2x + 3)⁴
 oops: The derivative of a product is not the product of the derivatives. d/dx [x · x] = 2x, not 1.
+demo: Inflating a balloon
+aim: A balloon's radius grows 0.5 cm per second. How fast is its volume increasing?
+set: t = 4 | Time (s) | 0 to 20 by 0.5
+out: r = 0.5*t | Radius (cm)
+out: V = 4/3*pi*r^3 | Volume (cm³)
+out: dV = 4*pi*r^2*0.5 | dV/dt (cm³/s)
+plot: t, dV
+step: Use the chain rule: dV/dt = dV/dr · dr/dt.
+result: dV/dt = 4πr² × 0.5. You must blow air in faster and faster to keep the radius growing steadily, because the surface area keeps increasing.
 term: product rule = (fg)′ = f′g + fg′
 term: chain rule = differentiate the outside, keep the inside, multiply by the inside's derivative
 term: quotient rule = (f/g)′ = (f′g − fg′)/g²
@@ -102,6 +118,14 @@ ex: A farmer has 40 m of fence for a rectangular pen. What dimensions maximize a
 > 2x + 2y = 40, so y = 20 − x; A = x(20 − x)
 > A′ = 20 − 2x = 0 gives x = 10
 = 10 m by 10 m (area 100 m²)
+demo: Cheapest shipping box
+aim: An open-top box with a square base must hold 1,000 cm³. Choose the base size that uses the least cardboard.
+set: x = 8 | Base side (cm) | 3 to 25 by 0.1
+out: h = 1000/x^2 | Height (cm)
+out: S = x^2 + 4000/x | Cardboard used (cm²)
+plot: x, S
+step: Set S′(x) = 2x − 4000/x² = 0 and solve.
+result: S′ = 0 when x³ = 2000, so x ≈ 12.6 cm and h ≈ 6.3 cm (half the base): about 476 cm². Calculus finds the best design without trying every option.
 term: critical point = where the derivative is zero or undefined
 term: local maximum = a point higher than all nearby points
 term: optimization = finding the best (largest or smallest) value
@@ -139,6 +163,14 @@ ex: Find the area under y = x² from x = 0 to x = 3.
 > Antiderivative: x³/3
 > 27/3 − 0
 = 9 square units
+demo: Energy from solar panels
+aim: A solar array's power over a 12-hour day is P(t) = 5 sin(πt/12) kW. How much energy has it made by time T?
+set: T = 6 | Hours after sunrise | 0 to 12 by 0.25
+out: P = 5*sin(pi*T/12) | Power now (kW)
+out: E = 60/pi*(1 - cos(pi*T/12)) | Energy so far (kWh)
+plot: T, E
+step: Compute E = ∫₀ᵀ 5 sin(πt/12) dt. How much energy is made over the whole day?
+result: Energy is the integral of power. The full day gives 120/π ≈ 38 kWh, and half of it comes in the middle 4 hours when the Sun is highest.
 term: definite integral = the net accumulation of a function over an interval
 term: fundamental theorem of calculus = integrating a rate of change gives the total change: F(b) − F(a)
 term: Riemann sum = an approximation of an integral using rectangles

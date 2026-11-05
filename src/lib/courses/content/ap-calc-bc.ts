@@ -31,6 +31,13 @@ The IVT: if f is continuous on [a, b] and N is between f(a) and f(b), then f(c) 
 ex: f is continuous with f(0) = −3 and f(2) = 4. Must f have a zero on (0, 2)?
 > 0 is between −3 and 4, and f is continuous
 = Yes, by the IVT
+demo: Hunting for a root with the IVT
+aim: f(x) = x³ − 2x − 5 is continuous. Use sign changes to trap a root.
+set: x = 2 | x | 0 to 3 by 0.01
+out: f = x^3 - 2*x - 5 | f(x)
+plot: x, f
+step: f(2) < 0 and f(3) > 0. Narrow the interval until the root is known to 2 decimal places.
+result: Because f is continuous and changes sign, the Intermediate Value Theorem guarantees a root between 2 and 3. Halving the interval repeatedly (bisection) pins it near x ≈ 2.09.
 term: continuity = a function has no breaks, holes or jumps at a point
 term: intermediate value theorem = a continuous function takes every value between f(a) and f(b)
 term: jump discontinuity = a break where the one-sided limits exist but differ
@@ -48,6 +55,14 @@ Differentiability implies continuity. A function isn't differentiable at corners
 ex: Find f′(x) for f(x) = 3x⁴ − 2√x + eˣ.
 > 12x³ − 2·(1/2)x^(−1/2) + eˣ
 = f′(x) = 12x³ − 1/√x + eˣ
+demo: Marginal cost
+aim: A factory's cost to make x units is C(x) = 0.01x³ − 0.6x² + 13x + 100. The derivative estimates the cost of one more unit.
+set: x = 20 | Units produced | 0 to 50 by 1
+out: C = 0.01*x^3 - 0.6*x^2 + 13*x + 100 | Total cost ($)
+out: MC = 0.03*x^2 - 1.2*x + 13 | Marginal cost C′(x) ($)
+plot: x, MC
+step: At what production level is the marginal cost lowest?
+result: C′(x) = 0.03x² − 1.2x + 13 is lowest at x = 20 ($1 per unit), where efficiency is best. Beyond that, each extra unit costs more as the factory gets crowded.
 term: derivative = the instantaneous rate of change of a function
 term: differentiable = having a derivative at a point
 term: power rule = d/dx xⁿ = nxⁿ⁻¹
@@ -102,6 +117,15 @@ ex: f(x) = x³ + x, and g = f⁻¹. Find g′(2).
 = g′(2) = 1/4
 tip: You usually don't need a formula for g. Find g(a) by solving f(x) = a, then take the reciprocal of f′ at that x.
 oops: g′(a) = 1/f′(a) is wrong. Evaluate f′ at g(a), the matching input, not at a.
+demo: Elevator motion
+aim: An elevator's position is s(t) = t³ − 9t² + 24t meters. Find its velocity and acceleration.
+set: t = 1 | Time (s) | 0 to 6 by 0.1
+out: s = t^3 - 9*t^2 + 24*t | Position (m)
+out: v = 3*t^2 - 18*t + 24 | Velocity (m/s)
+out: a = 6*t - 18 | Acceleration (m/s²)
+plot: t, v
+step: When does the elevator stop? When is it speeding up?
+result: v = s′ is zero at t = 2 and 4, when the elevator changes direction. It's speeding up when v and a have the same sign (2 < t < 3 and t > 4).
 term: inverse function derivative = g′(a) = 1/f′(g(a))
 term: second derivative = the derivative of the derivative
 q: d/dx [arcsin x] = | *1/√(1 − x²) | 1/(1 + x²) | −1/√(1 − x²) | cos x
@@ -134,6 +158,15 @@ ex: lim (x→∞) x/eˣ
 Other indeterminate forms (0·∞, ∞ − ∞, 1^∞, 0⁰, ∞⁰) can be rewritten into 0/0 or ∞/∞ first, often using logs.
 Linear approximations are overestimates when f is concave down and underestimates when f is concave up, because the curve bends away from the tangent line.
 oops: L'Hospital's rule is NOT the quotient rule. Differentiate the top and bottom separately, and only for 0/0 or ∞/∞ forms.
+demo: Linear approximation of a square root
+aim: Approximate √x near 25 with the tangent line L(x) = 5 + (x − 25)/10.
+set: x = 26 | x | 16 to 36 by 0.1
+out: L = 5 + (x - 25)/10 | Tangent line L(x)
+out: f = sqrt(x) | √x
+out: err = L - f | Error
+plot: x, err
+step: How accurate is L(26)? Is the approximation an over- or underestimate, and why?
+result: Near x = 25 the tangent line is excellent (L(26) = 5.1 vs √26 ≈ 5.099). Because √x is concave down, the tangent line lies above the curve, so it always overestimates.
 term: linearization = approximating a function by its tangent line
 term: L'Hospital's rule = for 0/0 or ∞/∞ limits, compare derivatives of numerator and denominator
 q: lim (x→0) (eˣ − 1)/x = | *1 | 0 | e | ∞
@@ -170,6 +203,13 @@ ex: Find the dimensions of a box with a square base and open top, volume 32 ft³
 > S′ = 2x − 128/x² = 0 gives x = 4, so h = 2
 = 4 ft × 4 ft × 2 ft (S″ > 0 confirms a minimum)
 Always check the domain and endpoints, and answer the question asked.
+demo: Lifeguard rescue
+aim: A lifeguard runs along the beach at 7 m/s, then swims at 2 m/s to a swimmer 50 m along the shore and 10 m out. The lifeguard starts 20 m from the water.
+set: x = 40 | Distance run along the beach (m) | 0 to 50 by 0.5
+out: T = sqrt(x^2 + 20^2)/7 + sqrt((50 - x)^2 + 10^2)/2 | Total time (s)
+plot: x, T
+step: Find the x that minimizes the time, using T′(x) = 0.
+result: Running most of the way pays off because running is faster: the minimum is near x = 47 m. The optimal path satisfies the same rule as light refracting (Snell's law).
 term: optimization = finding a maximum or minimum value in a real context
 term: constraint = an equation that limits the variables
 q: To justify a minimum at a critical point, you can show… | *f″ > 0 there | f″ < 0 there | f′ > 0 there | f = 0 there
@@ -205,6 +245,14 @@ ex: ∫ x eˣ dx
 = x eˣ − eˣ + C
 Partial fractions split rational functions with factorable denominators (distinct linear factors): 1/((x − 1)(x + 2)) = A/(x − 1) + B/(x + 2).
 Improper integrals have infinite limits or infinite discontinuities. Evaluate them as limits: ∫₁^∞ 1/x² dx = lim (b→∞) [−1/x] from 1 to b = 1 (converges). ∫₁^∞ 1/x dx diverges.
+demo: Does the area stay finite?
+aim: Compute ∫₁ᵇ 1/xᵖ dx as b grows. Which values of p give a finite total area?
+set: b = 10 | Upper limit b | 2 to 1000 by 1
+set: p = 2 | Power p | 0.5 to 3 by 0.1
+out: I = if(abs(p - 1) < 1e-9, ln(b), (b^(1 - p) - 1)/(1 - p)) | Area from 1 to b
+plot: b, I
+step: Compare p = 2, p = 1 and p = 0.5 as b gets large.
+result: For p > 1 the area levels off: ∫₁^∞ 1/xᵖ dx = 1/(p − 1) converges. For p ≤ 1 it keeps growing without bound (diverges), even though 1/x → 0.
 term: integration by parts = ∫ u dv = uv − ∫ v du
 term: partial fractions = splitting a rational function into simpler fractions to integrate
 term: improper integral = an integral with an infinite limit or infinite discontinuity, evaluated as a limit
@@ -223,6 +271,14 @@ ex: dy/dx = x + y, y(0) = 1. Use Euler's method with Δx = 0.5 to estimate y(1).
 > Step 1: slope at (0, 1) is 1; y(0.5) ≈ 1 + 1(0.5) = 1.5
 > Step 2: slope at (0.5, 1.5) is 2; y(1) ≈ 1.5 + 2(0.5)
 = y(1) ≈ 2.5
+demo: Euler's method
+aim: Approximate y(1) for dy/dx = y, y(0) = 1, using n Euler steps. The exact answer is e ≈ 2.71828.
+set: n = 4 | Number of steps | 1 to 100 by 1
+out: y = (1 + 1/n)^n | Euler estimate of y(1)
+out: err = exp(1) - y | Error
+plot: n, y
+step: How does the error change when you double the number of steps?
+result: Each step multiplies by (1 + Δx), giving (1 + 1/n)ⁿ. Euler's method underestimates here because the solution is concave up, and the error roughly halves when n doubles.
 term: Euler's method = a step-by-step numerical method for approximating solutions to differential equations
 term: slope field = a graph of short segments showing slopes from a differential equation
 term: separation of variables = rewriting a differential equation so each variable is on one side
@@ -274,6 +330,14 @@ ex: Find the length of y = (2/3)x^(3/2) from x = 0 to 3.
 > ∫₀³ √(1 + x) dx = (2/3)(1 + x)^(3/2) from 0 to 3
 = (2/3)(8 − 1) = 14/3
 Many arc length integrals can't be done by hand; on the exam, use a calculator when permitted.
+demo: Length of a playground slide
+aim: A slide follows y = x² (in meters) from x = 0 to x = b. How long is it?
+set: b = 1 | Horizontal extent b (m) | 0.1 to 3 by 0.1
+out: L = b*sqrt(1 + 4*b^2)/2 + ln(2*b + sqrt(1 + 4*b^2))/4 | Arc length (m)
+out: chord = sqrt(b^2 + b^4) | Straight-line distance (m)
+plot: b, L
+step: Set up L = ∫₀ᵇ √(1 + (2x)²) dx and compare it with the straight-line distance.
+result: Arc length L = ∫√(1 + (f′)²) dx. The curve is always longer than the chord between its endpoints, and the difference grows as the slide gets steeper.
 term: arc length = the length of a curve between two points
 term: arc length formula = L = ∫ √(1 + (f′(x))²) dx
 q: The arc length integrand for y = f(x) is… | *√(1 + (f′(x))²) | f′(x) | 1 + f(x)² | √(f(x))
@@ -311,6 +375,15 @@ ex: Find the area inside r = 2 (a full circle).
 > A = ½∫₀^{2π} 4 dθ
 = 4π (matching πr²)
 To find the area between two polar curves, integrate ½(R² − r²) over the angles where one is outside the other, using intersection points as limits.
+demo: Cardioid microphone
+aim: A cardioid microphone's sensitivity follows the polar curve r = 1 + cos θ. Sound from the front (θ = 0) is picked up best.
+set: th = 60 | Angle from the front (°) | 0 to 360 by 5
+out: r = 1 + cosd(th) | Sensitivity r
+out: x = r*cosd(th) | x = r cos θ
+out: y = r*sind(th) | y = r sin θ
+plot: th, r
+step: Where is the sensitivity zero? Find the area enclosed: ½∫₀^2π (1 + cos θ)² dθ.
+result: The heart-shaped curve has r = 0 at θ = 180°, so sound from behind is rejected. The enclosed area is 3π/2, using the polar area formula ½∫r² dθ.
 term: polar area formula = A = ½∫ r² dθ
 term: polar curve = a graph defined by r as a function of θ
 q: The area formula for a polar region is… | *½∫ r² dθ | ∫ r dθ | π∫ r² dθ | ∫ r² dθ
@@ -368,6 +441,16 @@ ex: Find the 3rd-degree Maclaurin polynomial for eˣ and estimate e^0.1.
 > P₃(x) = 1 + x + x²/2 + x³/6
 > P₃(0.1) = 1 + 0.1 + 0.005 + 0.000167
 = about 1.10517
+demo: Taylor polynomials for sin x
+aim: Approximate sin x with Maclaurin polynomials of increasing degree.
+set: x = 2 | x | -6 to 6 by 0.05
+set: n = 3 | Degree | 1 to 9 by 2
+out: P = x - (n > 2)*x^3/6 + (n > 4)*x^5/120 - (n > 6)*x^7/5040 + (n > 8)*x^9/362880 | Taylor polynomial
+out: s = sin(x) | sin x
+out: err = abs(P - s) | Error
+plot: x, P
+step: For each degree, find how far from 0 the polynomial stays close to sin x.
+result: Each extra term extends the range of good agreement. Near 0 the error is tiny (bounded by the next term, |x|ⁿ⁺²/(n + 2)!), but far away every polynomial eventually shoots off to ±∞.
 term: Taylor series = a power series representation of a function centered at a point
 term: Maclaurin series = a Taylor series centered at 0
 term: interval of convergence = the set of x-values for which a power series converges

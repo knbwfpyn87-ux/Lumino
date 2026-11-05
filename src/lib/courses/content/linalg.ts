@@ -11,6 +11,14 @@ ex: What does a row [0 0 0 | 5] in echelon form mean?
 > It says 0 = 5
 = The system has no solution (it's inconsistent)
 A system with at least one free variable (and consistent) has infinitely many solutions.
+demo: Mixing juices
+aim: Mix a 10% sugar juice with a 30% sugar juice to make 20 liters at a target sugar level. Solve the linear system.
+set: p = 18 | Target sugar (%) | 10 to 30 by 1
+out: y = 20*(p - 10)/20 | Liters of 30% juice
+out: x = 20 - y | Liters of 10% juice
+plot: p, x
+step: Write the system x + y = 20 and 0.10x + 0.30y = 0.01p × 20, then row-reduce.
+result: Row reduction gives y = (p − 10) liters and x = 20 − y. The system has a unique solution for any target between 10% and 30%; outside that range the solution needs negative amounts.
 term: augmented matrix = a matrix of coefficients with the constants added as a final column
 term: row echelon form = a staircase form produced by row reduction
 term: pivot = the leading nonzero entry in a row of an echelon matrix
@@ -49,6 +57,17 @@ ex: Find det [[2, 3], [1, 4]].
 > 2·4 − 3·1
 = 5 (areas are scaled by 5)
 Properties: det(AB) = det(A)det(B); swapping two rows changes the sign; a row of zeros gives det = 0.
+demo: Stretching an image
+aim: A photo editor transforms a 4 × 6 inch photo with the matrix [[a, b], [c, d]]. How does its area change?
+set: a = 2 | a | -3 to 3 by 0.25
+set: b = 0.5 | b | -3 to 3 by 0.25
+set: c = 0 | c | -3 to 3 by 0.25
+set: d = 1 | d | -3 to 3 by 0.25
+out: det = a*d - b*c | Determinant
+out: A = abs(det)*24 | New area (in²)
+plot: a, det
+step: Find settings with determinant 0. What happens to the photo? What does a negative determinant mean?
+result: A linear transformation scales every area by |det|. A determinant of 0 squashes the photo onto a line (not invertible), and a negative determinant flips it.
 term: determinant = a number computed from a square matrix that measures scaling and invertibility
 term: cofactor expansion = computing a determinant using minors along a row or column
 term: singular matrix = a matrix with determinant zero, which has no inverse
@@ -83,6 +102,15 @@ In ℝⁿ, more than n vectors are always dependent. Two vectors in ℝ² are in
 ex: Are ⟨1, 2⟩ and ⟨2, 4⟩ independent?
 > ⟨2, 4⟩ = 2⟨1, 2⟩
 = No, they're dependent (they lie on the same line)
+demo: Reaching a target with two vectors
+aim: A robot can move along two directions: u = (1, 0) and v at an angle. Find the combination c₁u + c₂v that reaches (3, 2).
+set: a = 60 | Angle of v (°) | 10 to 170 by 1
+out: det = sind(a) | Determinant of [u v]
+out: c2 = 2/sind(a) | Amount of v
+out: c1 = 3 - c2*cosd(a) | Amount of u
+plot: a, c2
+step: What happens to the coefficients as the angle approaches 0° or 180°?
+result: As long as u and v aren't parallel they're linearly independent, span the plane, and give a unique combination. Near 0° or 180° the determinant nears 0 and the coefficients blow up; at exactly parallel, most targets are unreachable.
 term: linear combination = a sum of vectors multiplied by scalars
 term: span = the set of all linear combinations of a set of vectors
 term: linear independence = no vector in the set is a combination of the others
@@ -120,6 +148,14 @@ ex: Find the eigenvalues of [[2, 0], [0, 5]].
 = λ = 2 and λ = 5
 For each eigenvalue, solve (A − λI)v = 0 to find its eigenvectors. The eigenvalues of a triangular matrix are its diagonal entries.
 Applications: Google's PageRank, population models, vibration analysis and principal component analysis in data science.
+demo: Will the owl population survive?
+aim: Owls are juveniles or adults. Each adult has f juveniles per year; 30% of juveniles and 80% of adults survive. The growth rate is the dominant eigenvalue.
+set: f = 0.5 | Juveniles per adult per year | 0 to 1.5 by 0.05
+out: lam = 0.4 + sqrt(0.16 + 0.3*f) | Dominant eigenvalue λ
+out: growth = 100*(lam - 1) | Long-run growth (% per year)
+plot: f, lam
+step: Find the birth rate that keeps the population stable (λ = 1).
+result: For the matrix [[0, f], [0.3, 0.8]], λ = 0.4 + √(0.16 + 0.3f). The population grows if λ > 1 and declines if λ < 1; it's stable at f ≈ 0.67. Eigenvalues predict long-run behavior.
 term: eigenvector = a nonzero vector whose direction is unchanged by a matrix
 term: eigenvalue = the scale factor λ for an eigenvector, where Av = λv
 term: characteristic equation = det(A − λI) = 0, whose roots are the eigenvalues

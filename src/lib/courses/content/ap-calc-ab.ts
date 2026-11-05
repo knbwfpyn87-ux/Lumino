@@ -55,6 +55,13 @@ ex: Is f(x) = (x² − 4)/(x − 2) continuous at x = 2? How would you fix it?
 > f(2) is undefined, so it's not continuous
 > The limit is 4 (factor and cancel)
 = Removable discontinuity; define f(2) = 4
+demo: Parking garage fees
+aim: A garage charges $5 for each hour or part of an hour. Explore where the cost function is discontinuous.
+set: t = 1.5 | Time parked (hours) | 0.05 to 6 by 0.05
+out: C = 5*ceil(t) | Cost ($)
+plot: t, C
+step: Look at the cost just before and just after t = 2. Do the one-sided limits agree?
+result: The cost is a step function with jump discontinuities at every whole hour: the left-hand limit at t = 2 is $10 but the right-hand limit is $15, so the limit doesn't exist there.
 term: continuous = having no breaks, jumps or holes at a point or on an interval
 term: removable discontinuity = a hole in a graph that could be filled by redefining one point
 term: intermediate value theorem = a continuous function on [a, b] takes every value between f(a) and f(b)
@@ -75,6 +82,13 @@ ex: Use the definition to find f′(x) for f(x) = x²
 > Let h → 0
 = f′(x) = 2x
 Differentiability implies continuity, but not the reverse. A function is not differentiable at corners (like |x| at 0), cusps, vertical tangents, or discontinuities.
+demo: Secant slopes become a tangent
+aim: A tank drains so its volume is V(t) = 100(1 − t/10)² liters. Estimate the rate at t = 4 from secant slopes.
+set: hh = 1 | Interval length h (min) | 0.01 to 3 by 0.01
+out: sec = (100*(1 - (4 + hh)/10)^2 - 100*(1 - 4/10)^2)/hh | Secant slope (L/min)
+plot: hh, sec
+step: Make h smaller and smaller. What value is the slope approaching?
+result: The difference quotient [V(4 + h) − V(4)]/h approaches −12 L/min as h → 0. That limit is the derivative V′(4), the instantaneous rate at which water leaves the tank.
 term: derivative = the instantaneous rate of change of a function; the slope of the tangent line
 term: secant line = a line through two points on a curve
 term: tangent line = the line that touches a curve at a point with the same slope as the curve
@@ -132,6 +146,15 @@ ex: Find d/dx (3x² + 1)⁵
 = 30x(3x² + 1)⁴
 More examples: d/dx sin(4x) = 4cos(4x). d/dx e^(x²) = 2x e^(x²). d/dx ln(5x + 1) = 5/(5x + 1).
 tip: Ask "what's the last operation I'd do to evaluate this?" That's the outside function.
+demo: Spreading ripples and the chain rule
+aim: A stone hits a pond and the ripple's radius grows 3 cm per second. How fast is the ripple's area growing?
+set: t = 2 | Time (s) | 0 to 10 by 0.1
+out: r = 3*t | Radius (cm)
+out: A = pi*r^2 | Area (cm²)
+out: dA = 2*pi*r*3 | dA/dt (cm²/s)
+plot: t, dA
+step: Differentiate A = π(3t)² using the chain rule.
+result: dA/dt = dA/dr · dr/dt = 2πr · 3. The area grows faster and faster even though the radius grows at a constant rate, because a bigger circle adds more area per centimeter.
 term: chain rule = the derivative of f(g(x)) is f′(g(x)) times g′(x)
 term: composite function = a function inside another function, f(g(x))
 q: d/dx [sin(x²)] = ? | *2x cos(x²) | cos(x²) | cos(2x) | 2x sin(x²)
@@ -207,6 +230,14 @@ ex: A circle's radius grows at 2 cm/s. How fast is its area growing when r = 5 c
 > dA/dt = 2π(5)(2)
 = 20π cm²/s
 oops: Plug in the specific values only after you differentiate. If you plug in r = 5 first, the derivative of a constant is 0.
+demo: Sliding ladder
+aim: A 5 m ladder slides away from a wall at 1 m/s at its base. How fast is the top sliding down?
+set: x = 3 | Base distance from the wall (m) | 0.2 to 4.9 by 0.1
+out: y = sqrt(25 - x^2) | Height of the top (m)
+out: dy = -x*1/y | dy/dt (m/s)
+plot: x, dy
+step: Differentiate x² + y² = 25 with respect to time and solve for dy/dt.
+result: 2x(dx/dt) + 2y(dy/dt) = 0 gives dy/dt = −x(dx/dt)/y. At x = 3 the top falls at 0.75 m/s, and it speeds up dramatically as the ladder nears the ground.
 term: related rates = problems that find one rate of change from another using a relating equation
 term: implicit differentiation with respect to time = differentiating every variable as a function of t
 q: For a sphere V = (4/3)πr³, dV/dt = ? | *4πr² dr/dt | 4πr² | (4/3)πr² dr/dt | 3r² dr/dt
@@ -287,6 +318,14 @@ ex: You have 100 m of fence for a rectangular pen. What dimensions give the most
 > A′ = 50 − 2x = 0, so x = 25; A″ = −2 < 0 (max)
 = 25 m by 25 m, area 625 m²
 tip: Always answer the question that was asked: dimensions, maximum value or location.
+demo: Fencing a riverside field
+aim: A farmer has 200 m of fence for three sides of a rectangle along a straight river. Maximize the area.
+set: x = 30 | Side perpendicular to the river (m) | 1 to 99 by 1
+out: A = x*(200 - 2*x) | Area (m²)
+out: dA = 200 - 4*x | dA/dx
+plot: x, A
+step: Set A′(x) = 200 − 4x = 0. Check that it's a maximum.
+result: A′ = 0 at x = 50 m, and A″ = −4 < 0 confirms a maximum: 50 m × 100 m = 5,000 m². The derivative is positive before 50 and negative after.
 term: optimization = finding the maximum or minimum value of a quantity under constraints
 term: constraint = a condition that limits the possible values of the variables
 q: In optimization, after finding critical points you must also… | *check endpoints and justify max or min | stop | integrate | take the limit at infinity
@@ -303,6 +342,15 @@ If a rate is constant, total change = rate × time. If the rate varies, approxim
 - For an increasing function, a left sum underestimates and a right sum overestimates.
 key: The definite integral ∫ from a to b of f(x) dx is the limit of Riemann sums as the rectangles get infinitely thin. It gives the net (signed) area.
 Area below the x-axis counts as negative.
+demo: Riemann sums for area
+aim: Estimate the area under y = x² from 0 to 3 with n rectangles. The exact area is 9.
+set: n = 4 | Number of rectangles | 1 to 100 by 1
+out: L = 27/n^3*(n - 1)*n*(2*n - 1)/6 | Left sum
+out: Rt = 27/n^3*n*(n + 1)*(2*n + 1)/6 | Right sum
+out: err = Rt - 9 | Right sum error
+plot: n, L
+step: Why is the left sum always too small and the right sum too big here?
+result: For an increasing function, left sums underestimate and right sums overestimate. As n → ∞ both approach 9, which is the definite integral ∫₀³ x² dx.
 term: Riemann sum = an approximation of an integral using rectangles
 term: definite integral = the limit of Riemann sums; the net accumulation of a rate over an interval
 term: trapezoidal rule = an approximation of an integral using trapezoids
@@ -382,6 +430,15 @@ ex: Solve dy/dx = xy with y(0) = 3
 = y = 3e^(x²/2)
 key: dy/dt = ky has solution y = y₀e^(kt): exponential growth if k > 0, decay if k < 0.
 This models populations, radioactive decay, Newton's law of cooling and continuously compounded interest.
+demo: Medicine leaving the body
+aim: A drug is eliminated at a rate proportional to the amount present: dA/dt = −kA. Start with 200 mg.
+set: t = 4 | Time (hours) | 0 to 24 by 0.5
+set: k = 0.2 | Elimination constant k | 0.05 to 0.6 by 0.05
+out: A = 200*exp(-k*t) | Amount left (mg)
+out: half = ln(2)/k | Half-life (hours)
+plot: t, A
+step: Separate variables to solve dA/A = −k dt.
+result: Separation of variables gives A = 200e^(−kt). The half-life ln 2/k doesn't depend on the dose, which is why medicines are taken at regular intervals.
 term: separation of variables = rearranging a differential equation so each variable is on its own side before integrating
 term: particular solution = the solution that satisfies a given initial condition
 term: exponential growth model = dy/dt = ky, with solution y = y₀e^(kt)
@@ -438,6 +495,14 @@ ex: Rotate y = √x from x = 0 to 4 about the x-axis. Find the volume.
 > V = π ∫ from 0 to 4 of x dx = π[x²/2]
 = 8π
 When rotating about a line other than an axis, measure radii from that line: about y = −1, R = f(x) + 1.
+demo: Filling a parabolic glass
+aim: A glass is shaped by spinning x = √y around the y-axis. How much liquid does it hold up to height h?
+set: h = 4 | Liquid height (cm) | 0 to 10 by 0.1
+out: V = pi*h^2/2 | Volume (cm³)
+out: dV = pi*h | dV/dh (cm³ per cm)
+plot: h, V
+step: Use the disk method: V = ∫₀ʰ π(√y)² dy.
+result: V = π∫₀ʰ y dy = πh²/2. Filling to half the height holds only a quarter of the volume, because the glass widens toward the top.
 term: disc method = finding volume by integrating areas of circular cross sections, π∫R² dx
 term: washer method = the disc method with a hole: π∫(R² − r²) dx
 term: cross section = the shape formed by slicing a solid perpendicular to an axis
