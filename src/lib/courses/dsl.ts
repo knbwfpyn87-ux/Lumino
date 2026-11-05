@@ -18,10 +18,14 @@
 //   q: Quick-check question? | *right answer | wrong | wrong | wrong
 //   why: explanation shown after answering          qcode: then "| " lines = code for the question
 //   gen: linear, slope            (calculated practice generators, see registry.ts)
+//   lab: / demo:                  an interactive virtual lab or real-world demo (see lab.ts for its lines)
+
+import { lintLab, type LabBlock } from './lab';
+export type { LabBlock };
 
 export type Block =
   | { t: 'p'; text: string } | { t: 'h'; text: string } | { t: 'list'; items: string[] } | { t: 'key'; text: string }
-  | { t: 'ex'; problem: string; steps: string[]; answer: string } | { t: 'tip'; text: string } | { t: 'oops'; text: string } | { t: 'code'; text: string };
+  | { t: 'ex'; problem: string; steps: string[]; answer: string } | { t: 'tip'; text: string } | { t: 'oops'; text: string } | { t: 'code'; text: string } | LabBlock;
 export type Check = { q: string; choices: string[]; answer: number; why: string; code?: string };
 export type LessonSrc = { title: string; say: string; blocks: Block[]; terms: [string, string][]; checks: Check[]; gens: string[] };
 export type UnitSrc = { title: string; summary: string; lessons: LessonSrc[] };
@@ -29,7 +33,7 @@ export type CourseMeta = { id: string; name: string; level: string; emoji: strin
 export type CourseSrc = CourseMeta & { units: UnitSrc[] };
 
 export class CourseSyntaxError extends Error {}
-const TAGS = new Set(['say', 'key', 'tip', 'oops', 'ex', 'code', 'term', 'q', 'why', 'qcode', 'gen']);
+const TAGS = new Set(['say', 'key', 'tip', 'oops', 'ex', 'code', 'term', 'q', 'why', 'qcode', 'gen', 'lab', 'demo', 'aim', 'set', 'out', 'plot', 'step', 'noise', 'result']);
 
 export function parseCourse(text: string, file = 'course'): CourseSrc {
   const lines = text.replace(/\r/g, '').split('\n');
@@ -82,6 +86,23 @@ export function parseCourse(text: string, file = 'course'): CourseSrc {
       }
       case 'why': { const c = L.checks.at(-1); if (!c) fail(n, 'why: must follow q:'); c!.why = rest('why'); return; }
       case 'qcode': { const c = L.checks.at(-1); if (!c) fail(n, 'qcode: must follow q:'); codeTarget = c!; return; }
+      case 'lab': case 'demo': flush(); L.blocks.push({ t: 'lab', kind: tag as 'lab' | 'demo', title: rest(tag), aim: '', sets: [], outs: [], steps: [], noise: 0, result: '' }); return;
+      case 'aim': case 'set': case 'out': case 'plot': case 'step': case 'noise': case 'result': {
+        const lab = L.blocks.at(-1); if (lab?.t !== 'lab') fail(n, `${tag}: must follow lab: or demo:`);
+        const b = lab as LabBlock; const s = rest(tag);
+        if (tag === 'aim') b.aim = s; else if (tag === 'step') b.steps.push(s); else if (tag === 'result') b.result = s;
+        else if (tag === 'noise') b.noise = Number(s);
+        else if (tag === 'plot') { const [x, y] = s.split(',').map(z => z.trim()); b.plot = { x, y }; }
+        else if (tag === 'set') {
+          const m = /^(\w+)\s*=\s*(-?[\d.e]+)\s*\|\s*(.+?)\s*\|\s*(-?[\d.e]+)\s+to\s+(-?[\d.e]+)\s+by\s+([\d.e]+)$/.exec(s);
+          if (!m) fail(n, 'set: needs "name = start | label | min to max by step"');
+          b.sets.push({ name: m![1], start: +m![2], label: m![3], min: +m![4], max: +m![5], step: +m![6] });
+        } else {
+          const m = /^(\w+)\s*=\s*(.+?)\s*\|\s*(.+)$/.exec(s); if (!m) fail(n, 'out: needs "name = formula | label"');
+          b.outs.push({ name: m![1], expr: m![2], label: m![3] });
+        }
+        return;
+      }
       case 'gen': L.gens.push(...rest('gen').split(',').map(s => s.trim()).filter(Boolean)); return;
     }
     flush(); para.push(line); flush();
@@ -100,7 +121,8 @@ export function lintCourse(c: CourseSrc, knownGens: Set<string>): string[] {
     if (!u.summary) out.push(`${where(ui)}: missing summary`);
     u.lessons.forEach((l, li) => {
       if (!l.say) out.push(`${where(ui, li)}: missing say:`);
-      const words = l.blocks.map(b => b.t === 'list' ? b.items.join(' ') : b.t === 'ex' ? [b.problem, ...b.steps, b.answer].join(' ') : b.text).join(' ').split(/\s+/).length;
+      l.blocks.forEach(b => { if (b.t === 'lab') out.push(...lintLab(b).map(e => `${where(ui, li)}: ${e}`)); });
+      const words = l.blocks.filter(b => b.t !== 'lab').map(b => b.t === 'list' ? b.items.join(' ') : b.t === 'ex' ? [b.problem, ...b.steps, b.answer].join(' ') : b.text).join(' ').split(/\s+/).length;
       if (l.blocks.length < 2 || words < 70) out.push(`${where(ui, li)}: teaching is too short (${words} words)`);
       if (l.checks.length < 2) out.push(`${where(ui, li)}: needs at least 2 q: checks`);
       l.checks.forEach((q, qi) => { if (!q.why) out.push(`${where(ui, li)} q${qi + 1}: missing why:`); });

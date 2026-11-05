@@ -49,6 +49,17 @@ ex: A rock is dropped from rest off a cliff. How far does it fall in 3 s?
 > v₀ = 0, a = 9.8 m/s², t = 3 s
 > Δx = ½(9.8)(3²) = 4.9 × 9
 = 44.1 m
+lab: Free-fall drop test
+aim: Drop a ball from different heights and time the fall. How does fall time depend on height?
+set: h = 5 | Drop height (m) | 1 to 50 by 1
+set: m = 1 | Ball mass (kg) | 0.1 to 5 by 0.1
+out: t = sqrt(2*h/g) | Fall time (s)
+out: v = g*t | Impact speed (m/s)
+plot: h, t
+step: Set a height and press Record. Repeat for at least 4 heights.
+step: Now keep the height fixed and change the mass. Does the time change?
+noise: 3
+result: Fall time grows with the square root of height (t = √(2h/g)): four times the height only doubles the time. Mass makes no difference without air resistance, just as Galileo found.
 term: free fall = motion where gravity is the only force acting
 term: acceleration due to gravity = g = 9.8 m/s², the acceleration of falling objects near Earth
 term: kinematics = the description of motion without discussing its causes
@@ -86,6 +97,16 @@ Weight is the force of gravity on an object: W = mg. A 50 kg student weighs 50 �
 ex: A 1,200 kg car accelerates at 3 m/s². What net force acts on it?
 > F = ma = 1,200 × 3
 = 3,600 N
+lab: Cart and pulling force
+aim: Pull a cart with a spring scale on a track. How do force and mass affect its acceleration?
+set: F = 10 | Net force (N) | 1 to 40 by 1
+set: m = 2 | Cart mass (kg) | 0.5 to 10 by 0.5
+out: a = F/m | Acceleration (m/s²)
+plot: F, a
+step: Keep the mass fixed and record the acceleration for 4 different forces.
+step: Then keep the force fixed and double the mass.
+noise: 4
+result: Acceleration is directly proportional to net force (a straight line through the origin) and inversely proportional to mass: a = F/m, Newton's second law.
 term: Newton's second law = the net force on an object equals its mass times its acceleration
 term: weight = the force of gravity on an object, W = mg
 term: mass = the amount of matter in an object, measured in kilograms
@@ -140,6 +161,17 @@ ex: A ball is thrown horizontally at 15 m/s from a 20 m cliff. How far from the 
 > Horizontal: x = 15 × 2.0
 = about 30 m
 A projectile launched from the ground goes farthest at 45° (without air resistance).
+lab: Projectile launcher
+aim: Fire a ball from a launcher at different angles. Which angle sends it farthest?
+set: th = 30 | Launch angle (°) | 5 to 85 by 5
+set: v = 15 | Launch speed (m/s) | 5 to 30 by 1
+out: R = v^2*sind(2*th)/g | Range (m)
+out: H = (v*sind(th))^2/(2*g) | Max height (m)
+plot: th, R
+step: Keep the speed fixed and record the range for at least 5 angles.
+step: Compare complementary angles such as 30° and 60°.
+noise: 3
+result: The range peaks at 45°. Complementary angles (30° and 60°) land at the same spot, but the steeper one flies higher and stays in the air longer.
 term: projectile = an object moving through the air under gravity alone after being launched
 term: trajectory = the curved path a projectile follows
 term: range = the horizontal distance a projectile travels
@@ -212,6 +244,17 @@ ex: A ball is dropped from 5 m. How fast is it moving just before it hits the gr
 = about 9.9 m/s
 In real life, friction turns some energy into thermal energy (heat), so mechanical energy decreases, but the total energy is still conserved.
 Efficiency = useful energy out ÷ energy in × 100%. No machine is 100% efficient.
+lab: Roller coaster energy
+aim: Release a cart from rest at the top of a hill. How fast is it going at the bottom?
+set: h = 20 | Hill height (m) | 1 to 60 by 1
+set: m = 500 | Cart mass (kg) | 100 to 1000 by 50
+out: PE = m*g*h | Energy at the top (J)
+out: v = sqrt(2*g*h) | Speed at the bottom (m/s)
+plot: h, v
+step: Record the bottom speed for at least 4 hill heights.
+step: Change the mass. Does the speed change?
+noise: 2
+result: All the potential energy becomes kinetic energy: mgh = ½mv², so v = √(2gh). Mass cancels, and quadrupling the height only doubles the speed.
 term: conservation of energy = energy cannot be created or destroyed, only transformed
 term: mechanical energy = the sum of kinetic and potential energy
 term: efficiency = the percent of input energy that becomes useful output
@@ -250,6 +293,18 @@ ex: A 2 kg cart at 3 m/s hits a 1 kg cart at rest. They stick together. Find the
 > After: (2 + 1)v = 6
 = v = 2 m/s
 Recoil is conservation of momentum too: when a cannon fires a ball forward, the cannon moves backward.
+lab: Collision cart track
+aim: Roll a cart into a stationary cart so they stick together. What is their speed afterward?
+set: m1 = 2 | Moving cart mass (kg) | 0.5 to 5 by 0.5
+set: v1 = 3 | Moving cart speed (m/s) | 0.5 to 6 by 0.5
+set: m2 = 2 | Stationary cart mass (kg) | 0.5 to 5 by 0.5
+out: vf = m1*v1/(m1 + m2) | Speed after sticking (m/s)
+out: KElost = 0.5*m1*v1^2 - 0.5*(m1 + m2)*vf^2 | Kinetic energy lost (J)
+plot: m2, vf
+step: Record the final speed for 4 different stationary-cart masses.
+step: Check that momentum before (m₁v₁) equals momentum after ((m₁ + m₂)v).
+noise: 3
+result: Momentum is conserved, so a heavier target means a slower combined speed. Kinetic energy is not conserved in this perfectly inelastic collision; some becomes heat and sound.
 term: conservation of momentum = total momentum stays constant in a closed system
 term: elastic collision = a collision where kinetic energy is conserved
 term: inelastic collision = a collision where some kinetic energy is lost to other forms
@@ -270,6 +325,15 @@ key: Wave speed = frequency × wavelength: v = fλ.
 ex: A wave has frequency 5 Hz and wavelength 2 m. Find its speed.
 > v = fλ = 5 × 2
 = 10 m/s
+lab: Waves on a string
+aim: Shake a string at different frequencies. How does the wavelength change?
+set: f = 5 | Frequency (Hz) | 1 to 20 by 1
+set: v = 10 | Wave speed (m/s) | 2 to 20 by 1
+out: lam = v/f | Wavelength (m)
+plot: f, lam
+step: Keep the wave speed fixed and record the wavelength at 5 frequencies.
+noise: 3
+result: Wavelength is inversely proportional to frequency (λ = v/f). Shaking faster makes shorter waves; the speed depends only on the string, not on how you shake it.
 term: wavelength = the distance between two crests of a wave
 term: frequency = the number of waves passing a point per second, in hertz
 term: amplitude = the maximum displacement of a wave from rest; related to its energy
@@ -358,6 +422,17 @@ Total internal reflection happens when light in a slower medium hits the boundar
 - Convex (converging) lenses are thicker in the middle and focus light. Magnifying glasses, cameras and your eye use them.
 - Concave (diverging) lenses are thinner in the middle and spread light. They correct nearsightedness.
 A prism separates white light into colors because each color refracts by a slightly different amount (dispersion). Rainbows work the same way.
+lab: Converging lens bench
+aim: Move a candle in front of a lens and find where a sharp image forms on the screen.
+set: d = 30 | Object distance (cm) | 12 to 80 by 1
+set: f = 10 | Focal length (cm) | 5 to 20 by 1
+out: di = 1/(1/f - 1/d) | Image distance (cm)
+out: M = -di/d | Magnification
+plot: d, di
+step: Record the image distance for at least 4 object distances.
+step: Notice what happens as the object approaches the focal point.
+noise: 2
+result: The thin-lens equation 1/f = 1/dₒ + 1/dᵢ fits the data. As the object nears the focal point the image moves far away and grows; far away objects form small images near f.
 term: refraction = the bending of light as it passes between materials
 term: index of refraction = the ratio of light's speed in a vacuum to its speed in a material
 term: total internal reflection = complete reflection of light inside a medium at a steep angle
@@ -395,6 +470,17 @@ ex: A 12 V battery is connected to a 4 Ω resistor. Find the current and power.
 > P = IV = 3 × 12
 = 3 A and 36 W
 Your electric bill charges for energy in kilowatt-hours: power (kW) × time (h).
+lab: Ohm's law circuit
+aim: Change the battery voltage across a resistor and read the ammeter.
+set: V = 6 | Voltage (V) | 0 to 12 by 0.5
+set: R = 10 | Resistance (Ω) | 1 to 50 by 1
+out: I = V/R | Current (A)
+out: P = V*I | Power (W)
+plot: V, I
+step: Keep the resistance fixed and record the current at 5 voltages.
+step: Then double the resistance and repeat one voltage.
+noise: 3
+result: Current is proportional to voltage, a straight line whose slope is 1/R. That's Ohm's law: V = IR. Doubling resistance halves the current.
 term: current = the rate of flow of electric charge, measured in amperes
 term: voltage = electric potential difference that pushes current, measured in volts
 term: resistance = opposition to current, measured in ohms
@@ -447,6 +533,17 @@ Moving a magnet into a coil of wire induces a current; moving it out reverses th
 A generator spins coils in a magnetic field (turned by steam, wind or water) to make electricity. It's a motor run in reverse.
 A transformer uses induction to change voltage. Power lines carry electricity at very high voltage to reduce energy loss, then transformers step it down for homes.
 Alternating current (AC) changes direction many times per second (60 Hz in the US). Direct current (DC), from batteries, flows one way.
+lab: Generator coil
+aim: Spin a magnet inside a coil and measure the peak voltage it induces.
+set: N = 100 | Turns of wire | 10 to 500 by 10
+set: f = 10 | Spin rate (turns per second) | 1 to 50 by 1
+set: B = 0.2 | Magnet strength (T) | 0.05 to 1 by 0.05
+out: Vpk = N*B*0.01*2*pi*f | Peak voltage (V)
+plot: f, Vpk
+step: Record the peak voltage at 4 spin rates.
+step: Then try more turns of wire and a stronger magnet.
+noise: 4
+result: Induced voltage rises with how fast the magnetic flux changes: more turns, a stronger magnet, or faster spinning all increase it (Faraday's law). The coil area here is 0.01 m².
 term: electromagnetic induction = producing a voltage by changing a magnetic field
 term: generator = a device that turns motion into electrical energy using induction
 term: transformer = a device that changes the voltage of alternating current

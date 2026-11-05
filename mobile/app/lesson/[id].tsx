@@ -9,7 +9,8 @@ import { usePlan } from '@/lib/auth';
 import { award } from '@/lib/progress';
 import { emit } from '@/lib/events';
 import { COURSES, unitTier, canAccess, courseTestId, levelState, getCourseProgress } from '@/lib/tests';
-import { loadLessonText, markLessonDone, isLessonDone, type Block, type LessonText } from '@shared/courses';
+import { loadLessonText, markLessonDone, isLessonDone, isLabDone, markLabDone, type Block, type LessonText } from '@shared/courses';
+import { Lab } from '@/components/Lab';
 import { PLAN_INFO } from '@shared/plans';
 import { LuminoSays } from '@/components/Lumino';
 import { speak, stopSpeaking, voiceOn } from '@/lib/voice';
@@ -22,6 +23,7 @@ function spokenBlock(b: Block): string | null {
     case 'oops': return `Watch out: ${b.text}`;
     case 'list': return b.items.join('. ');
     case 'ex': return `Example: ${b.problem}. ${b.steps.join('. ')}. Answer: ${b.answer}.`;
+    case 'lab': return `${b.kind === 'lab' ? 'Virtual lab' : 'Try it'}: ${b.title}. ${b.aim} ${b.steps.join(' ')}`;
     default: return null;
   }
 }
@@ -45,7 +47,7 @@ function Example({ b }: { b: Extract<Block, { t: 'ex' }> }) {
   );
 }
 
-function BlockView({ b, active }: { b: Block; active: boolean }) {
+function BlockView({ b, active, onLab }: { b: Block; active: boolean; onLab: (title: string) => void }) {
   const t = useTheme(); const hl = active ? { backgroundColor: t.accentSoft, borderRadius: 12, padding: 6, margin: -6 } : null;
   switch (b.t) {
     case 'h': return <T size={19} weight="900" style={{ marginTop: 6, ...hl }}>{b.text}</T>;
@@ -56,6 +58,7 @@ function BlockView({ b, active }: { b: Block; active: boolean }) {
     case 'oops': return <Box tag="⚠️ WATCH OUT" bg={t.bad + '1a'} border={t.bad + '40'} color={t.bad}><T size={16}>{b.text}</T></Box>;
     case 'code': return <View style={{ backgroundColor: t.code, borderRadius: 12, padding: 12 }}><T mono color="#e8ecff" size={14}>{b.text}</T></View>;
     case 'ex': return <Example b={b} />;
+    case 'lab': return <Lab b={b} onDone={() => onLab(b.title)} />;
   }
 }
 
@@ -76,6 +79,7 @@ export default function LessonScreen() {
   const right = checks.filter((x, i) => picks[i] === x.answer).length;
   const nextLesson = l + 1 < unit.lessons.length ? `${cid}~${u}~${l + 1}` : u + 1 < c.units.length && c.units[u + 1].lessons.length ? `${cid}~${u + 1}~0` : null;
 
+  const labDone = (title: string) => { if (!isLabDone(cid, u, l, title)) { markLabDone(cid, u, l, title); award(10, title); emit('progress'); } };
   const readAloud = () => {
     if (reading >= 0) { run.current++; stopSpeaking(); setReading(-1); return; }
     if (!text) return; const r = ++run.current;
@@ -106,7 +110,7 @@ export default function LessonScreen() {
       {text === undefined ? <T color={t.muted}>Loading…</T> : text === null ? <T color={t.muted}>This lesson couldn't load.</T> : <>
         <LuminoSays key={String(id)} text={text.say} mood="teach" after="idle" size={100} />
         {voiceOn() && <Button kind="ghost" title={reading >= 0 ? '⏹ Stop reading' : '🔊 Read this lesson to me'} onPress={readAloud} />}
-        <View style={{ gap: 14 }}>{text.blocks.map((b, i) => <BlockView key={i} b={b} active={i === reading} />)}</View>
+        <View style={{ gap: 14 }}>{text.blocks.map((b, i) => <BlockView key={i} b={b} active={i === reading} onLab={labDone} />)}</View>
         {lesson.terms.length > 0 && <View style={{ gap: 8 }}><T size={19} weight="900">🔑 Key terms</T>
           {lesson.terms.map(([term, d]) => <View key={term} style={{ backgroundColor: t.card, borderRadius: 12, borderWidth: 1, borderColor: t.line, padding: 12 }}><T weight="800">{term}</T><T size={14} color={t.muted}>{d}</T></View>)}</View>}
 

@@ -33,7 +33,7 @@ export default function ClassPath() {
             {open && u.lessons.map((ls, li) => { const done = isLessonDone(c.id, ui, li);
               return <Pressable key={`l${li}`} onPress={() => router.push(`/lesson/${c.id}~${ui}~${li}`)} style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 11, borderRadius: 14, backgroundColor: t.bg, opacity: pressed ? 0.7 : 1 })}>
                 <View style={{ width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: done ? t.ok : t.card, borderWidth: 2, borderColor: done ? t.ok : t.line }}><T size={12} weight="900" color={done ? '#fff' : t.text}>{done ? '✓' : li + 1}</T></View>
-                <T weight="700" style={{ flex: 1 }}>📖 {ls.title}</T></Pressable>; })}
+                <T weight="700" style={{ flex: 1 }}>📖 {ls.title}</T>{ls.lab && <T size={12} weight="800" color={t.muted}>{ls.lab === 'lab' ? '🧪 Lab' : '📐 Demo'}</T>}</Pressable>; })}
             {open && <View style={{ flexDirection: 'row', gap: 10 }}>
               {[0, 1, 2].map(li => { const s = levelState(c.id, ui, li, prog);
                 return (

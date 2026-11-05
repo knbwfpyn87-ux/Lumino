@@ -631,3 +631,28 @@ button.choice.faded { opacity:.55; }
 .lessonlink.done .lnum { background:var(--ok); border-color:var(--ok); color:#fff; }
 [data-theme="dark"] .lb.oops { background:#3a1d24; border-color:#5a2a35; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .lb.oops { background:#3a1d24; border-color:#5a2a35; } }
+
+/* virtual labs and demos */
+.lb.lab { border:2px solid var(--accent); background:var(--panel); }
+.lb.lab.lab { background:linear-gradient(180deg,var(--accent-soft),var(--panel) 120px); }
+.labtitle { margin:0 0 4px; font-size:1.1rem; } .labaim { margin:0 0 8px; }
+.labsteps { margin:0 0 10px; padding-left:1.4em; display:flex; flex-direction:column; gap:4px; font-size:.95rem; }
+.labgrid { display:grid; grid-template-columns:minmax(0,1fr); gap:14px; margin:6px 0 10px; }
+.labcontrols { display:grid !important; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+.labcontrols .labouts, .labcontrols .row { grid-column:1/-1; }
+.labcontrols { display:flex; flex-direction:column; gap:10px; }
+.labslider { display:flex; flex-direction:column; gap:4px; font-size:.92rem; font-weight:600; }
+.labslider span { display:flex; justify-content:space-between; gap:8px; } .labslider b { font-variant-numeric:tabular-nums; color:var(--accent); }
+.labslider input { width:100%; accent-color:var(--accent); }
+.labouts { display:flex; flex-wrap:wrap; gap:8px; }
+.labout { flex:1 1 120px; background:var(--soft); border-radius:12px; padding:8px 10px; display:flex; flex-direction:column; }
+.labout span { font-size:.8rem; color:var(--muted); font-weight:700; } .labout b { font-size:1.25rem; font-variant-numeric:tabular-nums; }
+.labgraph { width:100%; height:auto; background:var(--soft); border-radius:12px; }
+.labgraph .gridline { stroke:var(--line); stroke-width:1; } .labgraph .axis { stroke:var(--muted); stroke-width:1.5; }
+.labgraph .tick { fill:var(--muted); font-size:11px; } .labgraph .axlabel { fill:var(--text); font-size:12px; font-weight:700; }
+.labgraph .curve { fill:none; stroke:var(--accent); stroke-width:3; stroke-linejoin:round; }
+.labgraph .trial { fill:var(--ok); stroke:var(--panel); stroke-width:2; } .labgraph .now { fill:var(--accent); stroke:var(--panel); stroke-width:3; }
+.labtable { overflow-x:auto; margin:4px 0 10px; } .labtable table { border-collapse:collapse; font-size:.88rem; font-variant-numeric:tabular-nums; min-width:100%; }
+.labtable th, .labtable td { padding:5px 8px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; } .labtable th { color:var(--muted); font-size:.78rem; }
+.labresult { background:var(--accent-soft); border-radius:12px; padding:10px 12px; animation:fadein .25s ease; }
+.lessonlink .labbadge { margin-left:auto; font-size:.8rem; }

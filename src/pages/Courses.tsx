@@ -50,7 +50,7 @@ export function CourseView() {
             <div className="unithead"><span className="unitnum">{ui + 1}</span><div><b>{u.title}</b><p className="muted small">{u.topics}</p></div>
               {!open && <Link to="/pricing" className="pill">🔒 {PLAN_INFO[tier].name}</Link>}</div>
             {open && u.lessons.length > 0 && <div className="lessonlist">{u.lessons.map((ls, li) => <Link key={li} to={`/courses/${c.id}/learn/${ui}/${li}`} className={'lessonlink' + (isLessonDone(c.id, ui, li) ? ' done' : '')}>
-              <span className="lnum">{isLessonDone(c.id, ui, li) ? '✓' : li + 1}</span>{ls.title}</Link>)}
+              <span className="lnum">{isLessonDone(c.id, ui, li) ? '✓' : li + 1}</span>{ls.title}{ls.lab && <span className="labbadge" title={ls.lab === 'lab' ? 'Has a virtual lab' : 'Has a real-world demo'}>{ls.lab === 'lab' ? '🧪 Lab' : '📐 Demo'}</span>}</Link>)}
               <span className="muted small">{unitLessonsDone(c, ui)} of {u.lessons.length} lessons done</span></div>}
             {open && <div className="levels">{LEVELS.map((name, li) => {
               const st = levelState(c.id, ui, li, prog);

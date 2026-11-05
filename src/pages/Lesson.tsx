@@ -8,6 +8,8 @@ import LuminoSays from '../components/LuminoSays';
 import { speak, stopSpeaking, voiceOn } from '../lib/voice';
 import { award } from '../lib/progress';
 import { confetti } from '../components/Feedback';
+import Lab from '../components/Lab';
+import { isLabDone, markLabDone } from '../lib/courses';
 
 /** What "Read to me" says for each block (null = skip). */
 function spokenBlock(b: Block): string | null {
@@ -18,6 +20,7 @@ function spokenBlock(b: Block): string | null {
     case 'oops': return `Watch out: ${b.text}`;
     case 'list': return b.items.join('. ');
     case 'ex': return `Example: ${b.problem}. ${b.steps.join('. ')}. Answer: ${b.answer}.`;
+    case 'lab': return `${b.kind === 'lab' ? 'Virtual lab' : 'Try it'}: ${b.title}. ${b.aim} ${b.steps.join(' ')}`;
     default: return null;
   }
 }
@@ -33,7 +36,7 @@ function Example({ b }: { b: Extract<Block, { t: 'ex' }> }) {
   );
 }
 
-function BlockView({ b, active }: { b: Block; active: boolean }) {
+function BlockView({ b, active, onLab }: { b: Block; active: boolean; onLab: (title: string) => void }) {
   const cls = active ? ' reading' : '';
   switch (b.t) {
     case 'h': return <h3 className={'lh' + cls}>{b.text}</h3>;
@@ -44,6 +47,7 @@ function BlockView({ b, active }: { b: Block; active: boolean }) {
     case 'oops': return <div className={'lb oops' + cls}><div className="lbtag">⚠️ Watch out</div>{b.text}</div>;
     case 'code': return <pre className={'code' + cls}><code>{b.text}</code></pre>;
     case 'ex': return <div className={cls}><Example b={b} /></div>;
+    case 'lab': return <div className={cls}><Lab b={b} onDone={() => onLab(b.title)} /></div>;
   }
 }
 
@@ -85,6 +89,7 @@ export default function Lesson() {
       if (score === checks.length) setTimeout(() => confetti(document.querySelector('.confetti') as HTMLCanvasElement), 100);
     }
   };
+  const labDone = (title: string) => { if (!isLabDone(c.id, u, l, title)) { markLabDone(c.id, u, l, title); award(10, `${title}`); } };
   const q = checks[qi]; const picked = picks[qi];
 
   return (
@@ -97,7 +102,7 @@ export default function Lesson() {
       {text === undefined ? <p className="muted">Loading the lesson…</p> : text === null ? <p className="muted">This lesson couldn't load. Check your connection and try again.</p> : <>
         <LuminoSays key={`${id}-${u}-${l}`} text={text.say} mood="teach" after="idle" size={130} />
         {voiceOn() && <button className="ghost readbtn" onClick={readAloud}>{reading >= 0 ? '⏹ Stop reading' : '🔊 Read this lesson to me'}</button>}
-        <div className="lessonbody">{text.blocks.map((b, i) => <BlockView key={i} b={b} active={i === reading} />)}</div>
+        <div className="lessonbody">{text.blocks.map((b, i) => <BlockView key={i} b={b} active={i === reading} onLab={labDone} />)}</div>
         {lesson.terms.length > 0 && <div className="terms"><h3>🔑 Key terms</h3><dl>{lesson.terms.map(([t, d]) => <div key={t}><dt>{t}</dt><dd>{d}</dd></div>)}</dl></div>}
 
         <div className="quickcheck"><canvas className="confetti" />
