@@ -15,5 +15,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // GitHub Pages "Deploy from branch: main" serves this raw source page, which browsers can't run.
+      // Forward to the built site in /site/. (In the built page this tag finds no main.tsx and does nothing.)
+      if (/github\.io$/.test(location.hostname) && document.querySelector('script[src$="main.tsx"]')) {
+        location.replace(location.pathname.replace(/index\.html$/, '').replace(/\/?$/, '/') + 'site/' + location.hash);
+      }
+    </script>
   </body>
 </html>
