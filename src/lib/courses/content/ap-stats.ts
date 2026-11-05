@@ -37,6 +37,14 @@ ex: SAT Math scores are N(520, 110). What percent score above 740?
 > About 2.5% lie above z = 2 (half of the 5% outside ±2σ)
 = about 2.5%
 A percentile tells the percent of values at or below a given value. Transforming data: adding a constant shifts the center but not the spread; multiplying by a constant multiplies both center and spread.
+demo: Filling cereal boxes
+aim: A machine fills boxes labeled 500 g. Fill weights are normal with an adjustable mean and standard deviation 8 g.
+set: mu = 510 | Machine setting (mean, g) | 490 to 540 by 1
+set: sd = 8 | Standard deviation (g) | 2 to 15 by 1
+out: under = 100*normcdf((500 - mu)/sd) | Underweight boxes (%)
+plot: mu, under
+step: What setting keeps underweight boxes below 1%?
+result: P(X < 500) = P(Z < (500 − μ)/σ). To get under 1% you need z ≤ −2.33, so μ ≥ 500 + 2.33σ ≈ 519 g. Reducing variability lets the company fill less on average.
 term: z-score = the number of standard deviations a value is from the mean
 term: normal distribution = a symmetric, bell-shaped distribution described by its mean and standard deviation
 term: empirical rule = the 68–95–99.7 rule for normal distributions
@@ -77,6 +85,13 @@ ex: ŷ = 30 + 4.5x, where x is hours studied and y is test score. A student stud
 > Residual: 70 − 66
 = 4 (the student scored 4 points above the prediction)
 oops: Extrapolation (predicting far outside the range of the data) is unreliable.
+demo: The danger of extrapolation
+aim: For children aged 2–12, height is well modeled by ŷ = 76 + 6x cm, where x is age. Use it at other ages.
+set: x = 8 | Age (years) | 0 to 40 by 1
+out: yhat = 76 + 6*x | Predicted height (cm)
+plot: x, yhat
+step: Predict the height of a 10-year-old, then a 40-year-old.
+result: Within the data (ages 2–12) predictions are reasonable: 136 cm at age 10. At 40 the model predicts 316 cm, because growth stops. Never extrapolate far beyond the range of x in the data.
 term: least-squares regression line = the line that minimizes the sum of squared residuals
 term: residual = actual value minus predicted value
 term: coefficient of determination = r², the proportion of variation in y explained by the model
@@ -98,6 +113,15 @@ Sources of bias:
 - Undercoverage: some groups are left out.
 - Nonresponse: selected people don't respond.
 - Response bias: question wording or interviewer effects lead to inaccurate answers.
+demo: Nonresponse bias in a survey
+aim: Exactly 50% of a town supports a new park. Supporters and opponents respond to a mailed survey at different rates.
+set: r1 = 30 | Supporters who respond (%) | 5 to 80 by 5
+set: r2 = 15 | Opponents who respond (%) | 5 to 80 by 5
+out: est = 100*0.5*r1/(0.5*r1 + 0.5*r2) | Survey estimate of support (%)
+out: bias = est - 50 | Bias (points)
+plot: r1, est
+step: Set equal response rates. Then make supporters twice as likely to respond.
+result: When people who respond differ from those who don't, the estimate is biased, here 67% instead of 50%. A bigger sample doesn't fix bias; better design (follow-ups, random sampling) does.
 term: simple random sample = a sample where every group of n individuals has an equal chance of being chosen
 term: stratified random sample = dividing the population into similar groups and sampling randomly from each
 term: cluster sample = randomly selecting entire groups and surveying everyone in them
@@ -158,6 +182,16 @@ ex: A basketball player makes 70% of free throws. In 10 shots, what's the expect
 > μ = np = 10(0.7) = 7
 > σ = √(10 × 0.7 × 0.3) = √2.1
 = μ = 7, σ ≈ 1.45
+demo: Free throws: the binomial distribution
+aim: A player takes 20 free throws, each made with the same probability. Find the probability of making exactly k.
+set: k = 14 | Shots made (k) | 0 to 20 by 1
+set: p = 0.7 | Probability of making each shot | 0.1 to 0.95 by 0.05
+out: P = choose(20, k)*p^k*(1 - p)^(20 - k) | P(X = k)
+out: mean = 20*p | Expected makes
+out: sd = sqrt(20*p*(1 - p)) | Standard deviation
+plot: k, P
+step: Find the most likely number of makes. How does the shape change when p is 0.5 versus 0.9?
+result: P(X = k) = C(20, k)pᵏ(1 − p)²⁰⁻ᵏ. The distribution centers at np = 14 with SD √(np(1 − p)) ≈ 2.05; it's symmetric at p = 0.5 and skewed left when p is near 1.
 term: expected value = the long-run average value of a random variable
 term: binomial distribution = the distribution of the number of successes in n independent trials with the same probability p
 term: geometric distribution = the distribution of the number of trials until the first success
@@ -197,6 +231,14 @@ ex: Commute times have μ = 30 minutes and σ = 12, with a right-skewed shape. F
 > Mean 30, SD = 12/√36 = 2
 = approximately N(30, 2)
 The 10% condition: when sampling without replacement, the sample should be less than 10% of the population for the standard deviation formulas to work.
+demo: Sample size and the sampling distribution
+aim: Battery lifetimes have mean 400 hours and SD 60 hours (and are skewed). Take samples of size n.
+set: n = 30 | Sample size | 1 to 200 by 1
+out: se = 60/sqrt(n) | SD of x̄ (hours)
+out: P = 100*(1 - normcdf((410 - 400)/se)) | Chance x̄ > 410 h (%)
+plot: n, se
+step: How does the chance of a sample mean above 410 change as n grows?
+result: The sampling distribution of x̄ has SD σ/√n, so larger samples give less variable means. By the Central Limit Theorem it's approximately normal for n ≥ 30 even though lifetimes are skewed.
 term: central limit theorem = sample means are approximately normal for large samples, regardless of population shape
 term: standard error = the estimated standard deviation of a statistic's sampling distribution
 term: 10% condition = the sample size should be less than 10% of the population when sampling without replacement
@@ -234,6 +276,16 @@ If P-value < α (often 0.05), reject H₀: there is convincing evidence for Hₐ
 - Type I error: rejecting H₀ when it's true (probability α).
 - Type II error: failing to reject H₀ when Hₐ is true.
 - Power = 1 − P(Type II error): the probability of correctly rejecting a false H₀. Power increases with larger samples, larger α, and larger true effects.
+demo: The power of a test
+aim: Test H₀: p = 0.50 against Hₐ: p > 0.50 at α = 0.05. How likely are you to detect a true effect?
+set: p = 0.55 | True proportion | 0.5 to 0.7 by 0.01
+set: n = 400 | Sample size | 50 to 2000 by 50
+out: cut = 0.5 + 1.645*sqrt(0.25/n) | Rejection cutoff for p̂
+out: power = 100*(1 - normcdf((cut - p)/sqrt(p*(1 - p)/n))) | Power (%)
+out: beta = 100 - power | Type II error (%)
+plot: p, power
+step: Find the sample size needed for 80% power when p = 0.55.
+result: Power is the probability of correctly rejecting a false H₀. It rises with a larger true effect, a larger sample and a larger α. At p = 0.55 you need about 620 people for 80% power.
 term: null hypothesis = the claim of no effect or no difference, tested in a significance test
 term: P-value = the probability of results at least as extreme as observed, assuming the null hypothesis is true
 term: Type I error = rejecting the null hypothesis when it is actually true
@@ -271,6 +323,16 @@ ex: Students take a test before and after tutoring. Which procedure?
 > The same students are measured twice
 = Paired t-procedure on the differences
 If a confidence interval for a difference contains 0, there's no convincing evidence of a difference.
+demo: A/B test of two study apps
+aim: Students using App A score higher on average than students using App B. Is the difference statistically significant?
+set: diff = 4 | Difference in mean scores | 0 to 15 by 0.5
+set: n = 30 | Students per group | 5 to 200 by 5
+out: se = sqrt(12^2/n + 12^2/n) | Standard error of difference
+out: z = diff/se | Test statistic
+out: P = 100*2*(1 - normcdf(z)) | p-value (%)
+plot: n, P
+step: With a 4-point difference, how many students per group make the result significant at 5%?
+result: The test statistic (x̄₁ − x̄₂)/SE grows with sample size. A 4-point difference isn't significant with 30 per group (p ≈ 20%) but is with about 70 per group. Significance depends on effect size and n.
 term: paired data = two measurements on the same individual or matched individuals
 term: two-sample t-test = a test comparing the means of two independent groups
 term: pooled proportion = the combined proportion of successes used in a two-proportion test
@@ -291,6 +353,14 @@ Condition: all expected counts are at least 5.
 ex: A die is rolled 60 times. What is the expected count for each face under H₀ that the die is fair?
 > 60 rolls ÷ 6 faces
 = 10 per face
+demo: Is the coin fair?
+aim: Flip a coin 100 times and run a chi-square goodness-of-fit test against a 50/50 model.
+set: h = 58 | Heads in 100 flips | 30 to 70 by 1
+out: chi = (h - 50)^2/50 + (100 - h - 50)^2/50 | χ² statistic
+out: P = 100*2*(1 - normcdf(sqrt(chi))) | p-value (%), df = 1
+plot: h, P
+step: How many heads are needed before you'd reject a fair coin at α = 0.05?
+result: χ² = Σ(O − E)²/E with df = 1. You need 60 or more heads (or 40 or fewer) to reject at 5%; 58 heads gives p ≈ 11%, consistent with a fair coin.
 term: chi-square statistic = a measure of how far observed counts are from expected counts
 term: goodness-of-fit test = a chi-square test comparing one variable's distribution to a claimed distribution
 term: test for independence = a chi-square test for association between two categorical variables in one population
@@ -332,6 +402,17 @@ ex: Output shows slope b = 2.4, SE_b = 0.8, n = 22. Find the test statistic for 
 > t = 2.4/0.8
 = t = 3.0, with df = 20
 A small P-value means convincing evidence of a linear relationship between x and y in the population.
+demo: Inference for a regression slope
+aim: A sample shows exam score rising 1.5 points per extra hour of study. Is the slope significantly different from 0?
+set: n = 15 | Sample size | 5 to 100 by 1
+set: b = 1.5 | Sample slope | 0 to 4 by 0.1
+out: se = 8/(3*sqrt(n - 1)) | SE of slope
+out: t = b/se | t statistic
+out: P = 100*2*(1 - normcdf(t)) | Approx. p-value (%)
+out: lo = b - 2*se | 95% CI low
+plot: n, P
+step: Check whether the 95% interval contains 0 for small and large samples.
+result: t = b/SE_b tests H₀: β = 0. Larger samples shrink SE_b, so the same slope becomes significant and the confidence interval excludes 0. (Exact p-values use the t distribution with n − 2 df.)
 term: population slope = the true slope β of the linear relationship in the population
 term: standard error of the slope = the estimated standard deviation of the sample slope
 term: residual plot = a plot of residuals vs. x, used to check regression conditions

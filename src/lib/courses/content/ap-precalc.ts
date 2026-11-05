@@ -14,6 +14,13 @@ ex: f(1) = 3, f(2) = 7, f(3) = 15. Is f concave up or down on [1, 3]?
 > The rate of change is increasing
 = Concave up
 Linear functions have a constant rate of change; quadratic functions have a rate of change that changes at a constant rate.
+demo: Average speed over shrinking intervals
+aim: A ball rolls so that its distance is d(t) = t². Find its average speed from t = 2 to t = 2 + h as h gets smaller.
+set: h = 1 | Interval length h (s) | 0.01 to 2 by 0.01
+out: avg = ((2 + h)^2 - 4)/h | Average rate of change (m/s)
+plot: h, avg
+step: Shrink h toward 0. What value does the average rate approach?
+result: The average rate of change over [2, 2 + h] is 4 + h. As the interval shrinks it approaches 4 m/s, the instantaneous rate of change at t = 2.
 term: average rate of change = the change in output divided by the change in input over an interval
 term: concave up = curving upward; the rate of change is increasing
 term: point of inflection = a point where a graph changes concavity
@@ -105,6 +112,15 @@ ex: A semi-log plot of ln(y) vs. x gives the line ln(y) = 0.7x + 2. Write the ex
 > y = e^(0.7x + 2) = e²·e^(0.7x)
 = y ≈ 7.39(2.01)ˣ
 Models are built from data by regression (exponential, logarithmic, power). Choose a model based on the context and on residual plots that show no pattern.
+demo: Bacteria on a semi-log plot
+aim: A bacteria culture starts at 100 cells and doubles every 3 hours. Compare the count with its logarithm.
+set: t = 6 | Time (hours) | 0 to 30 by 1
+set: dbl = 3 | Doubling time (hours) | 1 to 6 by 0.5
+out: N = 100*2^(t/dbl) | Bacteria
+out: logN = log(N) | log₁₀(bacteria)
+plot: t, logN
+step: Is the log₁₀ graph straight? What is its slope?
+result: Exponential data look linear on a semi-log plot because log N = log 100 + (log 2/d)t. The slope reveals the growth rate, which is how scientists spot exponential growth.
 term: semi-log plot = a graph with a logarithmic vertical axis, where exponential data appears linear
 term: regression = fitting a function model to data
 term: residual = the difference between an actual and predicted value
@@ -138,6 +154,14 @@ ex: A Ferris wheel's seat ranges from 2 m to 42 m high and completes a rotation 
 > Midline 22, amplitude 20, period 40 so b = 2π/40 = π/20
 > Starting at the minimum: use −cos
 = h(t) = −20 cos(πt/20) + 22
+demo: Tides in a harbor
+aim: Water depth in a harbor rises and falls with a period of about 12.4 hours. Model it with a sinusoid.
+set: t = 6 | Hours after midnight | 0 to 24 by 0.25
+set: A = 1.2 | Tidal range ÷ 2 (m) | 0.3 to 3 by 0.1
+out: h = 3 + A*sin(2*pi*(t - 3)/12.4) | Water depth (m)
+plot: t, h
+step: Identify the midline, amplitude and period. When is it high tide?
+result: h = 3 + A sin(2π(t − 3)/12.4): midline 3 m, amplitude A, period 12.4 h, phase shift 3 h. A boat needing 3.5 m can only enter around high tide.
 term: amplitude = half the distance between a sinusoid's maximum and minimum
 term: midline = the horizontal line halfway between the maximum and minimum
 term: phase shift = a horizontal shift of a periodic function
@@ -191,6 +215,16 @@ Transition matrices model systems that move between states, like customers switc
 ex: Find the determinant of [[3, 1], [4, 2]].
 > ad − bc = 3(2) − 1(4)
 = 2 (areas double)
+demo: Bike-share migration
+aim: Each day 20% of bikes at the beach move downtown and 10% of downtown bikes move to the beach. Start with all bikes downtown.
+set: n = 3 | Days | 0 to 30 by 1
+set: a = 0.2 | Beach → downtown rate | 0.05 to 0.5 by 0.05
+set: b = 0.1 | Downtown → beach rate | 0.05 to 0.5 by 0.05
+out: eq = b/(a + b) | Long-run share at the beach
+out: beach = eq*(1 - (1 - a - b)^n) | Share at the beach after n days
+plot: n, beach
+step: Multiply the state vector by the transition matrix a few times. Where does it settle?
+result: Repeatedly applying the transition matrix moves the system to a steady state b/(a + b), one third of bikes at the beach here, regardless of where they started.
 term: matrix = a rectangular array of numbers
 term: determinant = a number from a square matrix; for 2×2, ad − bc
 term: linear transformation = a function that maps vectors using matrix multiplication

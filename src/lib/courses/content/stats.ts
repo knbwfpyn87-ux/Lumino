@@ -29,6 +29,14 @@ ex: Data: 2, 4, 5, 7, 9, 10, 30. Find the median and check if 30 is an outlier.
 > Upper fence: 10 + 1.5(6) = 19
 = Median 7; 30 is an outlier
 Use median and IQR for skewed data; use mean and standard deviation for symmetric data.
+demo: Spread and one changing value
+aim: Four quiz scores are 10, 12, 14 and 16. Change the fifth score and watch the mean and standard deviation.
+set: x = 13 | Fifth score | 0 to 30 by 1
+out: m = (52 + x)/5 | Mean
+out: sd = sqrt(((10 - m)^2 + (12 - m)^2 + (14 - m)^2 + (16 - m)^2 + (x - m)^2)/4) | Standard deviation
+plot: x, sd
+step: Where is the standard deviation smallest? What does an outlier do?
+result: Standard deviation measures typical distance from the mean. It's smallest when the new score sits in the middle and grows quickly as the value moves away, because deviations are squared.
 term: standard deviation = a measure of how spread out data are from the mean
 term: five-number summary = minimum, Q1, median, Q3 and maximum
 term: outlier = a value far from the rest of the data
@@ -64,6 +72,14 @@ ex: Ana scored 85 on a test with mean 75 and SD 5. Ben scored 90 on a test with 
 > Ana: z = (85 − 75)/5 = 2
 > Ben: z = (90 − 80)/10 = 1
 = Ana did better relative to her class
+demo: SAT score percentiles
+aim: SAT scores are roughly normal with mean 1050 and standard deviation 210. Find the percentile of any score.
+set: x = 1200 | Score | 400 to 1600 by 10
+out: z = (x - 1050)/210 | z-score
+out: pct = 100*normcdf(z) | Percentile
+plot: x, pct
+step: What score is at the 90th percentile?
+result: Convert to a z-score and use the normal curve: 1200 is z = 0.71, about the 76th percentile. The 90th percentile is near z = 1.28, a score of about 1320.
 term: percentile = the percent of values at or below a given value
 term: standardizing = converting values to z-scores to compare them
 q: Scoring at the 75th percentile means… | *75% scored at or below you | you got 75% correct | 75 people took the test | you're in the top 75%
@@ -95,6 +111,15 @@ ex: ŷ = 20 + 5x predicts a test score from hours studied. Predict the score for
 = Predicted score 50; each extra hour of study predicts 5 more points
 oops: Don't extrapolate far beyond the data. Predicting a score for 40 hours of study would be unreliable.
 r² tells the percent of variation in y explained by the line.
+demo: Ice cream and temperature
+aim: An ice cream shop's sales follow the regression line ŷ = −50 + 8x, where x is temperature in °C.
+set: x = 25 | Temperature (°C) | 10 to 40 by 1
+set: y = 160 | Actual cones sold | 0 to 300 by 5
+out: yhat = -50 + 8*x | Predicted cones
+out: res = y - yhat | Residual (actual − predicted)
+plot: x, yhat
+step: Interpret the slope in context. Find the residual for 160 cones on a 25 °C day.
+result: The slope means about 8 more cones per extra degree. A positive residual means the model underestimated. Predicting far outside the data range (extrapolation) is risky.
 term: regression line = the line that best fits the data in a scatterplot
 term: residual = actual value minus predicted value
 term: extrapolation = predicting outside the range of the data
@@ -128,6 +153,13 @@ ex: Draw a card from a standard deck. P(king or heart)?
 > 4/52 + 13/52 − 1/52
 = 16/52 = 4/13
 Conditional probability P(A | B) is the probability of A given that B happened. Two-way tables help compute it.
+demo: The birthday problem
+aim: How many people need to be in a room before two probably share a birthday?
+set: n = 23 | People in the room | 2 to 80 by 1
+out: P = 100*(1 - exp(-n*(n - 1)/730)) | Chance of a shared birthday (%)
+plot: n, P
+step: Guess first, then find where the chance passes 50%.
+result: Only 23 people give about a 50% chance, and 50 people give 97%, because the number of pairs n(n − 1)/2 grows fast. Probability often surprises our intuition.
 term: complement = the event that A does not happen
 term: independent events = events where one doesn't affect the probability of the other
 term: conditional probability = the probability of an event given that another occurred
@@ -145,6 +177,16 @@ ex: A poll finds 54% support a policy with a margin of error of ±3%. Interpret 
 > Interval: 51% to 57%
 = We're 95% confident the true support is between 51% and 57%
 Larger samples give smaller margins of error. Higher confidence levels give wider intervals.
+demo: Poll margin of error
+aim: A poll finds a percentage supporting a candidate. How does the 95% margin of error depend on the sample size?
+set: n = 1000 | Sample size | 100 to 3000 by 50
+set: p = 50 | Sample percentage (%) | 10 to 90 by 5
+out: ME = 196*sqrt(p/100*(1 - p/100)/n) | Margin of error (± points)
+out: lo = p - ME | Interval low (%)
+out: hi = p + ME | Interval high (%)
+plot: n, ME
+step: How many people must you poll to cut the margin of error in half?
+result: ME = 1.96√(p̂(1 − p̂)/n). About 1,000 people give ±3 points; halving the margin needs four times the sample, because n is under a square root.
 term: confidence interval = a range of plausible values for a population parameter
 term: margin of error = the maximum likely difference between the sample result and the true value
 term: confidence level = how often the method captures the true value in the long run

@@ -31,6 +31,14 @@ ex: A ladder makes a 70° angle with the ground and reaches 12 ft up a wall. How
 = about 12.8 ft
 key: Special right triangles give exact values: 45-45-90 has sides 1 : 1 : √2, and 30-60-90 has sides 1 : √3 : 2.
 Angle of elevation is measured up from horizontal; angle of depression is measured down from horizontal.
+demo: Measuring a building with a clinometer
+aim: Stand some distance from a building, measure the angle up to its top, and calculate its height. Your eyes are 1.5 m high.
+set: a = 40 | Angle of elevation (°) | 5 to 80 by 1
+set: d = 30 | Distance from the building (m) | 5 to 100 by 1
+out: H = d*tand(a) + 1.5 | Building height (m)
+plot: a, H
+step: Write tan θ = opposite/adjacent and solve for the opposite side.
+result: Height = d tan θ + eye height. At 30 m and 40° the building is about 26.7 m tall. Small angle errors matter more at steep angles, because tangent grows rapidly near 90°.
 term: inverse trig function = a function that finds an angle from a ratio, like tan⁻¹
 term: angle of elevation = the angle measured upward from a horizontal line
 term: angle of depression = the angle measured downward from a horizontal line
@@ -68,6 +76,14 @@ ex: Find cos(7π/6).
 > 7π/6 is in Quadrant III, reference angle π/6
 > cos π/6 = √3/2, and cosine is negative in Quadrant III
 = −√3/2
+demo: A valve on a turning wheel
+aim: A bicycle wheel of radius 1 turns. Track the coordinates of the tire valve on the unit circle.
+set: th = 30 | Angle turned (°) | 0 to 360 by 5
+out: x = cosd(th) | x = cos θ
+out: y = sind(th) | y = sin θ
+plot: th, y
+step: Find the angles where y = 1/2, and where x and y are equal.
+result: Any point on the unit circle is (cos θ, sin θ). The valve's height traces a sine wave as the wheel turns, positive in quadrants I and II and negative in III and IV.
 term: unit circle = a circle with radius 1 centered at the origin
 term: reference angle = the acute angle between the terminal side and the x-axis
 q: sin(3π/2) = | *−1 | 0 | 1 | undefined
@@ -85,6 +101,16 @@ ex: Describe y = 2 cos(3x) − 1.
 > Amplitude 2; period 2π/3
 > Midline y = −1, so it ranges from −3 to 1
 = amplitude 2, period 2π/3, midline y = −1
+demo: Tuning fork sound wave
+aim: A microphone records the air pressure from a tuning fork. Change the frequency and loudness.
+set: t = 2 | Time (ms) | 0 to 10 by 0.05
+set: f = 440 | Frequency (Hz) | 100 to 1000 by 10
+set: A = 1 | Amplitude (loudness) | 0.2 to 2 by 0.1
+out: p = A*sin(2*pi*f*t/1000) | Pressure change
+out: T = 1000/f | Period (ms)
+plot: t, p
+step: How many cycles fit in 10 ms at 440 Hz? What happens to the period as the frequency goes up?
+result: y = A sin(2πft): amplitude sets the loudness and frequency sets the pitch. The period is 1/f, so higher notes have shorter, more tightly packed waves.
 term: amplitude = half the distance between the maximum and minimum
 term: period = the length of one full cycle
 term: phase shift = a horizontal shift of a trig graph
@@ -135,6 +161,16 @@ ex: Solve 2 sin x − √3 = 0 on [0, 2π).
 = x = π/3 or 2π/3
 key: Law of Sines: a/sin A = b/sin B = c/sin C. Law of Cosines: c² = a² + b² − 2ab cos C.
 Use Law of Sines when you know an angle and its opposite side; use Law of Cosines for SAS or SSS.
+demo: Measuring across a river
+aim: Mark points A and B 100 m apart on one bank and measure the angles to a tree on the far bank. Find the distance from A to the tree.
+set: A = 60 | Angle at A (°) | 20 to 100 by 1
+set: B = 70 | Angle at B (°) | 20 to 100 by 1
+out: C = 180 - A - B | Angle at the tree (°)
+out: AT = 100*sind(B)/sind(C) | Distance A to tree (m)
+out: w = AT*sind(A) | River width (m)
+plot: A, AT
+step: Use the Law of Sines: AT/sin B = 100/sin C.
+result: With two angles and the included side, the Law of Sines finds the other sides. At 60° and 70° the tree is about 123 m from A and the river about 106 m wide.
 term: law of sines = the ratio of a side to the sine of its opposite angle is constant
 term: law of cosines = c² = a² + b² − 2ab cos C
 term: oblique triangle = a triangle with no right angle

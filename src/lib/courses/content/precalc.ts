@@ -32,6 +32,15 @@ ex: f(x) = √x and g(x) = x − 4. Find (f ∘ g)(x) and its domain.
 > f(g(x)) = √(x − 4)
 > Need x − 4 ≥ 0
 = √(x − 4), domain [4, ∞)
+demo: Coupon order matters
+aim: A store lets you use a $10-off coupon and a 20%-off coupon. Does the order of the two functions matter?
+set: x = 60 | Price ($) | 10 to 200 by 5
+out: pctFirst = 0.8*x - 10 | 20% off, then $10 off: g(f(x))
+out: dolFirst = 0.8*(x - 10) | $10 off, then 20% off: f(g(x))
+out: diff = dolFirst - pctFirst | Difference ($)
+plot: x, pctFirst
+step: Compare the two compositions at several prices. Is the difference always the same?
+result: Composition isn't commutative: f(g(x)) ≠ g(f(x)) in general. Taking 20% off first always saves you $2 more here, because the $10 coupon isn't shrunk by the percentage.
 term: composition = combining functions by using one function's output as another's input
 term: one-to-one function = a function where each output comes from exactly one input
 term: horizontal line test = a function is one-to-one if no horizontal line crosses its graph more than once
@@ -71,6 +80,13 @@ ex: Solve (x − 2)/(x + 1) ≥ 0.
 > Critical values: x = 2 (zero) and x = −1 (undefined)
 > Test intervals: x < −1 positive; −1 < x < 2 negative; x > 2 positive
 = (−∞, −1) ∪ [2, ∞)
+demo: Medicine in the bloodstream
+aim: After a pill is taken, the drug concentration follows the rational function C(t) = 50t/(t² + 4).
+set: t = 2 | Hours after the dose | 0 to 24 by 0.25
+out: C = 50*t/(t^2 + 4) | Concentration (mg/L)
+plot: t, C
+step: When is the concentration highest? What happens in the long run?
+result: The concentration peaks at t = 2 hours (12.5 mg/L) and then decays. Because the denominator's degree is higher, C(t) → 0: the horizontal asymptote is y = 0.
 term: slant asymptote = a diagonal asymptote when the numerator's degree is one more than the denominator's
 term: sign chart = a number line showing where an expression is positive or negative
 term: critical value = a value where an expression equals zero or is undefined
@@ -108,6 +124,15 @@ ex: How long does it take $1,000 to double at 6% compounded continuously?
 > ln 2 = 0.06t
 = t = ln 2 / 0.06 ≈ 11.6 years
 Logistic growth models populations that level off at a carrying capacity.
+demo: Cooling coffee
+aim: Coffee at 90 °C cools in a 20 °C room following Newton's law of cooling, T = 20 + 70e^(−kt).
+set: t = 10 | Time (min) | 0 to 60 by 1
+set: k = 0.05 | Cooling constant k | 0.01 to 0.15 by 0.01
+out: T = 20 + 70*exp(-k*t) | Temperature (°C)
+out: drink = ln(70/40)/k | Time to reach 60 °C (min)
+plot: t, T
+step: Solve 60 = 20 + 70e^(−kt) for t using natural logs.
+result: The temperature approaches the room temperature exponentially. Taking ln of both sides gives t = ln(70/40)/k, about 11 minutes when k = 0.05.
 term: continuous compounding = interest compounded at every instant, A = Pe^(rt)
 term: doubling time = the time it takes a growing quantity to double
 term: logistic growth = growth that slows as it approaches a maximum
@@ -149,6 +174,15 @@ ex: Evaluate arccos(−1/2).
 > Which angle in [0, π] has cosine −1/2?
 = 2π/3
 Modeling: a Ferris wheel, tides or daylight hours can be modeled by a sinusoid by finding the amplitude, midline and period from the data.
+demo: Hours of daylight
+aim: Daylight follows a sine wave through the year. Change your latitude and see the pattern.
+set: d = 172 | Day of the year | 1 to 365 by 1
+set: lat = 40 | Latitude (° N) | 0 to 60 by 1
+out: A = 4.5*sind(lat)*1.12 | Amplitude (hours)
+out: hrs = 12 + A*sin(2*pi*(d - 80)/365) | Hours of daylight
+plot: d, hrs
+step: Find the longest and shortest days. How does the amplitude change near the equator?
+result: Daylight = 12 + A sin(2π(d − 80)/365): midline 12 hours, period 365 days, and an amplitude that grows with latitude. At the equator days stay close to 12 hours all year.
 term: phase shift = the horizontal shift of a periodic function
 term: sinusoid = a graph shaped like a sine or cosine wave
 term: arcsin = the inverse sine function, with outputs between −π/2 and π/2
@@ -186,6 +220,14 @@ ex: Solve 2cos x + 1 = 0 on [0, 2π).
 key: Law of Sines: a/sin A = b/sin B = c/sin C. Law of Cosines: c² = a² + b² − 2ab cos C.
 Use the Law of Sines for AAS, ASA and SSA (watch for the ambiguous case with two possible triangles). Use the Law of Cosines for SAS and SSS.
 Area of a triangle with two sides and the included angle: Area = ½ab sin C.
+demo: Two ships leave port
+aim: Two ships leave the same port, one sailing 30 km and the other 40 km, separated by an angle. How far apart are they?
+set: C = 90 | Angle between their paths (°) | 0 to 180 by 1
+set: a = 30 | Ship A distance (km) | 5 to 60 by 5
+out: c = sqrt(a^2 + 40^2 - 2*a*40*cosd(C)) | Distance apart (km)
+plot: C, c
+step: Check the 90° case with the Pythagorean theorem. Then try 60° and 120°.
+result: The Law of Cosines c² = a² + b² − 2ab cos C works for any triangle. At 90° it becomes the Pythagorean theorem (50 km); a wider angle means a larger distance.
 term: law of sines = a/sin A = b/sin B = c/sin C
 term: law of cosines = c² = a² + b² − 2ab cos C
 term: ambiguous case = the SSA situation where zero, one or two triangles are possible
@@ -227,6 +269,16 @@ ex: Convert the polar point (4, π/3) to rectangular coordinates.
 > x = 4 cos(π/3) = 2
 > y = 4 sin(π/3) = 2√3
 = (2, 2√3)
+demo: The path of a kicked ball
+aim: A ball is kicked at a speed and angle. Eliminate the parameter t to find its height at any horizontal distance.
+set: x = 10 | Horizontal distance (m) | 0 to 40 by 0.5
+set: v = 20 | Launch speed (m/s) | 10 to 30 by 1
+set: th = 40 | Launch angle (°) | 10 to 80 by 1
+out: t = x/(v*cosd(th)) | Time to reach x (s)
+out: y = x*tand(th) - g*x^2/(2*v^2*cosd(th)^2) | Height (m)
+plot: x, y
+step: Start from x = (v cos θ)t and y = (v sin θ)t − 4.9t². Solve the first for t and substitute.
+result: Eliminating t gives y = x tan θ − gx²/(2v² cos² θ), a parabola. The parametric form also tells you when the ball is at each point.
 term: parametric equations = equations that express x and y in terms of a parameter t
 term: polar coordinates = locating a point by its distance from the origin and its angle
 term: De Moivre's theorem = a formula for raising a complex number in polar form to a power
@@ -263,6 +315,13 @@ ex: Find lim (x→4) (x² − 16)/(x − 4).
 > Factor: (x + 4)(x − 4)/(x − 4) = x + 4
 = 8
 Limits at infinity describe end behavior: for rational functions, compare degrees. A limit that grows without bound is written as ∞ (the limit does not exist as a real number).
+demo: Approaching a limit
+aim: The function f(x) = sin(x)/x is undefined at x = 0. What value does it approach?
+set: x = 1 | x (radians) | -3 to 3 by 0.01
+out: f = sin(x)/x | f(x)
+plot: x, f
+step: Move x closer and closer to 0 from both sides. What happens at exactly 0?
+result: f(0) is undefined (0/0), shown as "—", yet as x → 0 from either side f(x) → 1. A limit describes where a function is heading, not its value at the point.
 term: limit = the value a function approaches as the input approaches a number
 term: one-sided limit = the value a function approaches from one side only
 term: limit at infinity = the value a function approaches as x grows without bound
