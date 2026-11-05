@@ -122,7 +122,7 @@ const productRule: Gen = r => { const a = r.int(1, 5), n = r.int(2, 4), b = r.nz
 const tangentLine: Gen = r => { const a = r.nz(-3, 3), b = r.int(-5, 5), c = r.int(-6, 6), x0 = r.int(-3, 3), y0 = a * x0 * x0 + b * x0 + c, m = 2 * a * x0 + b, k = y0 - m * x0;
   const eq = (mm: number, kk: number) => `y = ${coef(mm, 'x') === '' ? '0' : mm === 0 ? '' : coef(mm, 'x')}${mm === 0 ? num(kk) : kk === 0 ? '' : ` ${sgn(kk)}`}`;
   return { prompt: `What is the tangent line to f(x) = ${coef(a, 'x²')} ${sgn(b)}x ${sgn(c)} at x = ${num(x0)}?`.replace(' + 0x', '').replace(' − 0x', ''), correct: eq(m, k), wrong: [eq(m, y0), eq(a * x0, k), eq(m + 1, k - x0)].filter(w => w !== eq(m, k)).concat(eq(-m, k)), explanation: `f(${num(x0)}) = ${num(y0)} and f′(x) = ${coef(2 * a, 'x')} ${sgn(b)}, so the slope is ${num(m)}. y − ${neg(y0)} = ${num(m)}(x − ${neg(x0)}) → ${eq(m, k)}.` }; };
-const critical: Gen = r => { const p = r.int(-5, 3), q = p + r.int(1, 5), a = 1; // f'(x) = 3(x-p)(x-q) for f = x^3 - 1.5(p+q)x^2 + 3pq x
+const critical: Gen = r => { const p = r.int(-5, 3), q = p + r.int(1, 5); // f'(x) = 3(x-p)(x-q) for f = x^3 - 1.5(p+q)x^2 + 3pq x
   const B = -1.5 * (p + q), C = 3 * p * q;
   if (!Number.isInteger(B)) return critical(r);
   return { prompt: `Where does f(x) = x³ ${sgn(B)}x² ${sgn(C)}x have a local maximum?`.replace(' + 0x²', '').replace(' + 0x', '').replace(' − 0x', ''), correct: `x = ${num(p)}`, wrong: [`x = ${num(q)}`, `x = ${num((p + q) / 2)}`, `x = ${num(-p)}`].filter(w => w !== `x = ${num(p)}`).concat(`x = ${num(p - 1)}`), explanation: `f′(x) = 3x² ${sgn(2 * B)}x ${sgn(C)} = 3(x ${sgn(-p)})(x ${sgn(-q)}). f′ changes from + to − at x = ${num(p)}, so that's a local max (x = ${num(q)} is a local min).` }; };
