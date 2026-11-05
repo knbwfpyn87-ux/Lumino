@@ -59,10 +59,10 @@ function Graph({ b, pts, dot, trials, showCurve }: { b: LabBlock; pts: [number, 
 export function Lab({ b, onDone }: { b: LabBlock; onDone?: () => void }) {
   const t = useTheme(); const model = useMemo(() => labModel(b), [b]);
   const [vals, setVals] = useState(() => startValues(b)); const [trials, setTrials] = useState<Record<string, number>[]>([]); const [open, setOpen] = useState(false);
-  const isLab = b.kind === 'lab'; const v = model.run(vals); const pts = useMemo(() => curve(b, model, vals, 40), [b, model, vals]);
+  const isLab = b.kind === 'lab'; const shown = b.outs.filter(o => !o.name.startsWith('_')); const v = model.run(vals); const pts = useMemo(() => curve(b, model, vals, 40), [b, model, vals]);
   const unlocked = !isLab || trials.length >= 3;
   const record = () => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); const r = { ...v }; for (const o of b.outs) r[o.name] = measure(v[o.name], b.noise); setTrials(x => [...x, r].slice(-12)); };
-  const cols = [...b.sets.map(s => ({ name: s.name, label: s.label })), ...b.outs.map(o => ({ name: o.name, label: o.label }))];
+  const cols = [...b.sets.map(s => ({ name: s.name, label: s.label })), ...shown.map(o => ({ name: o.name, label: o.label }))];
   return (
     <View style={{ borderWidth: 2, borderColor: t.accent, borderRadius: 18, padding: 14, gap: 12, backgroundColor: t.card }}>
       <T size={11} weight="900" color={t.muted} style={{ letterSpacing: 0.6 }}>{isLab ? '🧪 VIRTUAL LAB' : '📐 REAL-WORLD DEMO'}</T>
@@ -71,7 +71,7 @@ export function Lab({ b, onDone }: { b: LabBlock; onDone?: () => void }) {
       {!isLab && b.steps.length > 0 && <T size={13} weight="900" color={t.muted}>TRY THIS</T>}
       {b.steps.map((s, i) => <T key={i} size={15} color={t.muted}>{i + 1}. {s}</T>)}
       {b.sets.map(s => <Slider key={s.name} s={s} value={vals[s.name]} onChange={x => setVals({ ...vals, [s.name]: x })} />)}
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{b.outs.map(o => <View key={o.name} style={{ flexGrow: 1, flexBasis: 130, backgroundColor: t.accentSoft, borderRadius: 12, padding: 10 }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{shown.map(o => <View key={o.name} style={{ flexGrow: 1, flexBasis: 130, backgroundColor: t.accentSoft, borderRadius: 12, padding: 10 }}>
         <T size={12} weight="700" color={t.muted}>{o.label}</T><T size={20} weight="900">{fmt(v[o.name])}</T></View>)}</View>
       <Graph b={b} pts={pts} dot={isLab ? null : b.plot ? [vals[b.plot.x], v[b.plot.y]] : null} trials={b.plot ? trials.map(x => [x[b.plot!.x], x[b.plot!.y]]) : []} showCurve={!isLab || open} />
       {isLab && <View style={{ flexDirection: 'row', gap: 8 }}><Button title="⏺ Record trial" onPress={record} style={{ flex: 1 }} />{trials.length > 0 && <Button kind="ghost" title="Clear" onPress={() => setTrials([])} />}</View>}

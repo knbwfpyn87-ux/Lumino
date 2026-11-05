@@ -401,14 +401,14 @@ lab: Titrating a weak acid
 aim: Titrate 25.0 mL of 0.10 M weak acid with 0.10 M NaOH and find its pKa from the curve.
 set: Vb = 12.5 | NaOH added (mL) | 0 to 40 by 0.5
 set: pKa = 4.76 | Acid pKa | 3 to 7 by 0.01
-out: Ka = 10^(-pKa) | Ka
-out: Vt = (25 + Vb)/1000 | Total volume (L)
-out: HA = max(0.0025 - Vb*0.0001, 0)/Vt | [HA]
-out: A = min(Vb*0.0001, 0.0025)/Vt | [A⁻]
-out: H1 = (-(A + Ka) + sqrt((A + Ka)^2 + 4*Ka*HA))/2 | [H⁺] from the acid
-out: OH = max(Vb*0.0001 - 0.0025, 0)/Vt | Excess [OH⁻]
-out: OHt = (OH + sqrt(OH^2 + 4*(1e-14/Ka*A + 1e-14)))/2 | Total [OH⁻]
-out: pH = -log(max(H1, 1e-14/OHt)) | pH
+out: _Ka = 10^(-pKa) | Ka
+out: _Vt = (25 + Vb)/1000 | Total volume (L)
+out: _HA = max(0.0025 - Vb*0.0001, 0)/_Vt | [HA]
+out: _A = min(Vb*0.0001, 0.0025)/_Vt | [A⁻]
+out: _H1 = (-(_A + _Ka) + sqrt((_A + _Ka)^2 + 4*_Ka*_HA))/2 | [H⁺] from the acid
+out: _OH = max(Vb*0.0001 - 0.0025, 0)/_Vt | Excess [OH⁻]
+out: _OHt = (_OH + sqrt(_OH^2 + 4*(1e-14/_Ka*_A + 1e-14)))/2 | Total [OH⁻]
+out: pH = -log(max(_H1, 1e-14/_OHt)) | pH
 plot: Vb, pH
 step: Record the pH at 0, 6, 12.5, 20, 25 and 30 mL.
 step: Compare the pH at the half-equivalence point (12.5 mL) with the pKa.

@@ -4,7 +4,8 @@
 //   lab: Pendulum timing                 (or  demo: Phone plan costs)
 //   aim: What you're finding out.
 //   set: L = 1 | Length (m) | 0.1 to 2 by 0.1        a slider: name = start | label | min to max by step
-//   out: T = 2*pi*sqrt(L/g) | Period (s)              a result: name = formula | label   (can use earlier results)
+//   out: T = 2*pi*sqrt(L/g) | Period (s)              a result: name = formula | label   (can use earlier results;
+//                                                     names starting with _ are hidden helper steps)
 //   plot: L, T                                        graph T against slider L
 //   step: Press Record for 4 different lengths.       procedure (labs)
 //   noise: 2                                          labs only: ±% measurement error on recorded data

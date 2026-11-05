@@ -570,8 +570,8 @@ lab: Titration of HCl with NaOH
 aim: Add 0.10 M NaOH from a burette to 25.0 mL of 0.10 M HCl and track the pH.
 set: Vb = 10 | NaOH added (mL) | 0 to 50 by 0.5
 set: Cb = 0.1 | NaOH concentration (M) | 0.05 to 0.2 by 0.01
-out: x = (0.0025 - Cb*Vb/1000)/((25 + Vb)/1000) | Excess acid (mol/L)
-out: pH = -log((x + sqrt(x^2 + 4e-14))/2) | pH
+out: _x = (0.0025 - Cb*Vb/1000)/((25 + Vb)/1000) | Excess acid (mol/L)
+out: pH = -log((_x + sqrt(_x^2 + 4e-14))/2) | pH
 plot: Vb, pH
 step: Record the pH every 5 mL, then add drops near 25 mL.
 step: Find the equivalence point where the pH jumps.

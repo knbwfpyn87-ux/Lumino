@@ -31,7 +31,7 @@ export default function Lab({ b, onDone }: { b: LabBlock; onDone?: () => void })
   const [vals, setVals] = useState(() => startValues(b));
   const [trials, setTrials] = useState<Record<string, number>[]>([]);
   const [open, setOpen] = useState(false);
-  const isLab = b.kind === 'lab'; const v = model.run(vals);
+  const isLab = b.kind === 'lab'; const shown = b.outs.filter(o => !o.name.startsWith('_')); const v = model.run(vals);
   const pts = useMemo(() => curve(b, model, vals), [b, model, vals]);
   const unlocked = isLab ? trials.length >= 3 : true;
   const reveal = () => { setOpen(true); onDone?.(); };
@@ -53,14 +53,14 @@ export default function Lab({ b, onDone }: { b: LabBlock; onDone?: () => void })
             <label key={s.name} className="labslider"><span>{s.label}<b>{fmt(vals[s.name])}</b></span>
               <input type="range" min={s.min} max={s.max} step={s.step} value={vals[s.name]} onChange={e => setVals({ ...vals, [s.name]: snap(s, Number(e.target.value)) })} /></label>
           ))}
-          <div className="labouts">{b.outs.map(o => <div key={o.name} className="labout"><span>{o.label}</span><b>{fmt(v[o.name])}</b></div>)}</div>
+          <div className="labouts">{shown.map(o => <div key={o.name} className="labout"><span>{o.label}</span><b>{fmt(v[o.name])}</b></div>)}</div>
           {isLab && <div className="row"><button onClick={record}>⏺ Record trial</button>{trials.length > 0 && <button className="ghost" onClick={() => setTrials([])}>Clear</button>}</div>}
         </div>
         <Graph b={b} pts={pts} dot={isLab ? null : b.plot ? [vals[b.plot.x], v[b.plot.y]] : null} trials={plotTrials} showCurve={!isLab || open} />
       </div>
       {isLab && trials.length > 0 && <div className="labtable"><table>
-        <thead><tr><th>Trial</th>{b.sets.map(s => <th key={s.name}>{s.label}</th>)}{b.outs.map(o => <th key={o.name}>{o.label}</th>)}</tr></thead>
-        <tbody>{trials.map((t, i) => <tr key={i}><td>{i + 1}</td>{b.sets.map(s => <td key={s.name}>{fmt(t[s.name])}</td>)}{b.outs.map(o => <td key={o.name}>{fmt(t[o.name])}</td>)}</tr>)}</tbody>
+        <thead><tr><th>Trial</th>{b.sets.map(s => <th key={s.name}>{s.label}</th>)}{shown.map(o => <th key={o.name}>{o.label}</th>)}</tr></thead>
+        <tbody>{trials.map((t, i) => <tr key={i}><td>{i + 1}</td>{b.sets.map(s => <td key={s.name}>{fmt(t[s.name])}</td>)}{shown.map(o => <td key={o.name}>{fmt(t[o.name])}</td>)}</tr>)}</tbody>
       </table>{b.noise > 0 && <p className="muted small">Measurements include about ±{b.noise}% error, like a real lab.</p>}</div>}
       {open ? <div className="labresult"><b>{isLab ? '📋 Conclusion: ' : '💡 Takeaway: '}</b>{b.result}</div>
         : <button className={unlocked ? '' : 'ghost'} disabled={!unlocked} onClick={reveal}>
