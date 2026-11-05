@@ -1,9 +1,9 @@
 // Mr. Lumino's voice on iPhone.
-// 1) ElevenLabs clips cached in Supabase storage (made once by the tts edge function, then reused by everyone).
+// 1) Pre-recorded lines published with the website, or ElevenLabs clips cached in Supabase storage (made once by the tts edge function, then reused by everyone).
 // 2) Fallback: Apple's built-in speech (free, offline), so he always talks.
 import * as Speech from 'expo-speech';
 import { createAudioPlayer, setAudioModeAsync, type AudioPlayer } from 'expo-audio';
-import { speakable, voiceKey, CLOUD_MAX, type WordTimes } from '@shared/voicekey';
+import { speakable, voiceKey, CLOUD_MAX, VOICE_VERSION, type WordTimes, type VoiceBundle } from '@shared/voicekey';
 import { supabase } from './supabase';
 import { emit, on } from './events';
 export { speakable };
@@ -19,7 +19,14 @@ const CLOUD = process.env.EXPO_PUBLIC_CLOUD_VOICE === 'on' && !!supabase;
 const STORE = `${process.env.EXPO_PUBLIC_SUPABASE_URL ?? ''}/storage/v1/object/public/voice/`;
 type Clip = { url: string; times: WordTimes };
 const clips = new Map<string, Promise<Clip | null>>();
+/** Pre-recorded lines published with the website (public/voice). Override with EXPO_PUBLIC_VOICE_URL if the site moves. */
+const BUNDLE = process.env.EXPO_PUBLIC_VOICE_URL ?? `${(process.env.EXPO_PUBLIC_SITE_URL ?? '').replace(/\/$/, '')}/site/voice/`;
+let bundled: Promise<VoiceBundle | null> | null = null;
+const bundledLines = (): Promise<VoiceBundle | null> => (bundled ??= fetch(`${BUNDLE}manifest.json`).then(r => (r.ok ? r.json() : null)).catch(() => null));
 async function lookup(spoken: string): Promise<Clip | null> {
+  const b = await bundledLines();
+  if (b && (b.version === VOICE_VERSION || !CLOUD)) { const k = voiceKey(spoken, b.version); if (b.lines[k]) return { url: `${BUNDLE}${k}.mp3`, times: b.lines[k] }; }
+  if (!CLOUD) return null;
   const key = voiceKey(spoken);
   const hit = await fetch(`${STORE}${key}.json`).then(r => (r.ok ? r.json() as Promise<WordTimes> : null)).catch(() => null);
   if (hit) return { url: `${STORE}${key}.mp3`, times: hit };
@@ -72,7 +79,7 @@ export async function speak(text: string, h: Hooks) {
   const spoken = speakable(text);
   if (!voiceOn() || !spoken) return false;
   stopSpeaking(); const id = current;
-  const clip = CLOUD && spoken.length <= CLOUD_MAX ? await findClip(spoken) : null;
+  const clip = spoken.length <= CLOUD_MAX ? await findClip(spoken) : null;
   if (id !== current) return true;
   if (clip) { try { await playClip(id, clip, h); return true; } catch { /* fall through to device voice */ } }
   await device(id, spoken, h); return true;

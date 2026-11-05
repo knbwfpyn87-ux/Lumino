@@ -9,9 +9,9 @@
 //   say <voice_id> "<text>"  Speak one line to videos/voice-samples/eleven/say.mp3
 //   prebake                  Pre-record every fixed line (src/lib/lines.ts) with ELEVENLABS_VOICE_ID into public/voice/ (ships with the site).
 //                            If SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set, also uploads them to the "voice" bucket for the iPhone app.
-import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, existsSync, readFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
-import { speakable, voiceKey, VOICE_SETTINGS, VOICE_MODEL, type WordTimes } from '../../src/lib/voicekey';
+import { speakable, voiceKey, VOICE_SETTINGS, VOICE_MODEL, VOICE_VERSION, type WordTimes, type VoiceBundle } from '../../src/lib/voicekey';
 import { fixedLines } from '../../src/lib/lines';
 
 const API = 'https://api.elevenlabs.io';
@@ -90,7 +90,10 @@ if (cmd === 'find') {
 } else if (cmd === 'prebake') {
   const voice = process.env.ELEVENLABS_VOICE_ID; if (!voice) { console.error('Set ELEVENLABS_VOICE_ID (Mr. Lumino\'s voice ID) first.'); process.exit(1); }
   const dir = 'public/voice'; mkdirSync(dir, { recursive: true });
-  const mf = join(dir, 'manifest.json'); const manifest: Record<string, WordTimes> = existsSync(mf) ? JSON.parse(readFileSync(mf, 'utf8')) : {};
+  const mf = join(dir, 'manifest.json'); let bundle: VoiceBundle = existsSync(mf) ? JSON.parse(readFileSync(mf, 'utf8')) : { version: VOICE_VERSION, lines: {} };
+  // Replacing the temporary voice: start a fresh set (old temp files are removed below).
+  if (bundle.version !== VOICE_VERSION) { for (const k of Object.keys(bundle.lines)) rmSync(join(dir, `${k}.mp3`), { force: true }); bundle = { version: VOICE_VERSION, voice: 'elevenlabs', lines: {} }; }
+  const manifest = bundle.lines;
   const sb = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY ? { url: process.env.SUPABASE_URL, key: process.env.SUPABASE_SERVICE_ROLE_KEY } : null;
   const upload = (name: string, data: Buffer | string, type: string) => sb && fetch(`${sb.url}/storage/v1/object/voice/${name}`, { method: 'POST', headers: { Authorization: `Bearer ${sb.key}`, 'Content-Type': type, 'x-upsert': 'true', 'cache-control': 'max-age=31536000' }, body: data });
   const lines = fixedLines(); let made = 0, chars = 0;
@@ -99,7 +102,7 @@ if (cmd === 'find') {
     const { mp3, times } = await tts(voice, s);
     writeFileSync(join(dir, `${k}.mp3`), mp3); manifest[k] = times; made++; chars += s.length;
     await upload(`${k}.mp3`, mp3, 'audio/mpeg'); await upload(`${k}.json`, JSON.stringify(times), 'application/json');
-    writeFileSync(mf, JSON.stringify(manifest)); process.stdout.write(`\r${made} new lines (${chars} characters)`);
+    writeFileSync(mf, JSON.stringify(bundle)); process.stdout.write(`\r${made} new lines (${chars} characters)`);
   }
   console.log(`\nDone: ${Object.keys(manifest).length} of ${lines.length} lines recorded in ${dir}.`);
 } else {

@@ -34,3 +34,5 @@ export const voiceKey = (spoken: string, version = VOICE_VERSION) => hash128(`${
 
 /** Word timings saved next to each clip: w = [charIndex, startSeconds][], d = duration in seconds. */
 export type WordTimes = { w: [number, number][]; d: number };
+/** public/voice/manifest.json: pre-recorded lines. A different `version` than VOICE_VERSION means a temporary voice that the cloud voice replaces once it's on. */
+export type VoiceBundle = { version: string; voice?: string; lines: Record<string, WordTimes> };

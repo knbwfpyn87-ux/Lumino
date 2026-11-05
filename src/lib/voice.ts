@@ -2,7 +2,7 @@
 // 1) ElevenLabs clips (pre-made lines bundled with the site, or cached in Supabase storage / made by the tts function).
 // 2) Fallback: the device's built-in speech (free, offline), so he always talks even without the cloud voice.
 import { supabase } from './supabase';
-import { speakable, voiceKey, CLOUD_MAX, type WordTimes } from './voicekey';
+import { speakable, voiceKey, CLOUD_MAX, VOICE_VERSION, type WordTimes, type VoiceBundle } from './voicekey';
 export { speakable };
 
 const KEY = 'lumino:voice';
@@ -20,13 +20,15 @@ const CLOUD = import.meta.env.VITE_CLOUD_VOICE === 'on' && !!supabase;
 const STORE = `${import.meta.env.VITE_SUPABASE_URL ?? ''}/storage/v1/object/public/voice/`;
 type Clip = { url: string; times: WordTimes };
 const clips = new Map<string, Promise<Clip | null>>();
-let bundled: Promise<Record<string, WordTimes>> | null = null;
-/** Pre-made lines that ship with the site (public/voice, written by scripts/voice/eleven.mjs prebake). */
-const bundledLines = (): Promise<Record<string, WordTimes>> => (bundled ??= fetch('./voice/manifest.json').then(r => (r.ok ? r.json() : {})).catch(() => ({})));
+let bundled: Promise<VoiceBundle | null> | null = null;
+/** Pre-recorded lines that ship with the site (public/voice). */
+const bundledLines = (): Promise<VoiceBundle | null> => (bundled ??= fetch('./voice/manifest.json').then(r => (r.ok ? r.json() : null)).catch(() => null));
 
 async function lookup(spoken: string, generate = true): Promise<Clip | null> {
+  const b = await bundledLines();
+  // A temporary voice (different version) is only used while the ElevenLabs voice is off, so the two never mix.
+  if (b && (b.version === VOICE_VERSION || !CLOUD)) { const k = voiceKey(spoken, b.version); if (b.lines[k]) return { url: `./voice/${k}.mp3`, times: b.lines[k] }; }
   const key = voiceKey(spoken);
-  const pre = (await bundledLines())[key]; if (pre) return { url: `./voice/${key}.mp3`, times: pre };
   if (!CLOUD) return null;
   const hit = await fetch(`${STORE}${key}.json`).then(r => (r.ok ? r.json() as Promise<WordTimes> : null)).catch(() => null);
   if (hit) return { url: `${STORE}${key}.mp3`, times: hit };
