@@ -7,6 +7,7 @@ import { usePlan } from '@/lib/auth';
 import { ALL_TESTS, tierOf, canAccess } from '@/lib/tests';
 import { PLAN_INFO } from '@shared/plans';
 import UIcon from '@/components/UIcon';
+import { AI_ENABLED } from '@/lib/features';
 
 const FILTERS = ['All', 'SAT', 'AP', 'Math', 'English'];
 
@@ -23,7 +24,7 @@ export default function Practice() {
       <View style={{ flexDirection: 'row', gap: 10 }}>
         <Card onPress={() => router.push('/cards')} style={{ flex: 1, alignItems: 'center', gap: 8, backgroundColor: t.bg === '#0f111a' ? '#1c2a40' : '#e3f2ff' }}><UIcon name="tool-flashcards" size={38} ink keep /><T weight="800">Flashcards</T></Card>
         <Card onPress={() => router.push(`/quiz/sprint~${Date.now() % 1e9}`)} style={{ flex: 1, alignItems: 'center', gap: 8, backgroundColor: t.bg === '#0f111a' ? '#2d2716' : '#fff3d1' }}><UIcon name="tool-timer" size={38} ink keep /><T weight="800">Sprint</T></Card>
-        <Card onPress={() => router.push('/tutor')} style={{ flex: 1, alignItems: 'center', gap: 8, backgroundColor: t.bg === '#0f111a' ? '#25213d' : '#ebe8ff' }}><UIcon name="tool-ai" size={38} ink keep /><T weight="800">AI Help</T></Card>
+        {AI_ENABLED &&         <Card onPress={() => router.push('/tutor')} style={{ flex: 1, alignItems: 'center', gap: 8, backgroundColor: t.bg === '#0f111a' ? '#25213d' : '#ebe8ff' }}><UIcon name="tool-ai" size={38} ink keep /><T weight="800">AI Help</T></Card>}
       </View>
       <TextInput placeholder="Search tests" placeholderTextColor={t.muted} value={q} onChangeText={setQ} style={{ backgroundColor: t.card, color: t.text, borderRadius: 14, padding: 14, fontSize: 16, borderWidth: 1, borderColor: t.line }} />
       <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>

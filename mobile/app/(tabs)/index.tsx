@@ -9,6 +9,7 @@ import { useProgress, levelOf, lastWeek, getMyClasses } from '@/lib/progress';
 import { on } from '@/lib/events';
 import { nextLevel, COURSES } from '@/lib/tests';
 import UIcon from '@/components/UIcon';
+import { AI_ENABLED } from '@/lib/features';
 import { Image } from 'react-native';
 import { UI_SRC } from '@/lib/ui-assets';
 
@@ -70,10 +71,10 @@ export default function Today() {
         {mine.map(id => { const c = COURSES.find(x => x.id === id); return c && <Card key={id} onPress={() => router.push(`/class/${id}`)} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, padding: 14 }}><View style={{ width: 34, height: 26, borderRadius: 7, backgroundColor: ['#7cc8ff', '#ff9aa2', '#c4b5fd', '#ffd666'][mine.indexOf(id) % 4] }} /><T weight="700" style={{ flex: 1 }}>{c.name}</T><Icon ios="chevron.right" size={16} color={t.muted} /></Card>; })}
       </View>}
 
-      <Card onPress={() => router.push('/tutor')} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+      {AI_ENABLED &&       <Card onPress={() => router.push('/tutor')} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
         <UIcon name="icon-ai-yellow" size={30} ink keep /><T weight="800" size={17} style={{ flex: 1 }}>AI Tutor</T>
         <T color={t.muted} size={14}>Ask a question…</T><UIcon name="btn-send" size={34} />
-      </Card>
+      </Card>}
     </Screen>
   );
 }

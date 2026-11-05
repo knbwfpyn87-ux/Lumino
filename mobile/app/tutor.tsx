@@ -9,10 +9,17 @@ import { useTheme } from '@/lib/theme';
 import { usePlan } from '@/lib/auth';
 import { askTutor } from '@/lib/api';
 import { ASSISTANTS, canAccess, PLAN_INFO } from '@shared/plans';
+import { AI_ENABLED } from '@/lib/features';
+import { Redirect } from 'expo-router';
 
 type Turn = { role: 'user' | 'assistant'; content: string };
 
 export default function Tutor() {
+  if (!AI_ENABLED) return <Redirect href="/" />;
+  return <TutorScreen />;
+}
+
+function TutorScreen() {
   const t = useTheme(); const ins = useSafeAreaInsets(); const plan = usePlan();
   const [who, setWho] = useState('study-buddy'); const [turns, setTurns] = useState<Turn[]>([]); const [text, setText] = useState(''); const [busy, setBusy] = useState(false); const [err, setErr] = useState('');
   const scroll = useRef<React.ComponentRef<typeof ScrollView>>(null);
