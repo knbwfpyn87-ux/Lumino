@@ -1,14 +1,14 @@
-# Builds Lumino and publishes it to GitHub Pages on every push to main.
-# Repo Settings -> Pages -> Source: "GitHub Actions".
-# Repo Settings -> Secrets and variables -> Actions: add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.
+# Builds Lumino and publishes the finished website to the `gh-pages` branch on every push to main.
+# One-time setup: Repo Settings -> Pages -> Source: "Deploy from a branch" -> Branch: gh-pages, folder: / (root).
+# Optional: Settings -> Secrets and variables -> Actions: VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, VITE_LIVEKIT_URL.
 name: Deploy
 on:
   push: { branches: [main] }
   workflow_dispatch:
-permissions: { contents: read, pages: write, id-token: write }
+permissions: { contents: write }
 concurrency: { group: pages, cancel-in-progress: true }
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,12 +22,13 @@ jobs:
           VITE_LIVEKIT_URL: ${{ secrets.VITE_LIVEKIT_URL }}
           # AI stays hidden until launch: add a repository variable VITE_ENABLE_AI = true to turn it on
           VITE_ENABLE_AI: ${{ vars.VITE_ENABLE_AI }}
-      - uses: actions/upload-pages-artifact@v3
-        with: { path: dist }
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: { name: github-pages, url: '${{ steps.d.outputs.page_url }}' }
-    steps:
-      - id: d
-        uses: actions/deploy-pages@v4
+      - name: Publish dist/ to the gh-pages branch
+        run: |
+          cd dist
+          touch .nojekyll                      # serve files as-is (no Jekyll processing)
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Publish ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages

@@ -17,7 +17,7 @@ Without Supabase keys the app runs in **demo mode** (everything saved in the bro
 4. **Locally:** copy `.env.example` to `.env` and fill in the two keys.
 5. **Auth settings:** Authentication → URL Configuration → set Site URL to your live URL (e.g. `https://<you>.github.io/<repo>/`) and add `http://localhost:5173` to Redirect URLs.
 6. **Optional Google sign-in:** Authentication → Providers → Google (needs a Google Cloud OAuth client).
-7. **Deploy on GitHub Pages:** push to `main`, then in the repo: Settings → Pages → Source: GitHub Actions; Settings → Secrets → Actions → add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Each push redeploys.
+7. **Deploy on GitHub Pages:** push to `main`, then in the repo: Settings → Pages → Source: Deploy from a branch → **gh-pages** / (root); Settings → Secrets → Actions → add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Each push redeploys.
 
 The `anon` key is safe in the browser; access is enforced by row-level security in the SQL file.
 
