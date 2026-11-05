@@ -7,8 +7,9 @@ export function setVoiceOn(on: boolean) { try { localStorage.setItem(KEY, on ? '
 export function onVoiceChange(f: Listener) { subs.add(f); return () => { subs.delete(f); }; }
 
 // Prefer warm, natural-sounding English voices that ship with common devices.
-// Brighter, lighter voices first: they sound cuter when pitched up. Deeper voices are a last resort.
-const PREFERRED = [/Samantha/i, /Ava/i, /Allison/i, /Nicky/i, /Google US English/i, /Ana.*Natural/i, /Jenny.*Natural/i, /Aria.*Natural/i, /Zira/i, /Karen/i, /Natural/i, /Google UK English Female/i];
+// Most natural-sounding voices first (neural / premium), then the best standard ones.
+// Speaking near natural pitch keeps it warm; heavy pitch-shifting is what makes speech sound robotic.
+const PREFERRED = [/Natural/i, /\(Premium\)/i, /\(Enhanced\)/i, /Google US English/i, /Samantha/i, /Ava/i, /Allison/i, /Jenny/i, /Aria/i, /Karen/i, /Google UK English Female/i];
 let chosen: SpeechSynthesisVoice | null = null;
 function pickVoice(): SpeechSynthesisVoice | null {
   if (!voiceSupported) return null; if (chosen) return chosen;
@@ -33,7 +34,7 @@ export function speak(text: string, { onWord, onEnd, onStart }: { onWord?: (i: n
   if (!voiceSupported || !voiceOn() || !text.trim()) return false;
   const id = ++current; speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(speakable(text)); const v = pickVoice(); if (v) u.voice = v;
-  u.lang = v?.lang ?? 'en-US'; u.rate = 1.05; u.pitch = 1.45; // small, bright and bubbly: he's a lightbulb
+  u.lang = v?.lang ?? 'en-US'; u.rate = 1.0; u.pitch = 1.1; // a touch bright, but natural
   u.onstart = () => id === current && onStart?.();
   u.onboundary = e => { if (id === current && e.name !== 'sentence') onWord?.(e.charIndex); };
   u.onend = u.onerror = () => { if (id === current) onEnd?.(); };

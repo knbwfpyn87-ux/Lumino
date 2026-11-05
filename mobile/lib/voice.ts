@@ -17,7 +17,7 @@ export const speakable = (t: string) => t.replace(/[*_`#>]+/g, '').replace(/\p{E
 export async function speak(text: string, h: { onStart?: () => void; onWord?: (i: number) => void; onEnd?: () => void }) {
   if (!voiceOn() || !text.trim()) return false;
   Speech.stop(); const voice = await pick();
-  Speech.speak(speakable(text), { voice, language: 'en-US', pitch: 1.45, rate: 1.03, onStart: h.onStart, onDone: h.onEnd, onStopped: h.onEnd, onError: h.onEnd,
+  Speech.speak(speakable(text), { voice, language: 'en-US', pitch: 1.1, rate: 0.98, onStart: h.onStart, onDone: h.onEnd, onStopped: h.onEnd, onError: h.onEnd,
     onBoundary: (e: { charIndex: number }) => h.onWord?.(e.charIndex) } as Speech.SpeechOptions);
   return true;
 }
