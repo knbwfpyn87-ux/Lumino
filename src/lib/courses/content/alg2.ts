@@ -345,7 +345,13 @@ ex: Find the 30th term of 7, 11, 15, 19, …
 > a₁ = 7, d = 4
 > a₃₀ = 7 + 29 × 4
 = 123
+An arithmetic sequence is a linear function whose inputs are 1, 2, 3, …: its graph is a set of points on a line with slope d.
 The sum of the first n terms of an arithmetic series is Sₙ = n(a₁ + aₙ) ÷ 2. Pair up the first and last terms!
+ex: Find the sum of the first 20 terms of 5, 8, 11, …
+> a₂₀ = 5 + 19 × 3 = 62
+> S₂₀ = 20(5 + 62) ÷ 2
+= 670
+tip: To find d from two terms that aren't next to each other, divide the change in value by the number of steps: if a₃ = 10 and a₈ = 35, d = 25 ÷ 5 = 5.
 term: arithmetic sequence = a sequence with a constant difference between consecutive terms
 term: common difference = the amount added to get each next term of an arithmetic sequence
 term: series = the sum of the terms of a sequence

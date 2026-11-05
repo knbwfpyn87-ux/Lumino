@@ -100,7 +100,8 @@ export function lintCourse(c: CourseSrc, knownGens: Set<string>): string[] {
     if (!u.summary) out.push(`${where(ui)}: missing summary`);
     u.lessons.forEach((l, li) => {
       if (!l.say) out.push(`${where(ui, li)}: missing say:`);
-      if (l.blocks.length < 3) out.push(`${where(ui, li)}: teaching is too short (${l.blocks.length} blocks)`);
+      const words = l.blocks.map(b => b.t === 'list' ? b.items.join(' ') : b.t === 'ex' ? [b.problem, ...b.steps, b.answer].join(' ') : b.text).join(' ').split(/\s+/).length;
+      if (l.blocks.length < 2 || words < 70) out.push(`${where(ui, li)}: teaching is too short (${words} words)`);
       if (l.checks.length < 2) out.push(`${where(ui, li)}: needs at least 2 q: checks`);
       l.checks.forEach((q, qi) => { if (!q.why) out.push(`${where(ui, li)} q${qi + 1}: missing why:`); });
       l.blocks.forEach(b => { if (b.t === 'ex' && (!b.steps.length || !b.answer)) out.push(`${where(ui, li)}: worked example needs > steps and = answer`); });
