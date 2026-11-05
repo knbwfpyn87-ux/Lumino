@@ -3,6 +3,7 @@ import type { LessonText } from '../types';
 export const LESSON_TEXT: Record<string, () => Promise<{ default: LessonText[][] }>> = {
   'alg1': () => import('./alg1.gen'),
   'alg2': () => import('./alg2.gen'),
+  'ap-bio': () => import('./ap-bio.gen'),
   'ap-csa': () => import('./ap-csa.gen'),
   'bio': () => import('./bio.gen'),
   'chem': () => import('./chem.gen'),
