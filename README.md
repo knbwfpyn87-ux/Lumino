@@ -54,6 +54,26 @@ Plans: **Basic** (free) · **Premium** $1.99/mo · **Premium+** $3.99/mo.
 
 **AI cost guardrails:** Premium 30 messages/day, Premium+ 150/day (an AI upload counts as 5). Assistants run `claude-opus-5-5` at low effort with a 2,000-token reply cap. Watch your Anthropic usage page the first weeks and lower limits in `supabase/functions/_shared/common.ts` if needed.
 
+## Google Classroom sync
+
+Students can connect Google Classroom so their assignments (title, class, due date, link, turned-in status) appear in **Upcoming Assignments** and stay up to date: the site syncs when it opens, every 30 minutes, when the tab comes back into focus, and on **Sync now**. Access is read-only. Your own manually added assignments are never changed.
+
+1. **Google Cloud:** in the same project as your Google sign-in OAuth client, enable the **Google Classroom API**. On the OAuth consent screen, add these scopes:
+   - `https://www.googleapis.com/auth/classroom.courses.readonly`
+   - `https://www.googleapis.com/auth/classroom.coursework.me.readonly`
+
+   These are "sensitive" scopes. Up to 100 test users can use them while the app is in Testing; for everyone, submit the app for Google verification.
+2. **Supabase:** make sure Authentication → Providers → Google uses that client. Turn on **Authentication → Settings → Allow manual linking**, so students who signed up with email can link Google.
+3. **Database:** run `supabase/migrations/005_google_classroom.sql`. It stores each student's refresh token in a table browsers can't read.
+4. **Edge function:**
+
+       supabase secrets set GOOGLE_CLIENT_ID=... GOOGLE_CLIENT_SECRET=...
+       supabase functions deploy google-classroom
+
+5. **Turn on the button:** add `VITE_ENABLE_CLASSROOM=true` to the site's build environment (GitHub repository variables / your hosting settings) and redeploy.
+
+School Google accounts are managed by the school, and some schools block third-party apps. If students see "access blocked," the school's Google Workspace admin needs to allow Lumino (Admin console → Security → API controls).
+
 ## Question bank checks
 ```bash
 npm run check:bank          # structure + recomputes math answers + all course levels

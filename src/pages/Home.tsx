@@ -13,6 +13,7 @@ import { UI } from '../lib/ui';
 import Brand from '../components/Brand';
 import { AI_ENABLED } from '../lib/features';
 import DailyPlay from '../components/DailyPlay';
+import ClassroomConnect from '../components/ClassroomConnect';
 
 
 const greet = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
@@ -97,9 +98,10 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
 
             <div className="panel">
               <div className="panelhead"><h3><UIcon name="icon-calendar" size={30} ink /> Upcoming Assignments</h3><button className="link" onClick={() => setAdding(!adding)}>{adding ? 'Cancel' : <>Add <Icon name="plus" size={14} /></>}</button></div>
+              <ClassroomConnect />
               {adding && <div className="row"><input placeholder="e.g. History essay" value={ut} onChange={e => setUt(e.target.value)} style={{ flex: 2 }} /><input type="date" value={ud} onChange={e => setUd(e.target.value)} style={{ flex: 1 }} /><button onClick={addUp}>Add</button></div>}
-              {pending.length ? <div className="uplist">{pending.slice(0, 3).map(u => { const days = Math.ceil((new Date(u.due + 'T23:59').getTime() - Date.now()) / 864e5);
-                  return <label key={u.id} className="uprow"><input type="checkbox" checked={u.done} onChange={() => toggleUp(u.id)} /><span>{u.title}</span><span className={'when' + (days <= 1 ? ' soon' : '')}>{days < 0 ? 'Overdue' : days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : new Date(u.due + 'T12:00').toLocaleDateString(undefined, { weekday: 'short' })}</span></label>; })}</div>
+              {pending.length ? <div className="uplist">{pending.slice(0, 5).map(u => { const days = Math.ceil((new Date(u.due + 'T23:59').getTime() - Date.now()) / 864e5);
+                  return <label key={u.id} className="uprow"><input type="checkbox" checked={u.done} onChange={() => toggleUp(u.id)} /><span>{u.source === 'classroom' && <span title={u.course ? `Google Classroom · ${u.course}` : 'Google Classroom'}>🏫 </span>}{u.link ? <a href={u.link} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}>{u.title}</a> : u.title}{u.course && <span className="muted small"> · {u.course}</span>}</span><span className={'when' + (days <= 1 ? ' soon' : '')}>{days < 0 ? 'Overdue' : days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : new Date(u.due + 'T12:00').toLocaleDateString(undefined, days < 7 ? { weekday: 'short' } : { month: 'short', day: 'numeric' })}</span></label>; })}{pending.length > 5 && <p className="muted small">+{pending.length - 5} more</p>}</div>
                 : !adding && <p className="muted small">Nothing due. Add an assignment or test to stay on track.</p>}
             </div>
           </div>

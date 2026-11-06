@@ -25,6 +25,8 @@ jobs:
           VITE_ENABLE_AI: ${{ vars.VITE_ENABLE_AI }}
           # Mr. Lumino's ElevenLabs voice: add a repository variable VITE_CLOUD_VOICE = on after the tts function is deployed
           VITE_CLOUD_VOICE: ${{ vars.VITE_CLOUD_VOICE }}
+          # Google Classroom sync: add a repository variable VITE_ENABLE_CLASSROOM = true after the google-classroom function is deployed
+          VITE_ENABLE_CLASSROOM: ${{ vars.VITE_ENABLE_CLASSROOM }}
       - name: Publish dist/ to the gh-pages branch
         run: |
           cd dist

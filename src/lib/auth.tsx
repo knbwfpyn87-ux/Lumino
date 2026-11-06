@@ -4,6 +4,7 @@ import { supabase } from './supabase';
 import { db } from './store';
 
 import type { Plan } from './plans';
+import { finishClassroomConnect, startClassroomAutoSync } from './classroom';
 export type Profile = { id: string; username: string; role: 'student' | 'teacher'; school_level: 'high_school' | 'college'; plan: Plan; plan_renews_at: string | null };
 type Ctx = { session: Session | null; profile: Profile | null; loading: boolean; refresh: () => Promise<void>; signOut: () => Promise<void> };
 const AuthCtx = createContext<Ctx>(null!);
@@ -25,8 +26,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!supabase) return;
     supabase.auth.getSession().then(async ({ data }) => { setSession(data.session); await loadProfile(data.session); setLoading(false); });
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { setSession(s); loadProfile(s); });
-    return () => sub.subscription.unsubscribe();
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => { setSession(s); loadProfile(s); finishClassroomConnect(s); });
+    const stopSync = startClassroomAutoSync();
+    return () => { sub.subscription.unsubscribe(); stopSync(); };
   }, []);
 
   return <AuthCtx.Provider value={{ session, profile, loading,

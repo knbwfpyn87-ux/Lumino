@@ -184,7 +184,7 @@ export async function getCallToken(groupId: string): Promise<{ token: string; ur
 
 // ---------- Billing & AI ----------
 const returnUrl = () => window.location.origin + window.location.pathname;
-async function invoke<T>(fn: string, body: Record<string, unknown>): Promise<T> {
+export async function invoke<T>(fn: string, body: Record<string, unknown>): Promise<T> {
   if (!supabase) throw new Error('This needs the live version of Lumino.');
   const { data, error } = await supabase.functions.invoke(fn, { body });
   if (error) {

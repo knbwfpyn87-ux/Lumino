@@ -709,3 +709,4 @@ button.choice.faded { opacity:.55; }
 @keyframes ouch { 0%,100% { transform:none; } 25% { transform:translateX(-10px) rotate(-8deg); filter:brightness(1.6); } 60% { transform:translateX(8px) rotate(6deg); } }
 .bosshp { width:min(320px, 80%); height:14px; border-radius:99px; background:var(--line); overflow:hidden; } .bosshp i { display:block; height:100%; background:linear-gradient(90deg,#ef4444,#f97316); transition:width .35s; }
 .hearts { font-size:1.3rem; letter-spacing:2px; } .bossend { text-align:center; }
+.gcconnect { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:-4px 0 8px; } .gcconnect .bad { color:var(--bad); }
