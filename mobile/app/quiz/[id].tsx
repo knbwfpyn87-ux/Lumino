@@ -71,7 +71,7 @@ export default function Quiz() {
         <View style={{ flex: 1 }}><Bar pct={((i + (picked !== null ? 1 : 0)) / qs.length) * 100} height={12} /></View>
         {combo >= 2 ? <T weight="900" color={t.accent}>🔥{combo}</T> : <T color={t.muted}>{i + 1}/{qs.length}</T>}
         {desmos &&
-          <Pressable accessibilityLabel="Open the Desmos calculator" onPress={openDesmos} hitSlop={10}><T size={20}>📈</T></Pressable>}
+          <Pressable accessibilityLabel="Open the graphing calculator" onPress={() => openDesmos()} hitSlop={10}><T size={20}>📈</T></Pressable>}
       </View>
       <ScrollView contentContainerStyle={{ padding: 18, gap: 12, paddingBottom: 140 }}>
         <T size={13} color={t.muted}>{test.title}</T>

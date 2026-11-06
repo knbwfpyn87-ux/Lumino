@@ -28,19 +28,23 @@ function erf(x: number) { // Abramowitz–Stegun 7.1.26
   return s * (1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x));
 }
 const D = Math.PI / 180;
-const FUNCS: Record<string, (...a: number[]) => number> = {
+export const FUNCS: Record<string, (...a: number[]) => number> = {
   sqrt: Math.sqrt, abs: Math.abs, exp: Math.exp, ln: Math.log, log: Math.log10, log2: Math.log2,
   sin: Math.sin, cos: Math.cos, tan: Math.tan, asin: Math.asin, acos: Math.acos, atan: Math.atan,
   sind: x => Math.sin(x * D), cosd: x => Math.cos(x * D), tand: x => Math.tan(x * D), asind: x => Math.asin(x) / D, acosd: x => Math.acos(x) / D, atand: x => Math.atan(x) / D,
   sinh: Math.sinh, cosh: Math.cosh, tanh: Math.tanh,
   min: Math.min, max: Math.max, round: Math.round, floor: Math.floor, ceil: Math.ceil, sign: Math.sign,
   fact, choose: (n, k) => fact(n) / (fact(k) * fact(n - k)), normcdf: z => 0.5 * (1 + erf(z / Math.SQRT2)), normpdf: z => Math.exp(-z * z / 2) / Math.sqrt(2 * Math.PI),
-  if: (c, a, b) => (c > 0 ? a : b), mod: (a, b) => ((a % b) + b) % b,
+  if: (c, a, b) => (c > 0 ? a : b),
+  mean: (...a) => a.reduce((s, x) => s + x, 0) / a.length, total: (...a) => a.reduce((s, x) => s + x, 0), length: (...a) => a.length,
+  median: (...a) => { const b = [...a].sort((m, n) => m - n), k = b.length >> 1; return b.length % 2 ? b[k] : (b[k - 1] + b[k]) / 2; },
+  stdev: (...a) => { const m = a.reduce((s, x) => s + x, 0) / a.length; return Math.sqrt(a.reduce((s, x) => s + (x - m) ** 2, 0) / (a.length - 1)); },
+  stdevp: (...a) => { const m = a.reduce((s, x) => s + x, 0) / a.length; return Math.sqrt(a.reduce((s, x) => s + (x - m) ** 2, 0) / a.length); }, mod: (a, b) => ((a % b) + b) % b,
 };
 
 type Fn = (v: Record<string, number>) => number;
 /** Compiles "2*pi*sqrt(L/g)" into a function. Supports + - * / ^, parentheses, unary minus, < > (give 1 or 0), constants and FUNCS. */
-export function compile(src: string): { fn: Fn; vars: string[] } {
+export function compile(src: string, extra: Record<string, (...a: number[]) => number> = {}): { fn: Fn; vars: string[] } {
   const toks = src.match(/\d+\.?\d*(?:e[+-]?\d+)?|\.\d+|[A-Za-z_]\w*|[-+*/^(),<>]/g) ?? [];
   if (toks.join('') !== src.replace(/\s+/g, '')) throw new Error(`can't read formula "${src}"`);
   let i = 0; const vars = new Set<string>();
@@ -56,7 +60,7 @@ export function compile(src: string): { fn: Fn; vars: string[] } {
     if (/^[\d.]/.test(t)) { const n = Number(t); return () => n; }
     if (/^[A-Za-z_]/.test(t)) {
       if (peek() === '(') {
-        const f = FUNCS[t]; if (!f) throw new Error(`unknown function "${t}" in "${src}"`); take('(');
+        const f = extra[t] ?? FUNCS[t]; if (!f) throw new Error(`unknown function "${t}" in "${src}"`); take('(');
         const args: Fn[] = []; if (peek() !== ')') { args.push(cmp()); while (peek() === ',') { take(); args.push(cmp()); } } take(')');
         return v => f(...args.map(a => a(v)));
       }

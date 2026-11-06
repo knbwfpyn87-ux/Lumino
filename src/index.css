@@ -672,3 +672,26 @@ button.choice.faded { opacity:.55; }
 .helpwalk { margin:10px 0; padding:12px 14px; border-radius:14px; background:var(--accent-soft); }
 .helpsteps { margin:0 0 10px; padding-left:1.3em; display:flex; flex-direction:column; gap:6px; } .helpsteps li { animation:fadein .25s ease; }
 .helpsteps li.final { font-weight:600; }
+
+/* graphing calculator */
+.graphcalc { display:grid; grid-template-columns:minmax(260px, 340px) 1fr; gap:12px; height:min(72vh, 640px); }
+.graphcalc .gcside { order:-1; display:flex; flex-direction:column; gap:8px; min-height:0; }
+.graphcalc.compact { display:flex; flex-direction:column; height:100%; min-height:0; }
+.graphcalc.compact .gcgraph { flex:0 0 48%; }
+.graphcalc.compact .gcside { order:0; flex:1; min-height:0; }
+.graphcalc.compact .gcexprs { flex:1 1 auto; min-height:70px; }
+@media (max-width:720px) { .graphcalc { grid-template-columns:1fr; grid-template-rows:minmax(260px, 50vh) auto; height:auto; } .graphcalc .gcside { order:0; } }
+.gcgraph { position:relative; min-height:200px; border-radius:12px; overflow:hidden; background:#fff; border:1px solid var(--line); }
+.gcgraph canvas { width:100%; height:100%; display:block; touch-action:none; cursor:grab; }
+.gczoom { position:absolute; right:6px; top:6px; display:flex; flex-direction:column; gap:4px; }
+.gczoom button { width:34px; height:34px; padding:0; background:#fff; color:#111827; }
+.gcexprs { display:flex; flex-direction:column; gap:4px; overflow:auto; min-height:0; }
+.gcrow { display:flex; align-items:center; gap:6px; } .gcdot { width:10px; height:10px; border-radius:50%; flex:none; }
+.gcin { flex:1; display:flex; flex-direction:column; min-width:0; }
+.gcin input { width:100%; font-family:ui-monospace,Menlo,monospace; font-size:.95rem; padding:7px 9px; border-radius:10px; border:1px solid var(--line); background:var(--panel); color:var(--text); }
+.gcout { font-size:.82rem; color:var(--muted); text-align:right; padding:1px 4px; } .gcout.err { color:var(--bad); text-align:left; }
+.gcx { padding:4px 8px; }
+.gcsliders { display:flex; flex-direction:column; gap:4px; } .gcsliders label { display:flex; flex-direction:column; font-size:.88rem; } .gcsliders input { accent-color:var(--accent); }
+.gcopts { justify-content:space-between; align-items:center; }
+.calcpage { display:flex; flex-direction:column; gap:10px; }
+.desmospanel .graphcalc { flex:1; }
