@@ -9,6 +9,7 @@ import { speak, stopSpeaking, voiceOn } from '../lib/voice';
 import { award } from '../lib/progress';
 import { confetti } from '../components/Feedback';
 import Lab from '../components/Lab';
+import HelpWalk from '../components/HelpWalk';
 import { DesmosDock, DesmosBlock } from '../components/Desmos';
 import { courseUsesDesmos } from '../lib/desmos';
 import { isLabDone, markLabDone } from '../lib/courses';
@@ -115,6 +116,7 @@ export default function Lesson() {
             <p className="qq">{q.q}</p>{q.code && <pre className="code"><code>{q.code}</code></pre>}
             <div className="choices">{q.choices.map((ch, ci) => <button key={ci} disabled={picked != null}
               className={'choice' + (picked == null ? '' : ci === q.answer ? ' isright' : ci === picked ? ' iswrong' : ' faded')} onClick={() => pick(ci)}>{String.fromCharCode(65 + ci)}. {ch}</button>)}</div>
+            {picked == null && <HelpWalk key={`${id}-${u}-${l}-${qi}`} q={{ id: `${id}~${u}~${l}~${qi}`, prompt: q.q, choices: q.choices, answer: q.answer, explanation: q.why }} desmos={courseUsesDesmos(c)} />}
             {picked != null && <div className="teacherbox"><LuminoSays key={`why-${qi}`} size={96} mood={picked === q.answer ? 'correct' : 'wrong'} after={picked === q.answer ? 'correct' : 'teach'}
               text={picked === q.answer ? `Yes! ${q.why}` : `Not quite. It's ${String.fromCharCode(65 + q.answer)}. ${q.why}`} /></div>}
             {picked != null && qi < checks.length - 1 && <button onClick={() => setQi(qi + 1)}>Next question →</button>}

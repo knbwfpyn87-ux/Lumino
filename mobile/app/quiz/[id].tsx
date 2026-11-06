@@ -11,6 +11,7 @@ import { saveResult } from '@/lib/api';
 import { resolveTest, tierOf, canAccess, COURSES } from '@/lib/tests';
 import { courseUsesDesmos, testUsesDesmos } from '@shared/desmos';
 import { openDesmos } from '@/components/Desmos';
+import { HelpWalk } from '@/components/HelpWalk';
 import { recordCourseResult, parseCourseTestId, courseTestId } from '@shared/courses';
 import { PLAN_INFO } from '@shared/plans';
 import { teachLine } from '@shared/lines';
@@ -62,19 +63,21 @@ export default function Quiz() {
   }
 
   const right = picked !== null && picked === q.answer;
+  const pcd = parseCourseTestId(test.id); const desmos = pcd ? courseUsesDesmos(COURSES.find(x => x.id === pcd.courseId)) : testUsesDesmos(test);
   return (
     <View style={{ flex: 1, backgroundColor: t.bg, paddingTop: ins.top + 6 }}>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 18 }}>
         <Pressable accessibilityLabel="Close" onPress={() => router.back()} hitSlop={12}><T size={22} color={t.muted}>✕</T></Pressable>
         <View style={{ flex: 1 }}><Bar pct={((i + (picked !== null ? 1 : 0)) / qs.length) * 100} height={12} /></View>
         {combo >= 2 ? <T weight="900" color={t.accent}>🔥{combo}</T> : <T color={t.muted}>{i + 1}/{qs.length}</T>}
-        {(() => { const pc = parseCourseTestId(test.id); return pc ? courseUsesDesmos(COURSES.find(x => x.id === pc.courseId)) : testUsesDesmos(test); })() &&
+        {desmos &&
           <Pressable accessibilityLabel="Open the Desmos calculator" onPress={openDesmos} hitSlop={10}><T size={20}>📈</T></Pressable>}
       </View>
       <ScrollView contentContainerStyle={{ padding: 18, gap: 12, paddingBottom: 140 }}>
         <T size={13} color={t.muted}>{test.title}</T>
         <T size={22} weight="800">{q.prompt}</T>
         {q.code && <ScrollView horizontal style={{ backgroundColor: t.code, borderRadius: 14 }} contentContainerStyle={{ padding: 14 }}><T mono size={13} color="#e8ecff">{q.code}</T></ScrollView>}
+        {picked === null && <HelpWalk key={q.id} q={q} desmos={desmos} />}
         {q.choices.map((c, ci) => {
           const isAns = picked !== null && ci === q.answer; const isWrong = picked === ci && ci !== q.answer;
           return (

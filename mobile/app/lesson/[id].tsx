@@ -12,6 +12,7 @@ import { COURSES, unitTier, canAccess, courseTestId, levelState, getCourseProgre
 import { loadLessonText, markLessonDone, isLessonDone, isLabDone, markLabDone, type Block, type LessonText } from '@shared/courses';
 import { Lab } from '@/components/Lab';
 import { DesmosBlock, DesmosButton } from '@/components/Desmos';
+import { HelpWalk } from '@/components/HelpWalk';
 import { courseUsesDesmos } from '@shared/desmos';
 import { PLAN_INFO } from '@shared/plans';
 import { LuminoSays } from '@/components/Lumino';
@@ -122,6 +123,7 @@ export default function LessonScreen() {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}><T size={19} weight="900">✅ Quick check</T><T color={t.muted}>{qi + 1} of {checks.length}</T></View>
           <T size={17} weight="800">{q.q}</T>
           {q.code && <View style={{ backgroundColor: t.code, borderRadius: 12, padding: 12 }}><T mono color="#e8ecff" size={14}>{q.code}</T></View>}
+          {picked == null && <HelpWalk key={`${id}-${qi}`} q={{ id: `${id}~${qi}`, prompt: q.q, choices: q.choices, answer: q.answer, explanation: q.why }} desmos={courseUsesDesmos(c)} />}
           {q.choices.map((ch, ci) => {
             const isAns = picked != null && ci === q.answer; const isWrong = picked === ci && ci !== q.answer;
             return <Pressable key={ci} onPress={() => pick(ci)} disabled={picked != null} style={({ pressed }) => ({ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 14, borderRadius: 14, borderWidth: 2,
