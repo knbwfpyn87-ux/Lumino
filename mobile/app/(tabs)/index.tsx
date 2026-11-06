@@ -12,6 +12,7 @@ import UIcon from '@/components/UIcon';
 import { AI_ENABLED } from '@/lib/features';
 import { Image } from 'react-native';
 import { UI_SRC } from '@/lib/ui-assets';
+import { DailyPlay } from '@/components/DailyPlay';
 
 const greet = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
 
@@ -40,6 +41,8 @@ export default function Today() {
         </View>
         <UIcon name="mascot-hero" size={104} />
       </LinearGradient>
+
+      <DailyPlay />
 
       <Card onPress={() => router.push(`/quiz/sprint~${Date.now() % 1e9}`)} style={{ flexDirection: 'row', alignItems: 'center', gap: 14 }}>
         <View style={{ width: 56, height: 56, borderRadius: 16, backgroundColor: '#fff3d1', alignItems: 'center', justifyContent: 'center' }}><UIcon name="tool-timer" size={32} ink keep /></View>

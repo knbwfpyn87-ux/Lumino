@@ -9,6 +9,7 @@ import { ladder, type Course, type Category, type Unit } from './ladder';
 import { MORE_COURSES } from './catalog';
 import { CURRICULUM } from './curriculum.gen';
 import { LESSON_TEXT } from './lessons/index.gen';
+import { questEvent } from '../play';
 import { GENS } from './registry';
 import { vocab } from './banks';
 import type { Gen } from '../generated';
@@ -90,12 +91,12 @@ const LKEY = 'lumino:lessons';
 const lessonsDone = (): Record<string, number> => { try { return JSON.parse(localStorage.getItem(LKEY) ?? '{}'); } catch { return {}; } };
 export const lessonId = (courseId: string, u: number, l: number) => `${courseId}~${u}~${l}`;
 export function isLessonDone(courseId: string, u: number, l: number) { return !!lessonsDone()[lessonId(courseId, u, l)]; }
-export function markLessonDone(courseId: string, u: number, l: number) { const d = lessonsDone(); d[lessonId(courseId, u, l)] = Date.now(); try { localStorage.setItem(LKEY, JSON.stringify(d)); } catch { /* ignore */ } }
+export function markLessonDone(courseId: string, u: number, l: number) { questEvent('lesson'); const d = lessonsDone(); d[lessonId(courseId, u, l)] = Date.now(); try { localStorage.setItem(LKEY, JSON.stringify(d)); } catch { /* ignore */ } }
 const LABKEY = 'lumino:labs';
 const labsDone = (): Record<string, number> => { try { return JSON.parse(localStorage.getItem(LABKEY) ?? '{}'); } catch { return {}; } };
 /** A lab or demo counts once per lesson and title (for the points it gives). */
 export function isLabDone(courseId: string, u: number, l: number, title: string) { return !!labsDone()[`${lessonId(courseId, u, l)}~${title}`]; }
-export function markLabDone(courseId: string, u: number, l: number, title: string) { const d = labsDone(); d[`${lessonId(courseId, u, l)}~${title}`] = Date.now(); try { localStorage.setItem(LABKEY, JSON.stringify(d)); } catch { /* ignore */ } }
+export function markLabDone(courseId: string, u: number, l: number, title: string) { questEvent('lab'); const d = labsDone(); d[`${lessonId(courseId, u, l)}~${title}`] = Date.now(); try { localStorage.setItem(LABKEY, JSON.stringify(d)); } catch { /* ignore */ } }
 export function unitLessonsDone(c: Course, u: number) { return c.units[u].lessons.filter((_, l) => isLessonDone(c.id, u, l)).length; }
 
 /** Plan needed for a unit: Basic gets the first 2 units, Premium ~70% of units, Premium+ everything. */

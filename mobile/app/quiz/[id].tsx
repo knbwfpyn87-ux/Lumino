@@ -12,6 +12,7 @@ import { resolveTest, tierOf, canAccess, COURSES } from '@/lib/tests';
 import { courseUsesDesmos, testUsesDesmos } from '@shared/desmos';
 import { openDesmos } from '@/components/Desmos';
 import { HelpWalk } from '@/components/HelpWalk';
+import { recordAnswer } from '@shared/play';
 import { recordCourseResult, parseCourseTestId, courseTestId } from '@shared/courses';
 import { PLAN_INFO } from '@shared/plans';
 import { teachLine } from '@shared/lines';
@@ -33,7 +34,7 @@ export default function Quiz() {
 
   const qs = test.questions; const q = qs[i];
   const choose = (ci: number) => {
-    if (picked !== null) return; setPicked(ci);
+    if (picked !== null) return; setPicked(ci); recordAnswer(q, ci === q.answer, test.title);
     if (ci === q.answer) { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); setScore(s => s + 1); setCombo(c => c + 1); }
     else { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error); setCombo(0); }
   };

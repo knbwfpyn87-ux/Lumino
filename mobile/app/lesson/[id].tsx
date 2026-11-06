@@ -13,6 +13,7 @@ import { loadLessonText, markLessonDone, isLessonDone, isLabDone, markLabDone, t
 import { Lab } from '@/components/Lab';
 import { DesmosBlock, DesmosButton } from '@/components/Desmos';
 import { HelpWalk } from '@/components/HelpWalk';
+import { recordAnswer } from '@shared/play';
 import { courseUsesDesmos } from '@shared/desmos';
 import { PLAN_INFO } from '@shared/plans';
 import { LuminoSays } from '@/components/Lumino';
@@ -97,6 +98,7 @@ export default function LessonScreen() {
   };
   const pick = (ci: number) => {
     if (picked != null) return; const n = { ...picks, [qi]: ci }; setPicks(n);
+    recordAnswer({ id: `${cid}~${u}~${l}~${qi}`, prompt: q.q, choices: q.choices, answer: q.answer, explanation: q.why, code: q.code }, ci === q.answer, `${c.name}: ${lesson.title}`);
     Haptics.notificationAsync(ci === q.answer ? Haptics.NotificationFeedbackType.Success : Haptics.NotificationFeedbackType.Error);
     if (Object.keys(n).length === checks.length) {
       const score = checks.filter((x, i) => n[i] === x.answer).length;

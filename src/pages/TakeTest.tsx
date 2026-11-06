@@ -16,6 +16,7 @@ import { teachLine, verdict as verdictFor } from '../lib/lines';
 import { prefetchLine } from '../lib/voice';
 import { DesmosDock } from '../components/Desmos';
 import HelpWalk from '../components/HelpWalk';
+import { recordAnswer } from '../lib/play';
 import { courseUsesDesmos, testUsesDesmos } from '../lib/desmos';
 import { COURSES } from '../lib/courses';
 
@@ -74,7 +75,7 @@ export default function TakeTest() {
       {q.code && <pre className="code"><code>{q.code}</code></pre>}
       <div className="choices">{q.choices.map((c, ci) => { const shown = teach && revealed[q.id];
         return <button key={ci} disabled={shown} className={'choice' + (ans[q.id] === ci ? ' picked' : '') + (shown ? (ci === q.answer ? ' isright' : ans[q.id] === ci ? ' iswrong' : ' faded') : '')}
-          onClick={() => { setAns({ ...ans, [q.id]: ci }); if (teach) setRevealed({ ...revealed, [q.id]: true }); else if (i < qs.length - 1) setTimeout(() => setI(i + 1), 250); }}>{String.fromCharCode(65 + ci)}. {c}</button>; })}</div>
+          onClick={() => { if (ans[q.id] === undefined) recordAnswer(q, ci === q.answer, test.title); setAns({ ...ans, [q.id]: ci }); if (teach) setRevealed({ ...revealed, [q.id]: true }); else if (i < qs.length - 1) setTimeout(() => setI(i + 1), 250); }}>{String.fromCharCode(65 + ci)}. {c}</button>; })}</div>
       {!(teach && revealed[q.id]) && <HelpWalk key={q.id} q={q} desmos={desmos} />}
       {teach && (() => { const ok = ans[q.id] === q.answer; const r = revealed[q.id];
         const line = teachLine(i, q, !!r, ok);

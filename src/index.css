@@ -695,3 +695,17 @@ button.choice.faded { opacity:.55; }
 .gcopts { justify-content:space-between; align-items:center; }
 .calcpage { display:flex; flex-direction:column; gap:10px; }
 .desmospanel .graphcalc { flex:1; }
+/* daily play: boss + quests */
+.dailyplay .dp2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px; }
+.bosscard { display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:16px; background:linear-gradient(135deg,#fde8e8,#fff4e6); color:#3b1d1d; }
+.bosscard.won { background:linear-gradient(135deg,#e6f7ec,#f0fff4); } .bosscard p { margin:4px 0 8px; color:#5b4040; }
+.bossemoji { font-size:2.6rem; line-height:1; }
+.quests { display:flex; flex-direction:column; gap:6px; }
+.questpick { text-align:left; } .questpick.on { outline:2px solid var(--accent); }
+.quest { display:grid; grid-template-columns:1fr 80px auto; gap:8px; align-items:center; font-size:.92rem; } .quest.done span:first-child { text-decoration:line-through; color:var(--muted); }
+.qbar { height:8px; border-radius:99px; background:var(--line); overflow:hidden; } .qbar i { display:block; height:100%; background:var(--ok); }
+.bosspage h2 { margin:.4rem 0; } .bossstage { display:flex; flex-direction:column; align-items:center; gap:6px; margin:6px 0 14px; }
+.bossbig { font-size:5rem; line-height:1.1; } .bossbig.ouch { animation:ouch .35s ease; }
+@keyframes ouch { 0%,100% { transform:none; } 25% { transform:translateX(-10px) rotate(-8deg); filter:brightness(1.6); } 60% { transform:translateX(8px) rotate(6deg); } }
+.bosshp { width:min(320px, 80%); height:14px; border-radius:99px; background:var(--line); overflow:hidden; } .bosshp i { display:block; height:100%; background:linear-gradient(90deg,#ef4444,#f97316); transition:width .35s; }
+.hearts { font-size:1.3rem; letter-spacing:2px; } .bossend { text-align:center; }

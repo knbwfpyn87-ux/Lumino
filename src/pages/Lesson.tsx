@@ -10,6 +10,7 @@ import { award } from '../lib/progress';
 import { confetti } from '../components/Feedback';
 import Lab from '../components/Lab';
 import HelpWalk from '../components/HelpWalk';
+import { recordAnswer } from '../lib/play';
 import { DesmosDock, DesmosBlock } from '../components/Desmos';
 import { courseUsesDesmos } from '../lib/desmos';
 import { isLabDone, markLabDone } from '../lib/courses';
@@ -86,6 +87,7 @@ export default function Lesson() {
   };
   const pick = (ci: number) => {
     if (picks[qi] != null) return; const n = { ...picks, [qi]: ci }; setPicks(n);
+    recordAnswer({ id: `${c.id}~${u}~${l}~${qi}`, prompt: checks[qi].q, choices: checks[qi].choices, answer: checks[qi].answer, explanation: checks[qi].why, code: checks[qi].code }, ci === checks[qi].answer, `${c.name}: ${lesson.title}`);
     if (Object.keys(n).length === checks.length) {
       const score = checks.filter((q, i) => n[i] === q.answer).length;
       if (!isLessonDone(c.id, u, l)) award(15 + score * 5, `Lesson: ${lesson.title}`);

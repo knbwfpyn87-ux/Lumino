@@ -1,5 +1,6 @@
 import Lesson from './pages/Lesson';
 import Calculator from './pages/Calculator';
+import Boss from './pages/Boss';
 import { useEffect, useState } from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
@@ -88,6 +89,7 @@ export default function App() {
           <Route path="/courses/:id" element={<CourseView />} />
           <Route path="/courses/:id/learn/:u/:l" element={<Lesson />} />
           <Route path="/calculator" element={<Calculator />} />
+          <Route path="/boss" element={<Boss />} />
           {AI_ENABLED && <Route path="/assistant" element={<Assistant />} />}
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/account" element={<Account />} />

@@ -12,6 +12,8 @@ import UIcon from '../components/UIcon';
 import { UI } from '../lib/ui';
 import Brand from '../components/Brand';
 import { AI_ENABLED } from '../lib/features';
+import DailyPlay from '../components/DailyPlay';
+
 
 const greet = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
 const COLORS = ['#7cc8ff', '#ff9aa2', '#c4b5fd', '#ffd666', '#86efac', '#fdba74', '#93c5fd'];
@@ -81,6 +83,8 @@ export default function Home({ progressOnly = false }: { progressOnly?: boolean 
             <div><h2>Study Smarter Together.</h2><p>{AI_ENABLED ? 'AI-powered learning, built for you and your friends.' : 'Classes, practice and study rooms, built for you and your friends.'}</p></div>
             <img className="herowave" src={UI['wave-hero']} alt="" aria-hidden="true" />
           </Link>
+
+          <DailyPlay />
 
           <div className="dash2">
             <div className="panel">
