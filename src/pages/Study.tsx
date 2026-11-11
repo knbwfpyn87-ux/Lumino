@@ -9,14 +9,20 @@ export default function Study() {
   return (
     <section>
       <h1 className="greet">Study</h1>
-      <div className="tools big">
-        {[['tool-flashcards', 'Flashcards', '/flashcards', 'Spaced-repetition decks', 'blue'], ['tool-notes', 'Notes', '/notes', 'Class notes', 'yellow'],
-          ['tool-practice', 'Practice Tests', '/tests', 'SAT, AP & class tests', 'blue'], ['tool-timer', 'Focus Timer', '#timer', '25-minute sessions', 'yellow'],
-          ...(AI_ENABLED ? [['tool-ai', 'AI Help', '/assistant', 'Lumino AI tutor', 'purple']] : []), ['icon-classes', 'Classes', '/courses', 'Units that level up', 'blue'],
-          ['camera', 'Photo Quiz', '/photo-quiz/new', 'Snap a worksheet, solve as a group', 'yellow'], ['upload', 'Upload a Test', '/upload', 'Share with your group', 'blue']].map(([ic, l, to, d, c]) =>
-          to.startsWith('#') ? <a key={l} href={to} onClick={e => { e.preventDefault(); document.getElementById('timer')?.scrollIntoView({ behavior: 'smooth' }); }} className={'tool ' + c}><UIcon name={ic} size={42} ink /><span>{l}</span><small className="muted">{d}</small></a>
-          : <Link key={l} to={to} className={'tool ' + c}>{ic.includes('-') ? <UIcon name={ic} size={42} ink /> : <Icon name={ic} size={38} />}<span>{l}</span><small className="muted">{d}</small></Link>)}
-      </div>
+      {([
+        ['Practice', [['tool-practice', 'Practice Tests', '/tests', 'Class and SAT tests', 'blue'], ['⚔️', 'Daily Boss', '/boss', 'Review your past mistakes', 'yellow'],
+          ['camera', 'Photo Quiz', '/photo-quiz/new', 'Snap a worksheet, solve as a group', 'blue']]],
+        ['Tools', [['📈', 'Graphing Calculator', '/calculator', 'Graph, solve and calculate', 'yellow'], ['tool-flashcards', 'Flashcards', '/flashcards', 'Spaced-repetition decks', 'blue'],
+          ['tool-notes', 'Notes', '/notes', 'Class notes', 'yellow'], ['tool-timer', 'Focus Timer', '#timer', '25-minute sessions', 'blue']]],
+        ['Learn', [['icon-classes', 'Classes', '/courses', 'Lessons by subject', 'blue'], ['🎯', 'SAT & ACT', '/prep', 'Test prep and test-day toolkit', 'yellow'],
+          ...(AI_ENABLED ? [['tool-ai', 'AI Help', '/assistant', 'Lumino AI tutor', 'purple']] : []), ['upload', 'Upload a Test', '/upload', 'Share with your group', 'blue']]],
+      ] as [string, string[][]][]).map(([group, items]) => <div key={group}>
+        <h2 className="studygroup">{group}</h2>
+        <div className="tools big">{items.map(([ic, l, to, d, c]) => {
+          const icon = /^[a-z-]+$/.test(ic) ? (ic.includes('-') ? <UIcon name={ic} size={42} ink /> : <Icon name={ic} size={38} />) : <i className="toolemoji" aria-hidden="true">{ic}</i>;
+          return to.startsWith('#') ? <a key={l} href={to} onClick={e => { e.preventDefault(); document.getElementById('timer')?.scrollIntoView({ behavior: 'smooth' }); }} className={'tool ' + c}>{icon}<span>{l}</span><small className="muted">{d}</small></a>
+            : <Link key={l} to={to} className={'tool ' + c}>{icon}<span>{l}</span><small className="muted">{d}</small></Link>; })}</div>
+      </div>)}
       <FocusTimer />
     </section>
   );

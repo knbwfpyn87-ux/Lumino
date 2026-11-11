@@ -710,3 +710,17 @@ button.choice.faded { opacity:.55; }
 .bosshp { width:min(320px, 80%); height:14px; border-radius:99px; background:var(--line); overflow:hidden; } .bosshp i { display:block; height:100%; background:linear-gradient(90deg,#ef4444,#f97316); transition:width .35s; }
 .hearts { font-size:1.3rem; letter-spacing:2px; } .bossend { text-align:center; }
 .gcconnect { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:-4px 0 8px; } .gcconnect .bad { color:var(--bad); }
+/* SAT & ACT page */
+.prepgroup { margin-bottom:22px; } .prepsub { margin:16px 0 8px; font-size:1.02rem; }
+.prepcard .row { margin-top:8px; gap:8px; }
+.toolkit { display:flex; flex-wrap:wrap; gap:8px; }
+.kit { padding:8px 12px; border-radius:999px; background:var(--soft); color:var(--text); text-decoration:none; font-weight:600; font-size:.92rem; border:1px solid var(--line); }
+.kit:hover { background:var(--accent-soft); } .kit.done { color:var(--ok); }
+.lvltabs { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 4px; } .lvltabs button { padding:5px 12px; font-size:.85rem; }
+.lvlbadge { font-size:.7rem; font-weight:800; padding:2px 7px; border-radius:99px; background:var(--accent-soft); color:var(--accent); margin-left:6px; vertical-align:middle; }
+.prepbanner { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:12px 14px; border-radius:14px; background:var(--accent-soft); margin:10px 0; text-decoration:none; color:var(--text); font-weight:600; }
+.studygroup { margin:16px 0 6px; font-size:1.05rem; }
+.toolemoji { font-size:2.2rem; line-height:1; }
+.tool .toolemoji { font-style:normal; font-size:2.4rem; line-height:1; display:block; }
+.classcard h3 { padding-right:30px; }
+.prepcard .row button { padding:7px 12px; font-size:.9rem; }

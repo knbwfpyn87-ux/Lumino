@@ -1,6 +1,7 @@
 import Lesson from './pages/Lesson';
 import Calculator from './pages/Calculator';
 import Boss from './pages/Boss';
+import Prep from './pages/Prep';
 import { useEffect, useState } from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
@@ -36,7 +37,7 @@ import { LOGO } from './lib/logo';
 
 const AI_NAV = { to: '/assistant', label: 'AI Tutor', icon: 'nav-ai' };
 const NAV_BASE = [
-  { to: '/', label: 'Home', icon: 'nav-home' }, { to: '/courses', label: 'Classes', icon: 'nav-classes' }, { to: '/study', label: 'Study', icon: 'nav-study' },
+  { to: '/', label: 'Home', icon: 'nav-home' }, { to: '/courses', label: 'Classes', icon: 'nav-classes' }, { to: '/prep', label: 'SAT & ACT', icon: 'tool-practice' }, { to: '/study', label: 'Study', icon: 'nav-study' },
   { to: '/friends', label: 'Friends', icon: 'nav-friends' }, { to: '/groups', label: 'Groups', icon: 'nav-groups' },
 ];
 const NAV = AI_ENABLED ? [...NAV_BASE, AI_NAV] : NAV_BASE;
@@ -90,6 +91,7 @@ export default function App() {
           <Route path="/courses/:id/learn/:u/:l" element={<Lesson />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/boss" element={<Boss />} />
+          <Route path="/prep" element={<Prep />} />
           {AI_ENABLED && <Route path="/assistant" element={<Assistant />} />}
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/account" element={<Account />} />
