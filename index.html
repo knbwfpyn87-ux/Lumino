@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="./logo.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Lumino" />
+    <meta name="theme-color" content="#f7f8fc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#11131c" media="(prefers-color-scheme: dark)" />
+    <title>Lumino</title>
+    <script type="module" crossorigin src="./assets/index-KXQWsk2m.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-C8qcCRGU.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // GitHub Pages "Deploy from branch: main" serves this raw source page, which browsers can't run.
+      // Forward to the built site in /site/. (In the built page this tag finds no main.tsx and does nothing.)
+      if (/github\.io$/.test(location.hostname) && document.querySelector('script[src$="main.tsx"]')) {
+        location.replace(location.pathname.replace(/index\.html$/, '').replace(/\/?$/, '/') + 'site/' + location.hash);
+      }
+    </script>
+  </body>
+</html>
