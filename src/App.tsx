@@ -14,7 +14,7 @@ import Assistant from './pages/Assistant';
 import { AI_ENABLED } from './lib/features';
 import Pricing from './pages/Pricing';
 import Account from './pages/Account';
-import { Terms, Privacy } from './pages/Legal';
+import { Terms, Privacy, Cookies } from './pages/Legal';
 import { CourseList, CourseView } from './pages/Courses';
 import Icon from './components/Icon';
 import UIcon from './components/UIcon';
@@ -29,6 +29,7 @@ import Friends from './pages/Friends';
 import { NewPhotoQuiz, PhotoQuizView } from './pages/PhotoQuiz';
 import Moderation from './pages/Moderation';
 import Feedback from './components/Feedback';
+import CookieNotice from './components/CookieNotice';
 import { useAuth } from './lib/auth';
 import { isCloud } from './lib/supabase';
 import { SignIn, Onboarding } from './pages/Auth';
@@ -49,12 +50,13 @@ export default function App() {
   if (AI_ENABLED && window.location.hash.startsWith('#/lumino-scene')) return <LuminoScene />;
   if (isCloud) {
     if (loading) return <div className="auth"><Brand name="logo-mascot" className="authlogo" /></div>;
-    if (!session) return ['#/terms', '#/privacy'].includes(window.location.hash) ? <main>{window.location.hash === '#/terms' ? <Terms /> : <Privacy />}</main> : <SignIn logo={LOGO} />;
+    if (!session) return ['#/terms', '#/privacy', '#/cookies'].includes(window.location.hash) ? <main>{window.location.hash === '#/terms' ? <Terms /> : window.location.hash === '#/cookies' ? <Cookies /> : <Privacy />}</main> : <><SignIn logo={LOGO} /><CookieNotice /></>;
     if (!profile) return <Onboarding logo={LOGO} />;
   }
   return (
     <div className="shell">
       <Feedback />
+      <CookieNotice />
       <aside className="side">
         <NavLink to="/" className="brandfull" end aria-label="Lumino home"><Brand name="logo-full" alt="Lumino" /></NavLink>
         <nav className="sidenav">
@@ -97,6 +99,7 @@ export default function App() {
           <Route path="/account" element={<Account />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/cookies" element={<Cookies />} />
         </Routes>
       </main>
       </div>

@@ -37,7 +37,7 @@ export default function Account() {
         }}>Delete my account</button>
       </>}
       {err && <p className="wrong">{err}</p>}
-      <p className="muted small"><Link to="/terms">Terms</Link> · <Link to="/privacy">Privacy</Link></p>
+      <p className="muted small"><Link to="/terms">Terms</Link> · <Link to="/privacy">Privacy</Link> · <Link to="/cookies">Cookies</Link></p>
     </section>
   );
 }

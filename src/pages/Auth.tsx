@@ -69,7 +69,7 @@ export function Onboarding(_props: { logo?: string }) {
         <div className="seg">{[['student', '🎒 Student'], ['teacher', '🍎 Teacher']].map(([v, l]) => <button type="button" key={v} className={role === v ? '' : 'ghost'} onClick={() => setRole(v)}>{l}</button>)}</div>
         <div className="seg">{[['high_school', 'High school'], ['college', 'College']].map(([v, l]) => <button type="button" key={v} className={level === v ? '' : 'ghost'} onClick={() => setLevel(v)}>{l}</button>)}</div>
         <input inputMode="numeric" maxLength={4} placeholder="Birth year (e.g. 2009)" value={birthYear} onChange={e => setBirthYear(e.target.value.replace(/\D/g, ''))} />
-        <label className="small muted" style={{ textAlign: 'left' }}><input type="checkbox" checked={agree} onChange={e => setAgree(e.target.checked)} /> I agree to the <a href="#/terms" target="_blank">Terms</a> and <a href="#/privacy" target="_blank">Privacy Policy</a>{' '}(under 18: with a parent's OK)</label>
+        <label className="small muted" style={{ textAlign: 'left' }}><input type="checkbox" checked={agree} onChange={e => setAgree(e.target.checked)} /> I agree to the <a href="#/terms" target="_blank">Terms</a> and <a href="#/privacy" target="_blank">Privacy Policy</a> (see also our <a href="#/cookies" target="_blank">Cookie Policy</a>){' '}(under 18: with a parent's OK)</label>
         <button disabled={busy}>Let's go</button>
         {err && <p className="wrong">{err}</p>}
         <p className="muted small"><a onClick={signOut}>Sign out</a></p>
